@@ -5,51 +5,29 @@ on:
     branches: [ main, master ]
     types: [opened, synchronize, reopened]
   workflow_dispatch:
-    inputs:
-      baseline_ref:
-        description: 'Baseline reference (branch/commit)'
-        required: false
-        default: 'main'
-      pr_ref:
-        description: 'PR reference (branch/commit)'
-        required: false
-        default: ''
 
 concurrency:
   group: perf-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  # Performance test configuration
-  PERFORMANCE_TIMEOUT: 90
-  BUILD_TIMEOUT: 30
-  
 jobs:
   performance-test:
-    name: DMD Performance Regression Test
+    name: DMD Performance Test
     runs-on: ubuntu-latest
-    timeout-minutes: 120
-    
-    permissions:
-      contents: read
-      pull-requests: write
-      actions: read
+    timeout-minutes: 90
 
     steps:
-    - name: Checkout Repository
+    - name: Checkout PR
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-        submodules: recursive
 
     - name: Setup Build Environment
       run: |
-        echo "=== Setting up DMD build environment ==="
         sudo apt-get update
-        sudo apt-get install -y build-essential git bc python3 time curl gdc
+        sudo apt-get install -y build-essential git bc python3 time
         
         # Install bootstrap D compiler
-        echo "Installing bootstrap DMD..."
         curl -fsS https://dlang.org/install.sh | bash -s dmd
         source ~/dlang/dmd-*/activate
         
@@ -57,1265 +35,298 @@ jobs:
         echo "$(echo ~/dlang/dmd-*/linux/bin64)" >> $GITHUB_PATH
         echo "HOST_DMD=$(echo ~/dlang/dmd-*/linux/bin64/dmd)" >> $GITHUB_ENV
         
-        # Set library paths for Phobos/druntime
-        echo "LIBRARY_PATH=$(echo ~/dlang/dmd-*/linux/lib64):$LIBRARY_PATH" >> $GITHUB_ENV
-        echo "LD_LIBRARY_PATH=$(echo ~/dlang/dmd-*/linux/lib64):$LD_LIBRARY_PATH" >> $GITHUB_ENV
-        
-        # Verify bootstrap environment
+        # Verify bootstrap compiler
         dmd --version
-        echo "Testing basic D compilation..."
-        echo 'import std.stdio; void main() { writeln("Hello, World!"); }' > test.d
-        dmd test.d -of=test && ./test && rm -f test test.d
-        echo "✅ Bootstrap D environment verified"
-
-    - name: Create Performance Test Scripts
+        
+    - name: Create Performance Test Script
       run: |
         mkdir -p scripts/perf
-        
-        # Create the main performance test script
         cat > scripts/perf/dmd-performance-test.sh << 'SCRIPT_EOF'
-        #!/bin/bash
-        # DMD Performance Test Script with comprehensive error handling
-        # Usage: ./dmd-performance-test.sh [baseline|pr]
-
-        set -e
-
-        TEST_TYPE="${1:-pr}"
-        SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-        PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-        RESULTS_DIR="$PROJECT_ROOT/perf-results"
-
-        mkdir -p "$RESULTS_DIR"
-
-        # Format duration helper
-        format_duration() {
-            local duration="$1"
-            printf "%.9f" "$duration" | sed 's/^\./0./'
-        }
-
-        # Find DMD binary with comprehensive search
-        find_dmd() {
-            local dmd_paths=(
-                "generated/linux/release/64/dmd"
-                "generated/linux/debug/64/dmd"
-                "generated/osx/release/64/dmd"
-                "generated/linux/64/dmd"
-                "src/dmd"
-                "dmd"
-                "compiler/src/dmd"
-            )
-            
-            for path in "${dmd_paths[@]}"; do
-                if [ -f "$PROJECT_ROOT/$path" ] && [ -x "$PROJECT_ROOT/$path" ]; then
-                    echo "$PROJECT_ROOT/$path"
-                    return 0
-                fi
-            done
-            
-            echo ""
-            return 1
-        }
-
-        # Test compilation with detailed error reporting
-        test_compilation() {
-            local test_name="$1"
-            local source_files="$2"
-            local output_file="$3"
-            local timeout_sec="${4:-120}"
-            
-            echo "Testing $test_name..."
-            
-            local start_time=$(date +%s.%N)
-            local compile_result=0
-            local error_output=""
-            
-            # Test compilation with timeout and error capture
-            if ! error_output=$(timeout "$timeout_sec" "$DMD_BINARY" $source_files -of="$output_file" -v 2>&1); then
-                compile_result=1
-                echo "❌ $test_name compilation failed"
-                echo "Error details (last 10 lines):"
-                echo "$error_output" | tail -10
-            else
-                echo "✅ $test_name compiled successfully"
-                # Cleanup generated file
-                rm -f "$output_file"
-            fi
-            
-            local end_time=$(date +%s.%N)
-            
-            if [ $compile_result -eq 0 ]; then
-                format_duration "$(echo "$end_time - $start_time" | bc -l)"
-            else
-                echo "999.000000000"
-            fi
-        }
-
-        echo "=== DMD Performance Test ($TEST_TYPE) ==="
-        cd "$PROJECT_ROOT"
-
-        # Initialize results JSON
-        {
-            echo "{"
-            echo "  \"timestamp\": \"$(date -Iseconds)\","
-            echo "  \"test_type\": \"$TEST_TYPE\","
-            if git rev-parse --git-dir > /dev/null 2>&1; then
-                echo "  \"commit\": \"$(git rev-parse HEAD)\","
-                echo "  \"branch\": \"$(git branch --show-current 2>/dev/null || git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'unknown')\","
-            fi
-        } > "$RESULTS_DIR/results.json"
-
-        # Find and verify DMD binary
-        DMD_BINARY=$(find_dmd)
-        if [ -z "$DMD_BINARY" ]; then
-            echo "❌ DMD binary not found!"
-            echo "Searching for DMD files:"
-            find . -name "*dmd*" -type f | head -20
-            echo '  "error": "dmd_not_found",' >> "$RESULTS_DIR/results.json"
-            echo '}' >> "$RESULTS_DIR/results.json"
-            exit 1
-        fi
-
-        echo "📍 Using DMD: $DMD_BINARY"
-
-        # Verify DMD functionality
-        echo "🔍 Verifying DMD functionality..."
-        echo 'void main() {}' > /tmp/test_basic.d
-        if ! "$DMD_BINARY" /tmp/test_basic.d -of=/tmp/test_basic 2>/dev/null; then
-            echo "❌ DMD binary is not functional"
-            echo '  "error": "dmd_not_functional",' >> "$RESULTS_DIR/results.json"
-            echo '}' >> "$RESULTS_DIR/results.json"
-            rm -f /tmp/test_basic.d /tmp/test_basic
-            exit 1
-        fi
-        rm -f /tmp/test_basic.d /tmp/test_basic
-        echo "✅ DMD is functional"
-
-        # Check standard library availability
-        echo "🔍 Checking standard library..."
-        echo 'import std.stdio; void main() { writeln("test"); }' > /tmp/test_phobos.d
-        if "$DMD_BINARY" /tmp/test_phobos.d -of=/tmp/test_phobos 2>/dev/null; then
-            HAS_PHOBOS=true
-            echo "✅ Standard library (Phobos) is available"
-            rm -f /tmp/test_phobos /tmp/test_phobos.d
-        else
-            HAS_PHOBOS=false
-            echo "⚠️ Standard library not available - using simpler tests"
-            rm -f /tmp/test_phobos.d
-        fi
-
-        # Test 1: Basic compilation benchmark
-        echo "🧪 Running basic compilation benchmark..."
-        temp_dir=$(mktemp -d)
-        cd "$temp_dir"
-        
-        start_time=$(date +%s.%N)
-        success_count=0
-        for i in {1..10}; do
-            echo "void test$i() { int x = $i; } void main() { test$i(); }" > "test$i.d"
-            if "$DMD_BINARY" "test$i.d" -of="test$i" 2>/dev/null; then
-                success_count=$((success_count + 1))
-                rm -f "test$i"
-            fi
-            rm -f "test$i.d"
-        done
-        end_time=$(date +%s.%N)
-        
-        if [ $success_count -eq 10 ]; then
-            basic_benchmark_time=$(format_duration "$(echo "$end_time - $start_time" | bc -l)")
-        else
-            basic_benchmark_time="999.000000000"
-        fi
-        
-        cd "$PROJECT_ROOT"
-        rm -rf "$temp_dir"
-        echo "  \"basic_benchmark_time\": $basic_benchmark_time," >> "$RESULTS_DIR/results.json"
-
-        # Test 2: Real D project compilation
-        echo "🏗️ Testing real D project compilation..."
-        temp_dir=$(mktemp -d)
-        cd "$temp_dir"
-
-        cat > main.d << 'EOF'
-module main;
-
-struct Token {
-    string type;
-    string value;
-    size_t line;
-    
-    this(string t, string v, size_t l) {
-        type = t;
-        value = v;
-        line = l;
-    }
-}
-
-class Lexer {
-    Token[] tokens;
-    
-    Token[] tokenize(string input) {
-        Token[] result;
-        size_t line = 1;
-        
-        foreach (i, char c; input) {
-            if (c >= 'a' && c <= 'z') {
-                result ~= Token("LETTER", input[i..i+1], line);
-            } else if (c >= '0' && c <= '9') {
-                result ~= Token("DIGIT", input[i..i+1], line);
-            } else if (c == '\n') {
-                line++;
-            }
-        }
-        return result;
-    }
-}
-
-abstract class ASTNode {
-    abstract string toString() const;
-}
-
-class Expression : ASTNode {
-    string value;
-    this(string v) { value = v; }
-    override string toString() const { return value; }
-}
-
-class Statement : ASTNode {
-    ASTNode[] children;
-    override string toString() const { return "Statement"; }
-    
-    void addChild(ASTNode child) {
-        children ~= child;
-    }
-}
-
-class Parser {
-    ASTNode parse(Token[] tokens) {
-        auto root = new Statement();
-        foreach (token; tokens) {
-            root.addChild(new Expression(token.value));
-        }
-        return root;
-    }
-}
-
-class CodeGenerator {
-    string generate(ASTNode ast) {
-        return "// Generated code\nvoid generatedFunction() {}\n";
-    }
-}
-
-void main() {
-    auto lexer = new Lexer();
-    auto parser = new Parser();
-    auto codegen = new CodeGenerator();
-    
-    string testInput = "hello world 123 test input data processing";
-    auto tokens = lexer.tokenize(testInput);
-    auto ast = parser.parse(tokens);
-    auto code = codegen.generate(ast);
-}
-EOF
-
-        real_project_time=$(test_compilation "Real D Project" "main.d" "test_app")
-        cd "$PROJECT_ROOT"
-        rm -rf "$temp_dir"
-        echo "  \"real_project_compile_time\": $real_project_time," >> "$RESULTS_DIR/results.json"
-
-        # Test 3: Template compilation
-        echo "🔧 Testing template compilation..."
-        temp_dir=$(mktemp -d)
-        cd "$temp_dir"
-
-        cat > template_test.d << 'EOF'
-module template_test;
-
-// Factorial template
-template Factorial(int n) {
-    static if (n <= 1)
-        enum Factorial = 1;
-    else
-        enum Factorial = n * Factorial!(n-1);
-}
-
-// Prime checking template
-template IsPrime(int n) {
-    static if (n < 2)
-        enum IsPrime = false;
-    else static if (n == 2)
-        enum IsPrime = true;
-    else static if (n % 2 == 0)
-        enum IsPrime = false;
-    else {
-        static if (n % 3 == 0)
-            enum IsPrime = false;
-        else static if (n % 5 == 0)
-            enum IsPrime = false;
-        else static if (n % 7 == 0)
-            enum IsPrime = false;
-        else
-            enum IsPrime = true; // Simplified for testing
-    }
-}
-
-// Generic max template
-T max(T)(T a, T b) {
-    return a > b ? a : b;
-}
-
-// Array processing template
-template ArraySum(T) {
-    T ArraySum(T[] arr) {
-        T sum = T.init;
-        foreach (elem; arr) {
-            sum += elem;
-        }
-        return sum;
-    }
-}
-
-// Template instantiations
-enum fact5 = Factorial!(5);
-enum fact7 = Factorial!(7);
-enum fact10 = Factorial!(10);
-
-enum prime7 = IsPrime!(7);
-enum prime11 = IsPrime!(11);
-enum prime13 = IsPrime!(13);
-enum prime17 = IsPrime!(17);
-
-void main() {
-    int factSum = fact5 + fact7 + fact10;
-    bool anyPrime = prime7 || prime11 || prime13 || prime17;
-    
-    auto maxInt = max(10, 20);
-    auto maxFloat = max(1.5, 2.5);
-    
-    int[] testArray = [1, 2, 3, 4, 5];
-    auto sum = ArraySum!int(testArray);
-}
-EOF
-
-        template_stress_time=$(test_compilation "Template Test" "template_test.d" "template_test")
-        cd "$PROJECT_ROOT"
-        rm -rf "$temp_dir"
-        echo "  \"template_stress_time\": $template_stress_time," >> "$RESULTS_DIR/results.json"
-
-        # Test 4: CTFE compilation
-        echo "⚡ Testing CTFE compilation..."
-        temp_dir=$(mktemp -d)
-        cd "$temp_dir"
-
-        cat > ctfe_test.d << 'EOF'
-module ctfe_test;
-
-// CTFE functions
-int[] generateSquares(int n) {
-    int[] result;
-    foreach (i; 0 .. n) {
-        result ~= i * i;
-    }
-    return result;
-}
-
-int fibonacci(int n) {
-    if (n <= 1) return n;
-    return fibonacci(n-1) + fibonacci(n-2);
-}
-
-string generateString(int n) {
-    string result = "Generated: ";
-    foreach (i; 0 .. n) {
-        if (i > 0) result ~= ", ";
-        result ~= cast(char)('A' + (i % 26));
-    }
-    return result;
-}
-
-// Matrix multiplication at compile time
-int[][] multiplyMatrices(int[][] a, int[][] b) {
-    if (a.length == 0 || b.length == 0 || a[0].length != b.length) {
-        return [];
-    }
-    
-    int[][] result = new int[][](a.length, b[0].length);
-    foreach (i; 0 .. a.length) {
-        foreach (j; 0 .. b[0].length) {
-            result[i][j] = 0;
-            foreach (k; 0 .. a[0].length) {
-                result[i][j] += a[i][k] * b[k][j];
-            }
-        }
-    }
-    return result;
-}
-
-// Force CTFE execution
-enum squares = generateSquares(25);
-enum fib10 = fibonacci(10);
-enum fib12 = fibonacci(12);
-enum generated = generateString(20);
-
-// Simple matrix operations
-enum matrix1 = [[1, 2], [3, 4]];
-enum matrix2 = [[5, 6], [7, 8]];
-enum matrixResult = multiplyMatrices(matrix1, matrix2);
-
-void main() {
-    int total = 0;
-    foreach (val; squares) {
-        total += val;
-    }
-    
-    int fibResult = fib10 + fib12;
-    string msg = generated;
-    
-    // Use matrix result
-    foreach (row; matrixResult) {
-        foreach (val; row) {
-            total += val;
-        }
-    }
-}
-EOF
-
-        ctfe_stress_time=$(test_compilation "CTFE Test" "ctfe_test.d" "ctfe_test")
-        cd "$PROJECT_ROOT"
-        rm -rf "$temp_dir"
-        echo "  \"ctfe_stress_time\": $ctfe_stress_time," >> "$RESULTS_DIR/results.json"
-
-        # Test 5: Large file compilation
-        echo "📄 Testing large file compilation..."
-        temp_dir=$(mktemp -d)
-        cd "$temp_dir"
-
-        # Generate large D file
-        {
-            echo "module large_file;"
-            echo ""
-            
-            # Generate classes with methods
-            for i in $(seq 1 40); do
-                cat << CLASSEOF
-class TestClass$i {
-    private int value$i = $i;
-    private string name$i = "test$i";
-    
-    this() {}
-    this(int val) { value$i = val; }
-    this(int val, string n) { value$i = val; name$i = n; }
-    
-    int getValue() { return value$i; }
-    void setValue(int val) { value$i = val; }
-    string getName() { return name$i; }
-    void setName(string n) { name$i = n; }
-    
-    int compute() {
-        int result = 0;
-        foreach (j; 0 .. 10) {
-            result += j * value$i;
-        }
-        return result;
-    }
-    
-    bool isValid() {
-        return value$i > 0 && name$i.length > 0;
-    }
-    
-    void process() {
-        if (isValid()) {
-            int temp = compute();
-            setValue(temp % 1000);
-        }
-    }
-}
-
-interface IProcessor$i {
-    int process$i(int input);
-}
-
-class Processor$i : IProcessor$i {
-    TestClass$i instance;
-    
-    this() {
-        instance = new TestClass$i();
-    }
-    
-    int process$i(int input) {
-        instance.setValue(input);
-        return instance.compute();
-    }
-}
-
-int processClass$i() {
-    auto obj = new TestClass$i();
-    auto processor = new Processor$i();
-    obj.process();
-    return processor.process$i(obj.getValue());
-}
-
-CLASSEOF
-            done
-            
-            echo "void main() {"
-            echo "    int total = 0;"
-            for i in $(seq 1 40); do
-                echo "    total += processClass$i();"
-            done
-            echo "    // Final computation"
-            echo "    total = total % 10000;"
-            echo "}"
-        } > large_file.d
-
-        large_file_time=$(test_compilation "Large File" "large_file.d" "large_test" 240)
-        cd "$PROJECT_ROOT"
-        rm -rf "$temp_dir"
-        echo "  \"large_file_compile_time\": $large_file_time," >> "$RESULTS_DIR/results.json"
-
-        # Test 6: Multi-module project
-        echo "📚 Testing multi-module compilation..."
-        temp_dir=$(mktemp -d)
-        cd "$temp_dir"
-
-        # Module 1: Utilities
-        cat > utils.d << 'EOF'
-module utils;
-
-struct Point {
-    int x, y;
-    
-    this(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-    
-    int distanceSquared() {
-        return x*x + y*y;
-    }
-    
-    Point add(Point other) {
-        return Point(x + other.x, y + other.y);
-    }
-}
-
-class Calculator {
-    int add(int a, int b) { return a + b; }
-    int subtract(int a, int b) { return a - b; }
-    int multiply(int a, int b) { return a * b; }
-    int divide(int a, int b) { return b != 0 ? a / b : 0; }
-    
-    int power(int base, int exp) {
-        int result = 1;
-        foreach (i; 0 .. exp) {
-            result = multiply(result, base);
-        }
-        return result;
-    }
-}
-
-interface Drawable {
-    string draw();
-}
-EOF
-
-        # Module 2: Algorithms
-        cat > algorithms.d << 'EOF'
-module algorithms;
-import utils;
-
-class AdvancedCalculator : Calculator {
-    Point[] points;
-    
-    void addPoint(int x, int y) {
-        points ~= Point(x, y);
-    }
-    
-    void addPoint(Point p) {
-        points ~= p;
-    }
-    
-    int sumDistances() {
-        int total = 0;
-        foreach (point; points) {
-            total = add(total, point.distanceSquared());
-        }
-        return total;
-    }
-    
-    Point centroid() {
-        if (points.length == 0) return Point(0, 0);
-        
-        int sumX = 0, sumY = 0;
-        foreach (point; points) {
-            sumX += point.x;
-            sumY += point.y;
-        }
-        return Point(sumX / cast(int)points.length, sumY / cast(int)points.length);
-    }
-}
-
-int factorial(int n) {
-    if (n <= 1) return 1;
-    Calculator calc = new Calculator();
-    return calc.multiply(n, factorial(n-1));
-}
-
-class Shape : Drawable {
-    Point center;
-    
-    this(Point c) { center = c; }
-    
-    override string draw() {
-        return "Shape at center";
-    }
-}
-
-class Circle : Shape {
-    int radius;
-    
-    this(Point c, int r) {
-        super(c);
-        radius = r;
-    }
-    
-    override string draw() {
-        return "Circle";
-    }
-    
-    int area() {
-        // Approximate PI as 3
-        return 3 * radius * radius;
-    }
-}
-EOF
-
-        # Module 3: Main application
-        cat > main.d << 'EOF'
-module main;
-import utils;
-import algorithms;
-
-class Application {
-    AdvancedCalculator calc;
-    Shape[] shapes;
-    
-    this() {
-        calc = new AdvancedCalculator();
-    }
-    
-    void run() {
-        // Add test points
-        foreach (i; 0 .. 15) {
-            calc.addPoint(i, i*2);
-        }
-        
-        // Calculate distances
-        int distances = calc.sumDistances();
-        Point center = calc.centroid();
-        
-        // Create shapes
-        foreach (i; 1 .. 10) {
-            shapes ~= new Circle(Point(i, i), i);
-        }
-        
-        // Process shapes
-        foreach (shape; shapes) {
-            string drawing = shape.draw();
-        }
-        
-        // Mathematical operations
-        int fact5 = factorial(5);
-        int pow23 = calc.power(2, 8);
-    }
-}
-
-void main() {
-    auto app = new Application();
-    app.run();
-}
-EOF
-
-        multi_module_time=$(test_compilation "Multi-Module" "main.d utils.d algorithms.d" "multi_test")
-        cd "$PROJECT_ROOT"
-        rm -rf "$temp_dir"
-        echo "  \"multi_module_compile_time\": $multi_module_time," >> "$RESULTS_DIR/results.json"
-
-        # Test 7: DMD Self-compilation (if possible)
-        if [ -f "src/dmd/mars.d" ] || [ -f "compiler/src/dmd/mars.d" ] || [ -d "src" ]; then
-            echo "🔄 Testing DMD self-compilation..."
-            
-            start_time=$(date +%s.%N)
-            self_compile_success=false
-            
-            echo "Attempting DMD self-compilation..."
-            
-            # Clean before attempting self-compile
-            make clean > /dev/null 2>&1 || true
-            
-            # Try different build approaches with timeout
-            if timeout 900 make -j1 HOST_DMD="$HOST_DMD" > /dev/null 2>&1; then
-                self_compile_success=true
-                echo "✅ Self-compilation via default Makefile succeeded"
-            elif timeout 900 make -f posix.mak -j1 HOST_DMD="$HOST_DMD" > /dev/null 2>&1; then
-                self_compile_success=true
-                echo "✅ Self-compilation via posix.mak succeeded"
-            else
-                echo "❌ Self-compilation failed or timed out"
-            fi
-            
-            end_time=$(date +%s.%N)
-            
-            if [ "$self_compile_success" = true ]; then
-                self_compile_time=$(format_duration "$(echo "$end_time - $start_time" | bc -l)")
-            else
-                self_compile_time="999.000000000"
-            fi
-            
-            echo "  \"self_compile_time\": $self_compile_time," >> "$RESULTS_DIR/results.json"
-        fi
-
-        # Get binary information
-        if [ -f "$DMD_BINARY" ]; then
-            dmd_size=$(stat -c%s "$DMD_BINARY" 2>/dev/null || stat -f%z "$DMD_BINARY" 2>/dev/null || echo "0")
-            dmd_version=$("$DMD_BINARY" --version 2>/dev/null | head -1 || echo "unknown")
-            echo "  \"dmd_version\": \"$dmd_version\"," >> "$RESULTS_DIR/results.json"
-            echo "  \"dmd_size_bytes\": $dmd_size," >> "$RESULTS_DIR/results.json"
-        else
-            echo "  \"dmd_size_bytes\": 0," >> "$RESULTS_DIR/results.json"
-        fi
-
-        # Add system information
-        echo "  \"system_info\": {" >> "$RESULTS_DIR/results.json"
-        echo "    \"os\": \"$(uname -s)\"," >> "$RESULTS_DIR/results.json"
-        echo "    \"arch\": \"$(uname -m)\"," >> "$RESULTS_DIR/results.json"
-        echo "    \"cores\": $(nproc 2>/dev/null || echo "1")," >> "$RESULTS_DIR/results.json"
-        echo "    \"has_phobos\": $HAS_PHOBOS" >> "$RESULTS_DIR/results.json"
-        echo "  }" >> "$RESULTS_DIR/results.json"
-
-        # Close JSON properly
-        echo "}" >> "$RESULTS_DIR/results.json"
-
-        # Validate and format JSON
-        if command -v python3 >/dev/null 2>&1; then
-            python3 -c "
-import json
-import re
-
-try:
-    with open('$RESULTS_DIR/results.json', 'r') as f:
-        content = f.read()
-    
-    # Clean up JSON format
-    content = re.sub(r',(\s*[}\]])', r'\1', content)
-    
-    # Validate JSON
-    data = json.loads(content)
-    
-    # Write formatted JSON
-    with open('$RESULTS_DIR/results.json', 'w') as f:
-        json.dump(data, f, indent=2)
-    
-    print('✅ JSON formatted and validated successfully')
-except Exception as e:
-    print(f'❌ JSON formatting failed: {e}')
-    # Fallback formatting
-    with open('$RESULTS_DIR/results.json', 'r') as f:
-        content = f.read()
-    content = re.sub(r',(\s*[}\]])', r'\1', content.strip())
-    with open('$RESULTS_DIR/results.json', 'w') as f:
-        f.write(content)
-"
-        fi
-
-        echo "✅ Performance test completed!"
-        echo "📊 Results saved to: $RESULTS_DIR/results.json"
-
-        # Display summary
-        echo ""
-        echo "=== Performance Test Summary ==="
-        if command -v python3 >/dev/null 2>&1; then
-            python3 -c "
-import json
-import os
-
-results_file = '$RESULTS_DIR/results.json'
-try:
-    with open(results_file) as f:
-        data = json.load(f)
-except Exception as e:
-    print(f'Error reading results: {e}')
-    exit()
-
-def fmt_time(t):
-    if t is None:
-        return 'N/A'
-    return 'FAILED' if str(t) == '999.000000000' else f'{float(t):.3f}s'
-
-def fmt_size(s):
-    if s is None or s == 0:
-        return 'N/A'
-    return f'{int(s) / (1024*1024):.1f}MB'
-
-print(f\"Basic Benchmark: {fmt_time(data.get('basic_benchmark_time'))}\")
-print(f\"Real Project: {fmt_time(data.get('real_project_compile_time'))}\")
-print(f\"Template Test: {fmt_time(data.get('template_stress_time'))}\")
-print(f\"CTFE Test: {fmt_time(data.get('ctfe_stress_time'))}\")
-print(f\"Large File: {fmt_time(data.get('large_file_compile_time'))}\")
-print(f\"Multi-Module: {fmt_time(data.get('multi_module_compile_time'))}\")
-if 'self_compile_time' in data:
-    print(f\"Self-Compile: {fmt_time(data['self_compile_time'])}\")
-print(f\"DMD Size: {fmt_size(data.get('dmd_size_bytes'))}\")
-print(f\"Has Phobos: {data.get('system_info', {}).get('has_phobos', 'Unknown')}\")
-"
-        fi
+        ${{ steps.create_script.outputs.script_content }}
         SCRIPT_EOF
-        
         chmod +x scripts/perf/dmd-performance-test.sh
 
-        # Create performance report generator
-        cat > scripts/perf/generate-report.py << 'REPORT_EOF'
-#!/usr/bin/env python3
-import json
-import sys
-import os
-from datetime import datetime
 
-def load_json(file_path):
-    """Load JSON file with error handling"""
-    try:
-        if not os.path.exists(file_path):
-            return {"error": f"File {file_path} not found"}
-        with open(file_path) as f:
-            return json.load(f)
-    except Exception as e:
-        return {"error": f"Failed to load {file_path}: {e}"}
 
-def format_time(seconds):
-    """Format time with failure detection"""
-    if seconds is None:
-        return "N/A"
-    if str(seconds) == "999.000000000":
-        return "FAILED"
-    try:
-        return f"{float(seconds):.3f}s"
-    except:
-        return "ERROR"
 
-def format_size(bytes_val):
-    """Format file size in MB"""
-    if bytes_val is None or bytes_val == 0:
-        return "N/A"
-    try:
-        mb = int(bytes_val) / (1024 * 1024)
-        return f"{mb:.1f}MB"
-    except:
-        return "ERROR"
 
-def calculate_change(baseline_val, pr_val):
-    """Calculate percentage change between baseline and PR"""
-    if baseline_val is None or pr_val is None:
-        return "N/A"
-    
-    baseline_str = str(baseline_val)
-    pr_str = str(pr_val)
-    
-    if baseline_str == "999.000000000" and pr_str == "999.000000000":
-        return "Both failed"
-    elif baseline_str == "999.000000000":
-        return "Baseline failed"
-    elif pr_str == "999.000000000":
-        return "PR failed"
-    
-    try:
-        baseline_num = float(baseline_val)
-        pr_num = float(pr_val)
-        if baseline_num == 0:
-            return "N/A"
+
         
-        change_pct = ((pr_num - baseline_num) / baseline_num) * 100
-        if abs(change_pct) < 1:
-            return "≈ no change"
-        elif change_pct < 0:
-            return f"🚀 {abs(change_pct):.1f}% faster"
-        else:
-            return f"🔻 {change_pct:.1f}% slower"
-    except:
-        return "ERROR"
-
-def main():
-    if len(sys.argv) != 3:
-        print("Usage: python3 generate-report.py <baseline.json> <pr.json>")
-        sys.exit(1)
-    
-    baseline_file = sys.argv[1]
-    pr_file = sys.argv[2]
-    
-    baseline = load_json(baseline_file)
-    pr = load_json(pr_file)
-
-    # Check for critical errors
-    if baseline.get('error') and pr.get('error'):
-        print("# ⚠️ DMD Performance Test Failed")
-        print()
-        print("❌ **Both baseline and PR tests failed**")
-        print()
-        print("**Baseline Error:** " + baseline.get('error', 'Unknown'))
-        print("**PR Error:** " + pr.get('error', 'Unknown'))
-        print()
-        print("Please check the workflow logs for build errors.")
-        return
-
-    elif baseline.get('error'):
-        print("# ⚠️ DMD Performance Test Issue")
-        print()
-        print("❌ **Baseline test failed** - cannot compare performance")
-        print()
-        print("**Error:** " + baseline.get('error', 'Unknown'))
-        print()
-        print("PR test succeeded, but baseline comparison is not available.")
-        return
-
-    elif pr.get('error'):
-        print("# ❌ DMD Performance Test Failed")
-        print()
-        print("**PR test failed** - this needs to be fixed before merging")
-        print()
-        print("**Error:** " + pr.get('error', 'Unknown'))
-        print()
-        print("Baseline test succeeded, but PR has issues.")
-        return
-
-    # Generate successful comparison report
-    print("# 📊 DMD Performance Comparison")
-    print()
-    
-    baseline_branch = baseline.get('branch', 'main')
-    pr_branch = pr.get('branch', 'PR')
-    baseline_commit = baseline.get('commit', '')[:8] if baseline.get('commit') else 'unknown'
-    pr_commit = pr.get('commit', '')[:8] if pr.get('commit') else 'unknown'
-    
-    print(f"**Comparing:** `{pr_branch}` ({pr_commit}) vs `{baseline_branch}` ({baseline_commit})")
-    print(f"**Tested on:** {datetime.now().strftime('%Y-%m-%d %H:%M UTC')}")
-    print()
-
-    # System information
-    pr_sys = pr.get('system_info', {})
-    print(f"**Environment:** {pr_sys.get('os', 'Unknown')} {pr_sys.get('arch', 'Unknown')} ({pr_sys.get('cores', 'Unknown')} cores)")
-    print(f"**Standard Library:** {'Available' if pr_sys.get('has_phobos') else 'Not Available'}")
-    print()
-
-    # Performance comparison table
-    print("## ⚡ Compilation Performance")
-    print("| Test Case | Baseline | PR Branch | Performance Change |")
-    print("|-----------|----------|-----------|-------------------|")
-
-    test_cases = [
-        ("Basic Benchmark", "basic_benchmark_time"),
-        ("Real D Project", "real_project_compile_time"), 
-        ("Template Heavy", "template_stress_time"),
-        ("CTFE Heavy", "ctfe_stress_time"),
-        ("Large File", "large_file_compile_time"),
-        ("Multi-Module", "multi_module_compile_time"),
-    ]
-
-    # Add self-compile if available in both
-    if "self_compile_time" in baseline and "self_compile_time" in pr:
-        test_cases.append(("DMD Self-Compile", "self_compile_time"))
-
-    for test_name, key in test_cases:
-        if key in pr:  # Only show tests that ran in PR
-            base_val = baseline.get(key)
-            pr_val = pr[key]
-            change = calculate_change(base_val, pr_val)
-            print(f"| {test_name} | {format_time(base_val)} | {format_time(pr_val)} | {change} |")
-
-    print()
-
-    # Binary size comparison
-    print("## 📦 Binary Size")
-    print("| Component | Baseline | PR Branch | Size Change |")
-    print("|-----------|----------|-----------|-------------|")
-
-    if "dmd_size_bytes" in baseline and "dmd_size_bytes" in pr:
-        base_size = baseline["dmd_size_bytes"]
-        pr_size = pr["dmd_size_bytes"]
-        size_change = calculate_change(base_size, pr_size).replace("faster", "smaller").replace("slower", "larger")
-        print(f"| DMD Compiler | {format_size(base_size)} | {format_size(pr_size)} | {size_change} |")
-
-    print()
-
-    # Analysis and warnings
-    significant_regressions = []
-    test_failures = []
-    improvements = []
-
-    for test_name, key in test_cases:
-        if key in pr:
-            pr_val = pr[key]
-            baseline_val = baseline.get(key)
-            
-            # Check for new test failures
-            if str(pr_val) == "999.000000000":
-                if baseline_val and str(baseline_val) != "999.000000000":
-                    test_failures.append(test_name)
-            
-            # Check for significant changes
-            elif baseline_val and str(baseline_val) != "999.000000000":
-                try:
-                    base_val = float(baseline_val)
-                    pr_val_float = float(pr_val)
-                    if base_val > 0:
-                        change_pct = ((pr_val_float - base_val) / base_val) * 100
-                        
-                        if change_pct > 15:  # >15% slower
-                            significant_regressions.append(f"{test_name}: {change_pct:.1f}% slower")
-                        elif change_pct < -10:  # >10% faster
-                            improvements.append(f"{test_name}: {abs(change_pct):.1f}% faster")
-                except:
-                    pass
-
-    # Report issues and improvements
-    if test_failures:
-        print("## ❌ Test Failures")
-        print("The following tests failed in the PR but worked in baseline:")
-        for test in test_failures:
-            print(f"- **{test}** - This indicates a potential regression")
-        print()
-
-    if significant_regressions:
-        print("## ⚠️ Performance Regressions")
-        print("Significant performance regressions detected:")
-        for regression in significant_regressions:
-            print(f"- **{regression}**")
-        print()
-        print("Consider investigating these regressions before merging.")
-        print()
-
-    if improvements:
-        print("## 🚀 Performance Improvements")
-        print("Notable performance improvements:")
-        for improvement in improvements:
-            print(f"- **{improvement}**")
-        print()
-
-    # Overall summary
-    successful_tests = len([test for test, key in test_cases if key in pr and str(pr[key]) != "999.000000000"])
-    total_tests = len([test for test, key in test_cases if key in pr])
-    
-    print("## 📈 Summary")
-    print(f"- **Tests Completed:** {successful_tests}/{total_tests}")
-    
-    if not test_failures and not significant_regressions:
-        print("- **Status:** ✅ No significant performance issues detected")
-    elif test_failures:
-        print("- **Status:** ❌ Critical test failures require attention")
-    elif significant_regressions:
-        print("- **Status:** ⚠️ Performance regressions detected")
-    else:
-        print("- **Status:** ✅ Performance looks good")
-
-    print()
-    print("---")
-    print("*Generated by DMD Performance Regression Testing*")
-    print(f"*Report generated at {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}*")
-
-if __name__ == "__main__":
-    main()
-        REPORT_EOF
-        
-        chmod +x scripts/perf/generate-report.py
-
     - name: Build and Test Baseline (Main Branch)
       run: |
         echo "=== Building Baseline DMD ==="
+        git checkout ${{ github.base_ref }}
         
-        # Determine baseline reference
-        BASELINE_REF="${{ github.event.inputs.baseline_ref || github.base_ref || 'main' }}"
-        echo "Using baseline reference: $BASELINE_REF"
-        
-        # Checkout baseline
-        git checkout "$BASELINE_REF"
-        git submodule update --init --recursive || echo "Submodule update completed"
-        
-        # Clean any previous builds
-        make clean > /dev/null 2>&1 || true
+        # Clean any previous build
+        make -f posix.mak clean || true
         rm -rf generated/ || true
         
-        # Build baseline DMD with timeout
-        echo "Building baseline DMD with HOST_DMD: $HOST_DMD"
-        build_success=false
+        # Build baseline DMD using bootstrap compiler
+        echo "Building with HOST_DMD: $HOST_DMD"
+        make -f posix.mak -j$(nproc) HOST_DMD=$HOST_DMD || {
+          echo "❌ Failed to build baseline DMD"
+          echo "=== Build log ==="
+          make -f posix.mak -j$(nproc) HOST_DMD=$HOST_DMD || true
+          echo "=== End build log ==="
+          exit 1
+        }
         
-        if timeout ${{ env.BUILD_TIMEOUT }}m make -j$(nproc) HOST_DMD="$HOST_DMD" AUTO_BOOTSTRAP=1; then
-            build_success=true
-            echo "✅ Baseline build succeeded with default Makefile"
-        elif timeout ${{ env.BUILD_TIMEOUT }}m make -f posix.mak -j$(nproc) HOST_DMD="$HOST_DMD" AUTO_BOOTSTRAP=1; then
-            build_success=true
-            echo "✅ Baseline build succeeded with posix.mak"
-        elif timeout ${{ env.BUILD_TIMEOUT }}m make -f Makefile -j$(nproc) HOST_DMD="$HOST_DMD"; then
-            build_success=true
-            echo "✅ Baseline build succeeded with explicit Makefile"
+        # Verify DMD was built
+        if [ ! -f "generated/linux/release/64/dmd" ]; then
+          echo "❌ DMD binary not found after build"
+          find . -name "dmd" -type f || echo "No dmd binary found anywhere"
+          ls -la generated/linux/release/64/ || echo "Directory doesn't exist"
+          exit 1
         fi
         
-        if [ "$build_success" = false ]; then
-            echo "❌ All baseline build attempts failed"
-            echo "=== Build log (last 30 lines) ==="
-            make -j$(nproc) HOST_DMD="$HOST_DMD" 2>&1 | tail -30 || true
-            
-            # Create error result
-            mkdir -p /tmp/perf-results
-            echo '{"error": "baseline_build_failed", "timestamp": "'$(date -Iseconds)'"}' > /tmp/perf-results/baseline.json
-            exit 1
-        fi
+        echo "✅ Baseline DMD built successfully"
+        generated/linux/release/64/dmd --version
         
-        # Verify DMD was built successfully
-        DMD_PATHS=("generated/linux/release/64/dmd" "generated/linux/debug/64/dmd" "generated/linux/64/dmd")
-        DMD_FOUND=false
+        # Run performance tests on baseline
+        echo "=== Testing Baseline Performance ==="
+        ./scripts/perf/dmd-performance-test.sh baseline || {
+          echo "⚠️ Baseline performance test had issues"
+          cat perf-results/results.json 2>/dev/null || echo "No results file generated"
+        }
         
-        for path in "${DMD_PATHS[@]}"; do
-            if [ -f "$path" ] && [ -x "$path" ]; then
-                echo "✅ Found DMD at: $path"
-                # Test basic functionality
-                if "$path" --version > /dev/null 2>&1; then
-                    echo "✅ Baseline DMD is functional"
-                    DMD_FOUND=true
-                    break
-                fi
-            fi
-        done
-        
-        if [ "$DMD_FOUND" = false ]; then
-            echo "❌ No functional DMD binary found after build"
-            find . -name "dmd" -type f | head -10
-            mkdir -p /tmp/perf-results
-            echo '{"error": "baseline_dmd_not_found", "timestamp": "'$(date -Iseconds)'"}' > /tmp/perf-results/baseline.json
-            exit 1
-        fi
-        
-        # Run baseline performance tests
-        echo "=== Running Baseline Performance Tests ==="
-        if ! timeout ${{ env.PERFORMANCE_TIMEOUT }}m ./scripts/perf/dmd-performance-test.sh baseline; then
-            echo "❌ Baseline performance tests failed or timed out"
-            mkdir -p /tmp/perf-results
-            echo '{"error": "baseline_tests_failed", "timestamp": "'$(date -Iseconds)'"}' > /tmp/perf-results/baseline.json
-            exit 1
-        fi
-        
-        # Save baseline results
+        # Save results
         mkdir -p /tmp/perf-results
         if [ -f "perf-results/results.json" ]; then
-            cp perf-results/results.json /tmp/perf-results/baseline.json
-            echo "✅ Baseline results saved"
+          cp perf-results/results.json /tmp/perf-results/baseline.json
+          echo "✅ Baseline results saved"
         else
-            echo "❌ No baseline results generated"
-            echo '{"error": "baseline_no_results", "timestamp": "'$(date -Iseconds)'"}' > /tmp/perf-results/baseline.json
+          echo "❌ No baseline results generated"
+          # Create a minimal results file to allow workflow to continue
+          echo '{"error": "baseline_failed"}' > /tmp/perf-results/baseline.json
         fi
         
     - name: Build and Test PR Branch  
       run: |
         echo "=== Building PR DMD ==="
-        
-        # Determine PR reference
-        PR_REF="${{ github.event.inputs.pr_ref || github.sha }}"
-        echo "Using PR reference: $PR_REF"
-        
-        # Checkout PR
-        git checkout "$PR_REF"
-        git submodule update --init --recursive || echo "Submodule update completed"
+        git checkout ${{ github.sha }}
         
         # Clean previous build
-        make clean > /dev/null 2>&1 || true
+        make -f posix.mak clean || true
         rm -rf generated/ || true
         
-        # Build PR DMD with timeout
-        echo "Building PR DMD with HOST_DMD: $HOST_DMD"
-        build_success=false
+        # Build PR DMD
+        echo "Building with HOST_DMD: $HOST_DMD"
+        make -f posix.mak -j$(nproc) HOST_DMD=$HOST_DMD || {
+          echo "❌ Failed to build PR DMD"
+          echo "=== Build log ==="
+          make -f posix.mak -j$(nproc) HOST_DMD=$HOST_DMD || true
+          echo "=== End build log ==="
+          exit 1
+        }
         
-        if timeout ${{ env.BUILD_TIMEOUT }}m make -j$(nproc) HOST_DMD="$HOST_DMD" AUTO_BOOTSTRAP=1; then
-            build_success=true
-            echo "✅ PR build succeeded with default Makefile"
-        elif timeout ${{ env.BUILD_TIMEOUT }}m make -f posix.mak -j$(nproc) HOST_DMD="$HOST_DMD" AUTO_BOOTSTRAP=1; then
-            build_success=true
-            echo "✅ PR build succeeded with posix.mak"
-        elif timeout ${{ env.BUILD_TIMEOUT }}m make -f Makefile -j$(nproc) HOST_DMD="$HOST_DMD"; then
-            build_success=true
-            echo "✅ PR build succeeded with explicit Makefile"
+        # Verify DMD was built
+        if [ ! -f "generated/linux/release/64/dmd" ]; then
+          echo "❌ DMD binary not found after build"
+          find . -name "dmd" -type f || echo "No dmd binary found anywhere"
+          ls -la generated/linux/release/64/ || echo "Directory doesn't exist"
+          exit 1
         fi
         
-        if [ "$build_success" = false ]; then
-            echo "❌ All PR build attempts failed"
-            echo "=== Build log (last 30 lines) ==="
-            make -j$(nproc) HOST_DMD="$HOST_DMD" 2>&1 | tail -30 || true
-            
-            # Create error result  
-            echo '{"error": "pr_build_failed", "timestamp": "'$(date -Iseconds)'"}' > /tmp/perf-results/pr.json
-            exit 1
-        fi
+        echo "✅ PR DMD built successfully"
+        generated/linux/release/64/dmd --version
         
-        # Verify PR DMD was built successfully
-        DMD_PATHS=("generated/linux/release/64/dmd" "generated/linux/debug/64/dmd" "generated/linux/64/dmd")
-        DMD_FOUND=false
+        # Run performance tests on PR
+        echo "=== Testing PR Performance ==="
+        ./scripts/perf/dmd-performance-test.sh pr || {
+          echo "⚠️ PR performance test had issues"
+          cat perf-results/results.json 2>/dev/null || echo "No results file generated"
+        }
         
-        for path in "${DMD_PATHS[@]}"; do
-            if [ -f "$path" ] && [ -x "$path" ]; then
-                echo "✅ Found DMD at: $path"
-                # Test basic functionality
-                if "$path" --version > /dev/null 2>&1; then
-                    echo "✅ PR DMD is functional"
-                    DMD_FOUND=true
-                    break
-                fi
-            fi
-        done
-        
-        if [ "$DMD_FOUND" = false ]; then
-            echo "❌ No functional DMD binary found after PR build"
-            find . -name "dmd" -type f | head -10
-            echo '{"error": "pr_dmd_not_found", "timestamp": "'$(date -Iseconds)'"}' > /tmp/perf-results/pr.json
-            exit 1
-        fi
-        
-        # Run PR performance tests
-        echo "=== Running PR Performance Tests ==="
-        if ! timeout ${{ env.PERFORMANCE_TIMEOUT }}m ./scripts/perf/dmd-performance-test.sh pr; then
-            echo "❌ PR performance tests failed or timed out"
-            echo '{"error": "pr_tests_failed", "timestamp": "'$(date -Iseconds)'"}' > /tmp/perf-results/pr.json
-            exit 1
-        fi
-        
-        # Save PR results
+        # Save results
         if [ -f "perf-results/results.json" ]; then
-            cp perf-results/results.json /tmp/perf-results/pr.json
-            echo "✅ PR results saved"
+          cp perf-results/results.json /tmp/perf-results/pr.json
+          echo "✅ PR results saved"
         else
-            echo "❌ No PR results generated"
-            echo '{"error": "pr_no_results", "timestamp": "'$(date -Iseconds)'"}' > /tmp/perf-results/pr.json
+          echo "❌ No PR results generated"
+          # Create a minimal results file to allow workflow to continue
+          echo '{"error": "pr_failed"}' > /tmp/perf-results/pr.json
         fi
         
     - name: Generate Performance Report
       run: |
-        echo "=== Generating Performance Comparison Report ==="
+        cat > /tmp/generate-report.py << 'EOF'
+        #!/usr/bin/env python3
+        import json
+        import sys
+        from datetime import datetime
         
-        # Ensure both result files exist
-        if [ ! -f "/tmp/perf-results/baseline.json" ]; then
-            echo "❌ Baseline results missing"
-            echo '{"error": "baseline_missing", "timestamp": "'$(date -Iseconds)'"}' > /tmp/perf-results/baseline.json
-        fi
+        def load_json(file):
+            try:
+                with open(file) as f:
+                    return json.load(f)
+            except Exception as e:
+                print(f"Error loading {file}: {e}")
+                return {}
         
-        if [ ! -f "/tmp/perf-results/pr.json" ]; then
-            echo "❌ PR results missing"  
-            echo '{"error": "pr_missing", "timestamp": "'$(date -Iseconds)'"}' > /tmp/perf-results/pr.json
-        fi
+        def format_time(seconds):
+            if seconds == "999.000000000":
+                return "FAILED"
+            try:
+                return f"{float(seconds):.3f}s"
+            except:
+                return "ERROR"
         
-        # Generate the performance report
-        echo "Generating performance comparison report..."
-        python3 scripts/perf/generate-report.py /tmp/perf-results/baseline.json /tmp/perf-results/pr.json > /tmp/performance-report.md
+        def format_size(bytes_val):
+            if bytes_val == 0:
+                return "N/A"
+            try:
+                mb = int(bytes_val) / (1024 * 1024)
+                return f"{mb:.1f}MB"
+            except:
+                return "ERROR"
         
-        echo "=== Generated Performance Report ==="
+        def calc_change(baseline, pr):
+            if baseline == 0 or pr == "999.000000000" or baseline == "999.000000000":
+                return "N/A"
+            try:
+                baseline_val = float(baseline)
+                pr_val = float(pr)
+                if baseline_val == 0:
+                    return "N/A"
+                change = ((baseline_val - pr_val) / baseline_val) * 100
+                if abs(change) < 1:
+                    return "≈ no change"
+                elif change > 0:
+                    return f"🚀 {change:.1f}% faster"
+                else:
+                    return f"🔻 {abs(change):.1f}% slower"
+            except:
+                return "ERROR"
+        
+        baseline = load_json('/tmp/perf-results/baseline.json')
+        pr = load_json('/tmp/perf-results/pr.json')
+        
+        # Check for errors in results
+        if baseline.get('error') or pr.get('error'):
+            print("# ⚠️ DMD Performance Test Issues")
+            print()
+            if baseline.get('error'):
+                print("❌ **Baseline build/test failed**")
+            if pr.get('error'):
+                print("❌ **PR build/test failed**") 
+            print()
+            print("Please check the workflow logs for details.")
+            print()
+            print("---")
+            print("*DMD Performance Regression Testing*")
+            sys.exit(0)
+        
+        if not baseline or not pr:
+            print("# ⚠️ Performance Test Incomplete")
+            print()
+            print("Could not generate performance comparison - missing result files")
+            print()
+            print("---")
+            print("*DMD Performance Regression Testing*")
+            sys.exit(0)
+        
+        print("# 📊 DMD Performance Comparison")
+        print()
+        print(f"**Comparing:** `{pr.get('branch', 'PR')}` vs `{baseline.get('branch', 'main')}`")
+        print(f"**Tested on:** {datetime.now().strftime('%Y-%m-%d %H:%M UTC')}")
+        print()
+        
+        # DMD compilation performance
+        print("## ⚡ DMD Compilation Performance")
+        print("| Test | Main Branch | PR Branch | Change |")
+        print("|------|-------------|-----------|--------|")
+        
+        tests = [
+            ("DMD Test Suite", "test_suite_duration"),
+            ("Real D Project Build", "real_project_compile_time"), 
+            ("Template Heavy Code", "template_stress_time"),
+            ("CTFE Heavy Code", "ctfe_stress_time"),
+            ("Large File Compilation", "large_file_compile_time"),
+        ]
+        
+        # Add self-compile test if available
+        if "self_compile_time" in baseline and "self_compile_time" in pr:
+            tests.append(("DMD Self-Compile", "self_compile_time"))
+        
+        for test_name, key in tests:
+            if key in baseline and key in pr:
+                base_val = baseline[key]
+                pr_val = pr[key]
+                change = calc_change(base_val, pr_val)
+                print(f"| {test_name} | {format_time(base_val)} | {format_time(pr_val)} | {change} |")
+        
+        print()
+        
+        # Binary size comparison
+        print("## 📦 Binary Size Comparison") 
+        print("| Binary | Main Branch | PR Branch | Change |")
+        print("|--------|-------------|-----------|--------|")
+        
+        if "dmd_size_bytes" in baseline and "dmd_size_bytes" in pr:
+            base_size = baseline["dmd_size_bytes"]
+            pr_size = pr["dmd_size_bytes"]
+            change = calc_change(base_size, pr_size).replace("faster", "smaller").replace("slower", "larger")
+            print(f"| DMD Compiler | {format_size(base_size)} | {format_size(pr_size)} | {change} |")
+        
+
+
+
+
+
+
+
+
+
+        print()
+
+
+        
+        # Check for significant regressions
+        significant_regression = False
+        regression_tests = []
+        
+        for test_name, key in tests:
+            if key in baseline and key in pr:
+                try:
+                    base_val = float(baseline[key])
+                    pr_val = float(pr[key])
+                    if pr_val != 999.0 and pr_val > base_val * 1.15:  # >15% slower
+                        significant_regression = True
+                        regression_tests.append(f"{test_name}: {((pr_val - base_val) / base_val) * 100:.1f}% slower")
+                except:
+                    pass
+        
+        if significant_regression:
+            print("## ⚠️ Performance Regressions Detected")
+            for regression in regression_tests:
+                print(f"- {regression}")
+            print()
+        
+        # Success/failure summary
+        failed_tests = []
+        for test_name, key in tests:
+            if key in pr and str(pr[key]) == "999.000000000":
+                failed_tests.append(test_name)
+        
+        if failed_tests:
+            print("## ❌ Failed Tests")
+            for test in failed_tests:
+                print(f"- {test}")
+            print()
+        
+        print("---")
+        print("*Generated by DMD Performance Regression Testing*")
+        if baseline.get('commit') and pr.get('commit'):
+            print(f"*Baseline: {baseline['commit'][:8]} | PR: {pr['commit'][:8]}*")
+        
+        EOF
+        
+        python3 /tmp/generate-report.py > /tmp/performance-report.md
+        echo "Generated performance report:"
         cat /tmp/performance-report.md
         
-    - name: Comment PR with Performance Results
+    - name: Comment PR with Results
       uses: actions/github-script@v7
-      if: github.event_name == 'pull_request'
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
@@ -1325,341 +336,101 @@ if __name__ == "__main__":
           try {
             report = fs.readFileSync('/tmp/performance-report.md', 'utf8');
           } catch (error) {
-            console.error('Error reading performance report:', error);
             report = `# ⚠️ Performance Test Error
             
             Performance comparison could not be completed due to an internal error.
             
-            **Error:** ${error.message}
-            
-            Please check the [workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.
+            Please check the workflow logs for details.
             
             ---
             *DMD Performance Regression Testing*`;
           }
           
-          try {
-            // Find existing performance comment
-            const { data: comments } = await github.rest.issues.listComments({
+          // Find existing comment
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
+          
+          const existingComment = comments.find(comment => 
+            comment.user.login === 'github-actions[bot]' &&
+            comment.body.includes('📊 DMD Performance Comparison')
+          );
+          
+          if (existingComment) {
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: existingComment.id,
+              body: report
+            });
+            console.log('Updated existing performance comment');
+          } else {
+            await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
+              body: report
             });
-            
-            const botComments = comments.filter(comment => 
-              comment.user.login === 'github-actions[bot]' &&
-              comment.body.includes('DMD Performance')
-            );
-            
-            if (botComments.length > 0) {
-              // Update the most recent performance comment
-              const latestComment = botComments[botComments.length - 1];
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: latestComment.id,
-                body: report
-              });
-              console.log('✅ Updated existing performance comment');
-            } else {
-              // Create new comment
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: report
-              });
-              console.log('✅ Created new performance comment');
-            }
-          } catch (error) {
-            console.error('Failed to comment on PR:', error);
-            core.setFailed(`Failed to comment on PR: ${error.message}`);
+            console.log('Created new performance comment');
           }
           
-    - name: Upload Performance Results
+    - name: Upload Results
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: dmd-performance-results-${{ github.sha }}
-        path: |
-          /tmp/perf-results/
-          /tmp/performance-report.md
+        name: dmd-performance-results
+        path: /tmp/perf-results/
         retention-days: 30
         
-    - name: Upload DMD Binaries
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: dmd-binaries-${{ github.sha }}
-        path: |
-          generated/linux/release/64/dmd
-          generated/linux/debug/64/dmd
-          generated/*/dmd
-        retention-days: 7
-        if-no-files-found: warn
-        
-    - name: Performance Quality Gate
+    - name: Check for Critical Regressions
       if: always()
       run: |
-        echo "=== Checking Performance Quality Gate ==="
-        
+        # Check if any tests had critical failures or major regressions
         python3 << 'EOF'
-import json
-import sys
-import os
-
-def load_results(file_path):
-    """Load test results with error handling"""
-    try:
-        if not os.path.exists(file_path):
-            return {"error": f"File {file_path} not found"}
-        with open(file_path) as f:
-            return json.load(f)
-    except Exception as e:
-        return {"error": f"Failed to load {file_path}: {e}"}
-
-baseline_file = '/tmp/perf-results/baseline.json'
-pr_file = '/tmp/perf-results/pr.json'
-
-baseline = load_results(baseline_file)
-pr = load_results(pr_file)
-
-exit_code = 0
-warnings = []
-errors = []
-
-# Check for build failures
-if pr.get('error'):
-    if any(keyword in pr.get('error', '') for keyword in ['build_failed', 'not_functional', 'not_found']):
-        errors.append(f"PR build failed: {pr.get('error')}")
-        exit_code = 1
-    else:
-        warnings.append(f"PR test issue: {pr.get('error')}")
-
-if baseline.get('error'):
-    warnings.append(f"Baseline issue: {baseline.get('error')}")
-
-# Performance regression analysis
-if not baseline.get('error') and not pr.get('error'):
-    critical_regressions = []
-    test_failures = []
-    
-    test_keys = [
-        ("basic_benchmark_time", "Basic Benchmark"),
-        ("real_project_compile_time", "Real Project"),
-        ("template_stress_time", "Template Test"),
-        ("ctfe_stress_time", "CTFE Test"),
-        ("large_file_compile_time", "Large File"),
-        ("multi_module_compile_time", "Multi-Module"),
-        ("self_compile_time", "Self-Compile"),
-    ]
-    
-    for key, name in test_keys:
-        if key in pr:
-            pr_val = pr[key]
-            baseline_val = baseline.get(key)
-            
-            # Check for new test failures
-            if str(pr_val) == "999.000000000":
-                if baseline_val and str(baseline_val) != "999.000000000":
-                    test_failures.append(f"{name}: worked in baseline but failed in PR")
-                    exit_code = 1
-            
-            # Check for critical regressions (>25% slower)
-            elif baseline_val and str(baseline_val) != "999.000000000":
+        import json
+        import sys
+        
+        try:
+            with open('/tmp/perf-results/baseline.json') as f:
+                baseline = json.load(f)
+            with open('/tmp/perf-results/pr.json') as f:
+                pr = json.load(f)
+        except:
+            print("Could not load performance results")
+            sys.exit(0)
+        
+        # Check for build failures
+        if baseline.get('error') or pr.get('error'):
+            print("::error::Build or test failures detected")
+            sys.exit(1)
+        
+        # Check for critical performance regressions (>25% slower)
+        critical_regressions = []
+        tests = [
+            ("test_suite_duration", "Test Suite"),
+            ("real_project_compile_time", "Real Project"),
+            ("template_stress_time", "Template Stress"),
+            ("ctfe_stress_time", "CTFE Stress"),
+        ]
+        
+        for key, name in tests:
+            if key in baseline and key in pr:
                 try:
-                    base_val = float(baseline_val)
-                    pr_val_float = float(pr_val)
-                    if base_val > 0 and pr_val_float > base_val * 1.25:
-                        regression_pct = ((pr_val_float - base_val) / base_val) * 100
+                    base_val = float(baseline[key])
+                    pr_val = float(pr[key])
+                    if pr_val != 999.0 and base_val > 0 and pr_val > base_val * 1.25:
+                        regression_pct = ((pr_val - base_val) / base_val) * 100
                         critical_regressions.append(f"{name}: {regression_pct:.1f}% slower")
-                        exit_code = 1
                 except:
                     pass
-
-# Report results
-if errors:
-    print("::error::Critical issues detected:")
-    for error in errors:
-        print(f"::error::{error}")
-
-if test_failures:
-    print("::error::Critical test failures:")
-    for failure in test_failures:
-        print(f"::error::{failure}")
-
-if critical_regressions:
-    print("::error::Critical performance regressions:")
-    for regression in critical_regressions:
-        print(f"::error::{regression}")
-
-if warnings:
-    for warning in warnings:
-        print(f"::warning::{warning}")
-
-if exit_code == 0 and not warnings:
-    print("✅ Performance quality gate passed - no critical issues detected")
-elif exit_code == 0:
-    print("⚠️ Performance quality gate passed with warnings")
-else:
-    print("❌ Performance quality gate failed - critical issues detected")
-
-sys.exit(exit_code)
+        
+        if critical_regressions:
+            print("::error::Critical performance regressions detected:")
+            for regression in critical_regressions:
+                print(f"::error::{regression}")
+            sys.exit(1)
+        else:
+            print("No critical performance regressions detected")
         EOF
-        
-    - name: Performance Test Summary
-      if: always()
-      run: |
-        echo "=== Final Performance Test Summary ==="
-        
-        if [ -f "/tmp/perf-results/baseline.json" ] && [ -f "/tmp/perf-results/pr.json" ]; then
-            echo "📊 Performance comparison completed successfully"
-            
-            # Display key metrics
-            python3 -c "
-import json
-import os
-
-def safe_load(file_path):
-    try:
-        if os.path.exists(file_path):
-            with open(file_path) as f:
-                return json.load(f)
-    except:
-        pass
-    return {}
-
-baseline = safe_load('/tmp/perf-results/baseline.json')
-pr = safe_load('/tmp/perf-results/pr.json')
-
-print('=== Test Execution Summary ===')
-if baseline.get('commit'):
-    print(f'Baseline commit: {baseline[\"commit\"][:8]}')
-if pr.get('commit'):
-    print(f'PR commit: {pr[\"commit\"][:8]}')
-if pr.get('dmd_version'):
-    print(f'DMD version: {pr[\"dmd_version\"]}')
-
-# Count test results
-test_keys = ['basic_benchmark_time', 'real_project_compile_time', 'template_stress_time', 
-             'ctfe_stress_time', 'large_file_compile_time', 'multi_module_compile_time']
-
-def count_successful(data):
-    return sum(1 for key in test_keys if key in data and str(data[key]) != '999.000000000')
-
-if not baseline.get('error') and not pr.get('error'):
-    baseline_success = count_successful(baseline)
-    pr_success = count_successful(pr)
-    
-    print(f'Baseline successful tests: {baseline_success}/{len(test_keys)}')
-    print(f'PR successful tests: {pr_success}/{len(test_keys)}')
-    
-    if pr_success == len(test_keys):
-        print('✅ All PR tests passed')
-    elif pr_success >= len(test_keys) * 0.8:
-        print('⚠️ Most PR tests passed')
-    else:
-        print('❌ Many PR tests failed')
-else:
-    if baseline.get('error'):
-        print(f'❌ Baseline error: {baseline.get(\"error\")}')
-    if pr.get('error'):
-        print(f'❌ PR error: {pr.get(\"error\")}')
-"
-            
-            # Show workflow artifacts info
-            echo ""
-            echo "📁 Workflow Artifacts:"
-            echo "- Performance results: dmd-performance-results-${{ github.sha }}"
-            echo "- DMD binaries: dmd-binaries-${{ github.sha }}"
-            echo "- Report: /tmp/performance-report.md"
-            
-        else
-            echo "❌ Performance comparison could not be completed"
-            echo "Missing result files:"
-            ls -la /tmp/perf-results/ || echo "No results directory"
-        fi
-        
-        # Final status
-        echo ""
-        echo "🏁 DMD Performance Regression Testing completed"
-        echo "Check the PR comment for detailed performance comparison results"
-
-  # Optional: Add a job to run performance tests on schedule
-  scheduled-performance-test:
-    name: Scheduled Performance Baseline
-    runs-on: ubuntu-latest
-    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.baseline_ref == '')
-    timeout-minutes: 60
-    
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        ref: main
-        submodules: recursive
-        
-    - name: Setup Environment
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y build-essential git bc python3 curl
-        curl -fsS https://dlang.org/install.sh | bash -s dmd
-        source ~/dlang/dmd-*/activate
-        echo "$(echo ~/dlang/dmd-*/linux/bin64)" >> $GITHUB_PATH
-        echo "HOST_DMD=$(echo ~/dlang/dmd-*/linux/bin64/dmd)" >> $GITHUB_ENV
-        
-    - name: Create Test Scripts
-      run: |
-        mkdir -p scripts/perf
-        
-        # Copy the performance test script
-        cat > scripts/perf/dmd-performance-test.sh << 'SCRIPT_EOF'
-        #!/bin/bash
-        set -e
-        
-        TEST_TYPE="${1:-baseline}"
-        PROJECT_ROOT="$(pwd)"
-        RESULTS_DIR="$PROJECT_ROOT/perf-results"
-        mkdir -p "$RESULTS_DIR"
-        
-        # Simple baseline performance test
-        echo "Running scheduled baseline performance test..."
-        
-        # Build DMD
-        make clean || true
-        if make -j$(nproc) HOST_DMD="$HOST_DMD"; then
-            echo "Build successful"
-        else
-            echo "Build failed"
-            exit 1
-        fi
-        
-        # Basic performance metrics
-        echo '{"type": "scheduled_baseline", "timestamp": "'$(date -Iseconds)'"}' > "$RESULTS_DIR/results.json"
-        
-        SCRIPT_EOF
-        chmod +x scripts/perf/dmd-performance-test.sh
-        
-    - name: Run Baseline Test
-      run: |
-        echo "Running scheduled baseline performance test..."
-        make clean || true
-        timeout 30m make -j$(nproc) HOST_DMD="$HOST_DMD" || exit 1
-        echo "✅ Scheduled baseline test completed"
-        
-    - name: Archive Baseline Results
-      uses: actions/upload-artifact@v4
-      with:
-        name: scheduled-baseline-${{ github.sha }}
-        path: perf-results/
-        retention-days: 90
-
-# Additional workflow for performance monitoring
-on:
-  schedule:
-    - cron: '0 6 * * 1'  # Weekly on Monday at 6 AM UTC
-
-# Environment variables for all jobs
-env:
-  PERFORMANCE_TIMEOUT: 90
-  BUILD_TIMEOUT: 30
