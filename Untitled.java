@@ -1,0 +1,233 @@
+name: DMD Performance Regression Testing
+
+on:
+  pull_request:
+    branches: [ main, master ]
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+concurrency:
+  group: perf-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  performance-test:
+    name: DMD Performance Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    
+    steps:
+    - name: Checkout PR
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Setup Build Environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential git bc python3
+        # Install bootstrap D compiler
+        curl -fsS https://dlang.org/install.sh | bash -s dmd
+        source ~/dlang/dmd-*/activate
+        
+    - name: Setup Phobos and Druntime
+      run: |
+        # Clone required D libraries if not present
+        if [ ! -d "../phobos" ]; then
+          cd ..
+          git clone --depth 1 https://github.com/dlang/phobos.git
+          git clone --depth 1 https://github.com/dlang/druntime.git
+          
+          # Build Phobos
+          cd phobos
+          make -f posix.mak -j$(nproc)
+          cd ../dmd
+        fi
+        
+    - name: Build and Test Baseline (Main Branch)
+      run: |
+        echo "=== Building Baseline DMD ==="
+        git checkout ${{ github.base_ref }}
+        
+        # Build baseline DMD
+        make -f posix.mak clean || true
+        make -f posix.mak -j$(nproc)
+        
+        # Run performance tests on baseline
+        echo "=== Testing Baseline Performance ==="
+        ./scripts/perf/dmd-performance-test.sh baseline
+        
+        # Save results
+        mkdir -p /tmp/perf-results
+        cp perf-results/results.json /tmp/perf-results/baseline.json
+        
+    - name: Build and Test PR Branch  
+      run: |
+        echo "=== Building PR DMD ==="
+        git checkout ${{ github.sha }}
+        
+        # Build PR DMD
+        make -f posix.mak clean || true
+        make -f posix.mak -j$(nproc)
+        
+        # Run performance tests on PR
+        echo "=== Testing PR Performance ==="
+        ./scripts/perf/dmd-performance-test.sh pr
+        
+        # Save results
+        cp perf-results/results.json /tmp/perf-results/pr.json
+        
+    - name: Generate Performance Report
+      run: |
+        cat > /tmp/generate-report.py << 'EOF'
+        #!/usr/bin/env python3
+        import json
+        import sys
+        from datetime import datetime
+        
+        def load_json(file):
+            try:
+                with open(file) as f:
+                    return json.load(f)
+            except:
+                return {}
+        
+        def format_time(seconds):
+            return f"{float(seconds):.3f}s"
+        
+        def format_size(bytes_val):
+            mb = bytes_val / (1024 * 1024)
+            return f"{mb:.1f}MB"
+        
+        def calc_change(baseline, pr):
+            if baseline == 0:
+                return "N/A"
+            change = ((baseline - pr) / baseline) * 100
+            if abs(change) < 1:
+                return "no change"
+            elif change > 0:
+                return f"🚀 {change:.1f}% faster"
+            else:
+                return f"🔻 {abs(change):.1f}% slower"
+        
+        baseline = load_json('/tmp/perf-results/baseline.json')
+        pr = load_json('/tmp/perf-results/pr.json')
+        
+        if not baseline or not pr:
+            print("❌ Could not load performance results")
+            sys.exit(1)
+        
+        print("# 📊 DMD Performance Comparison")
+        print()
+        print(f"**Comparing:** `{pr.get('branch', 'PR')}` vs `{baseline.get('branch', 'main')}`")
+        print(f"**Tested on:** {datetime.now().strftime('%Y-%m-%d %H:%M UTC')}")
+        print()
+        
+        # DMD compilation performance
+        print("## ⚡ DMD Compilation Performance")
+        print("| Test | Main Branch | PR Branch | Change |")
+        print("|------|-------------|-----------|--------|")
+        
+        tests = [
+            ("DMD Test Suite", "test_suite_duration"),
+            ("Real D Project Build", "real_project_compile_time"), 
+            ("Template Heavy Code", "template_stress_time"),
+            ("CTFE Heavy Code", "ctfe_stress_time"),
+            ("DMD Self-Compile", "self_compile_time")
+        ]
+        
+        for test_name, key in tests:
+            if key in baseline and key in pr:
+                base_val = float(baseline[key])
+                pr_val = float(pr[key])
+                change = calc_change(base_val, pr_val)
+                print(f"| {test_name} | {format_time(base_val)} | {format_time(pr_val)} | {change} |")
+        
+        print()
+        
+        # Binary size comparison
+        print("## 📦 Binary Size Comparison") 
+        print("| Binary | Main Branch | PR Branch | Change |")
+        print("|--------|-------------|-----------|--------|")
+        
+        if "dmd_size_bytes" in baseline and "dmd_size_bytes" in pr:
+            base_size = int(baseline["dmd_size_bytes"])
+            pr_size = int(pr["dmd_size_bytes"])
+            change = calc_change(base_size, pr_size).replace("faster", "smaller").replace("slower", "larger")
+            print(f"| DMD Compiler | {format_size(base_size)} | {format_size(pr_size)} | {change} |")
+        
+        # Memory usage if available
+        if "peak_memory_mb" in baseline and "peak_memory_mb" in pr:
+            print()
+            print("## 🧠 Memory Usage")
+            base_mem = float(baseline["peak_memory_mb"])
+            pr_mem = float(pr["peak_memory_mb"])
+            mem_change = calc_change(base_mem, pr_mem).replace("faster", "less").replace("slower", "more")
+            print(f"**Peak Memory Usage:** {base_mem:.1f}MB → {pr_mem:.1f}MB ({mem_change})")
+        
+        print()
+        print("---")
+        print("*Generated by DMD Performance Regression Testing*")
+        
+        # Check for significant regressions
+        significant_regression = False
+        for test_name, key in tests:
+            if key in baseline and key in pr:
+                base_val = float(baseline[key])
+                pr_val = float(pr[key])
+                if pr_val > base_val * 1.05:  # >5% slower
+                    significant_regression = True
+                    break
+        
+        if significant_regression:
+            print()
+            print("⚠️ **Warning: This PR shows performance regressions >5%**")
+            sys.exit(1)  # Fail the workflow for significant regressions
+        
+        EOF
+        
+        python3 /tmp/generate-report.py > /tmp/performance-report.md
+        
+    - name: Comment PR with Results
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const fs = require('fs');
+          const report = fs.readFileSync('/tmp/performance-report.md', 'utf8');
+          
+          // Find existing comment
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
+          
+          const existingComment = comments.find(comment => 
+            comment.user.login === 'github-actions[bot]' &&
+            comment.body.includes('📊 DMD Performance Comparison')
+          );
+          
+          if (existingComment) {
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: existingComment.id,
+              body: report
+            });
+          } else {
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: report
+            });
+          }
+          
+    - name: Upload Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: dmd-performance-results
+        path: /tmp/perf-results/
+        retention-days: 30
