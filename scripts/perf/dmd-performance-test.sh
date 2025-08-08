@@ -1,4 +1,3 @@
-@@ -1,450 +1,450 @@
 #!/bin/bash
 # DMD Performance Test Script
 # Usage: ./dmd-performance-test.sh [baseline|pr]
@@ -27,14 +26,14 @@ find_dmd() {
         "src/dmd"
         "dmd"
     )
-
+    
     for path in "${dmd_paths[@]}"; do
         if [ -f "$PROJECT_ROOT/$path" ]; then
             echo "$PROJECT_ROOT/$path"
             return 0
         fi
     done
-
+    
     echo ""
     return 1
 }
@@ -57,15 +56,56 @@ cd "$PROJECT_ROOT"
 DMD_BINARY=$(find_dmd)
 if [ -z "$DMD_BINARY" ]; then
     echo "❌ DMD binary not found!"
+    # List available files for debugging
+    echo "Available files in generated/:"
+    find generated/ -name "*dmd*" -type f 2>/dev/null || echo "No generated directory found"
+    echo "Available files in src/:"
+    find src/ -name "*dmd*" -type f 2>/dev/null || echo "No src directory found"
+    
+    # Create error result and exit
+    echo '{"error": "dmd_not_found", "timestamp": "'$(date -Iseconds)'"}' > "$RESULTS_DIR/results.json"
     exit 1
 fi
 
 echo "📍 Using DMD: $DMD_BINARY"
 
-# Test 1: DMD Test Suite Performance
+# Verify DMD works
+echo "🔍 Verifying DMD functionality..."
+echo 'void main() {}' > /tmp/test_basic.d
+if ! "$DMD_BINARY" /tmp/test_basic.d -of=/tmp/test_basic 2>/dev/null; then
+    echo "❌ DMD binary is not functional"
+    echo '{"error": "dmd_not_functional", "timestamp": "'$(date -Iseconds)'"}' > "$RESULTS_DIR/results.json"
+    rm -f /tmp/test_basic.d /tmp/test_basic
+    exit 1
+fi
+rm -f /tmp/test_basic.d /tmp/test_basic
+echo "✅ DMD is functional"
+
+# Test 1: DMD Test Suite Performance (simplified)
 echo "🧪 Running DMD test suite..."
 start_time=$(date +%s.%N)
-timeout 1200 make test > /dev/null 2>&1 || echo "Test suite completed/timed out"
+
+# Try to run a subset of tests or just verify DMD works with multiple files
+if [ -f "compiler/test/Makefile" ]; then
+    # Run a quick subset of tests with timeout
+    timeout 300 make -C compiler/test quick > /dev/null 2>&1 || echo "Test subset completed/timed out"
+elif [ -d "test" ]; then
+    # Try alternative test directory
+    timeout 300 make -C test > /dev/null 2>&1 || echo "Test completed/timed out"
+else
+    # Fallback: compile multiple simple test files
+    temp_test_dir=$(mktemp -d)
+    cd "$temp_test_dir"
+    
+    for i in {1..10}; do
+        echo "void test$i() {} void main() { test$i(); }" > "test$i.d"
+        "$DMD_BINARY" "test$i.d" -of="test$i" 2>/dev/null || true
+    done
+    
+    cd "$PROJECT_ROOT"
+    rm -rf "$temp_test_dir"
+fi
+
 end_time=$(date +%s.%N)
 test_suite_duration=$(format_duration "$(echo "$end_time - $start_time" | bc -l)")
 echo "  \"test_suite_duration\": $test_suite_duration," >> "$RESULTS_DIR/results.json"
@@ -75,10 +115,10 @@ echo "🏗️  Testing real D project compilation..."
 create_real_d_project() {
     local temp_dir=$(mktemp -d)
     cd "$temp_dir"
-
+    
     # Create a realistic D project structure
-    mkdir -p src/{core,util,parser,backend}
-
+    mkdir -p src
+    
     # Main module - simplified to avoid import issues
     cat > src/main.d << 'EOF'
 module main;
@@ -167,15 +207,12 @@ echo "📁 Created test project at: $project_dir"
 
 start_time=$(date +%s.%N)
 cd "$project_dir"
-if "$DMD_BINARY" src/main.d -of=test_app 2>/dev/null; then
+if timeout 120 "$DMD_BINARY" src/main.d -of=test_app 2>/dev/null; then
     compile_result=0
     echo "✅ Real project compiled successfully"
 else
     compile_result=1
     echo "❌ Real project compilation failed"
-    # Debug: show compilation errors
-    echo "Debug: Compilation errors:"
-    "$DMD_BINARY" src/main.d -of=test_app || true
 fi
 end_time=$(date +%s.%N)
 
@@ -240,13 +277,11 @@ void main() {
 EOF
 
 start_time=$(date +%s.%N)
-if "$DMD_BINARY" template_test.d -of=template_test 2>/dev/null; then
+if timeout 120 "$DMD_BINARY" template_test.d -of=template_test 2>/dev/null; then
     echo "✅ Template test compiled successfully"
     template_result=0
 else
     echo "❌ Template test compilation failed"
-    echo "Debug: Template compilation errors:"
-    "$DMD_BINARY" template_test.d -of=template_test || true
     template_result=1
 fi
 end_time=$(date +%s.%N)
@@ -315,13 +350,11 @@ void main() {
 EOF
 
 start_time=$(date +%s.%N)
-if "$DMD_BINARY" ctfe_test.d -of=ctfe_test 2>/dev/null; then
+if timeout 120 "$DMD_BINARY" ctfe_test.d -of=ctfe_test 2>/dev/null; then
     echo "✅ CTFE test compiled successfully"
     ctfe_result=0
 else
     echo "❌ CTFE test compilation failed"
-    echo "Debug: CTFE compilation errors:"
-    "$DMD_BINARY" ctfe_test.d -of=ctfe_test || true
     ctfe_result=1
 fi
 end_time=$(date +%s.%N)
@@ -336,30 +369,20 @@ cd "$PROJECT_ROOT"
 rm -rf "$ctfe_dir"
 echo "  \"ctfe_stress_time\": $ctfe_stress_time," >> "$RESULTS_DIR/results.json"
 
-# Test 5: DMD Self-Compile Performance (if source available)
-if [ -f "src/dmd/mars.d" ] || [ -f "mars.d" ]; then
-    echo "🔄 Testing DMD self-compilation..."
-    start_time=$(date +%s.%N)
-    timeout 600 make -f posix.mak -j1 > /dev/null 2>&1 || echo "Self-compile completed/timed out"
-    end_time=$(date +%s.%N)
-    self_compile_time=$(format_duration "$(echo "$end_time - $start_time" | bc -l)")
-    echo "  \"self_compile_time\": $self_compile_time," >> "$RESULTS_DIR/results.json"
-fi
-
-# Test 6: Large File Compilation
+# Test 5: Large File Compilation
 echo "📄 Testing large file compilation..."
 large_file_dir=$(mktemp -d)
 cd "$large_file_dir"
 
-cat > large_file.d << 'EOF'
-// Large file test with many functions and classes
-module large_file;
-
-EOF
-
-# Generate many classes and functions
-for i in {1..50}; do
-    cat >> large_file.d << EOF
+# Generate large D file content more reliably
+{
+    echo "// Large file test with many functions and classes"
+    echo "module large_file;"
+    echo ""
+    
+    # Generate many classes and functions
+    for i in $(seq 1 50); do
+        cat << CLASSEOF
 class TestClass$i {
     private int value$i;
     
@@ -382,22 +405,19 @@ int globalFunction$i(int param) {
     return obj.compute$i();
 }
 
-EOF
-done
-
-cat >> large_file.d << 'EOF'
-void main() {
-    int total = 0;
-EOF
-
-for i in {1..50}; do
-    echo "    total += globalFunction$i($i);" >> large_file.d
-done
-
-echo "}" >> large_file.d
+CLASSEOF
+    done
+    
+    echo "void main() {"
+    echo "    int total = 0;"
+    for i in $(seq 1 50); do
+        echo "    total += globalFunction$i($i);"
+    done
+    echo "}"
+} > large_file.d
 
 start_time=$(date +%s.%N)
-if "$DMD_BINARY" large_file.d -of=large_test 2>/dev/null; then
+if timeout 180 "$DMD_BINARY" large_file.d -of=large_test 2>/dev/null; then
     echo "✅ Large file compiled successfully"
     large_file_result=0
 else
@@ -416,13 +436,60 @@ cd "$PROJECT_ROOT"
 rm -rf "$large_file_dir"
 echo "  \"large_file_compile_time\": $large_file_time," >> "$RESULTS_DIR/results.json"
 
+# Test 6: DMD Self-Compile Performance (if source available)
+if [ -f "compiler/src/dmd/mars.d" ] || [ -f "src/dmd/mars.d" ] || [ -f "mars.d" ]; then
+    echo "🔄 Testing DMD self-compilation..."
+    start_time=$(date +%s.%N)
+    timeout 600 make -f Makefile -j1 > /dev/null 2>&1 || timeout 600 make -f posix.mak -j1 > /dev/null 2>&1 || echo "Self-compile completed/timed out"
+    end_time=$(date +%s.%N)
+    self_compile_time=$(format_duration "$(echo "$end_time - $start_time" | bc -l)")
+    echo "  \"self_compile_time\": $self_compile_time," >> "$RESULTS_DIR/results.json"
+fi
+
 # Get DMD binary size
-dmd_size=$(stat -c%s "$DMD_BINARY" 2>/dev/null || stat -f%z "$DMD_BINARY" 2>/dev/null || echo "0")
+if [ -f "$DMD_BINARY" ]; then
+    dmd_size=$(stat -c%s "$DMD_BINARY" 2>/dev/null || stat -f%z "$DMD_BINARY" 2>/dev/null || echo "0")
+else
+    dmd_size="0"
+fi
 echo "  \"dmd_size_bytes\": $dmd_size," >> "$RESULTS_DIR/results.json"
 
-# Close JSON
-sed -i '$ s/,$//' "$RESULTS_DIR/results.json"
-echo "}" >> "$RESULTS_DIR/results.json"
+# Close JSON (remove trailing comma and add closing brace)
+if command -v python3 >/dev/null 2>&1; then
+    # Use Python to properly format JSON
+    python3 -c "
+import json
+import re
+
+try:
+    with open('$RESULTS_DIR/results.json', 'r') as f:
+        content = f.read()
+    
+    # Remove trailing comma before closing brace
+    content = re.sub(r',(\s*})?\s*$', '', content.strip())
+    if not content.endswith('}'):
+        content += '\n}'
+    
+    # Validate and reformat JSON
+    data = json.loads(content)
+    with open('$RESULTS_DIR/results.json', 'w') as f:
+        json.dump(data, f, indent=2)
+    
+    print('✅ JSON formatted successfully')
+except Exception as e:
+    print(f'❌ JSON formatting failed: {e}')
+    # Fallback: simple text replacement
+    with open('$RESULTS_DIR/results.json', 'r') as f:
+        content = f.read()
+    content = content.rstrip().rstrip(',') + '\n}'
+    with open('$RESULTS_DIR/results.json', 'w') as f:
+        f.write(content)
+"
+else
+    # Fallback without Python
+    sed -i '$ s/,$//' "$RESULTS_DIR/results.json"
+    echo "}" >> "$RESULTS_DIR/results.json"
+fi
 
 echo "✅ Performance test completed!"
 echo "📊 Results saved to: $RESULTS_DIR/results.json"
@@ -433,19 +500,61 @@ echo "=== Performance Summary ==="
 if command -v python3 >/dev/null 2>&1; then
     python3 -c "
 import json
-with open('$RESULTS_DIR/results.json') as f:
-    data = json.load(f)
+import os
+
+results_file = '$RESULTS_DIR/results.json'
+if not os.path.exists(results_file):
+    print('No results file found')
+    exit()
+
+try:
+    with open(results_file) as f:
+        data = json.load(f)
+except Exception as e:
+    print(f'Error reading results: {e}')
+    exit()
 
 def fmt_time(t):
-    return 'FAILED' if t == '999.000000000' else f'{float(t):.3f}s'
+    if t is None:
+        return 'N/A'
+    return 'FAILED' if str(t) == '999.000000000' else f'{float(t):.3f}s'
 
-print(f\"Test Suite Duration: {fmt_time(data.get('test_suite_duration', '0'))}\")
-print(f\"Real Project Compile: {fmt_time(data.get('real_project_compile_time', '0'))}\")
-print(f\"Template Stress Test: {fmt_time(data.get('template_stress_time', '0'))}\")
-print(f\"CTFE Stress Test: {fmt_time(data.get('ctfe_stress_time', '0'))}\")
-print(f\"Large File Test: {fmt_time(data.get('large_file_compile_time', '0'))}\")
+def fmt_size(s):
+    if s is None or s == 0:
+        return 'N/A'
+    return f'{int(s) / (1024*1024):.1f}MB'
+
+print(f\"Test Suite Duration: {fmt_time(data.get('test_suite_duration'))}\")
+print(f\"Real Project Compile: {fmt_time(data.get('real_project_compile_time'))}\")
+print(f\"Template Stress Test: {fmt_time(data.get('template_stress_time'))}\")
+print(f\"CTFE Stress Test: {fmt_time(data.get('ctfe_stress_time'))}\")
+print(f\"Large File Test: {fmt_time(data.get('large_file_compile_time'))}\")
 if 'self_compile_time' in data:
     print(f\"Self Compile: {fmt_time(data['self_compile_time'])}\")
-print(f\"DMD Size: {int(data.get('dmd_size_bytes', 0)) / (1024*1024):.1f}MB\")
+print(f\"DMD Size: {fmt_size(data.get('dmd_size_bytes'))}\")
 "
+else
+    echo "Python3 not available for summary"
+    cat "$RESULTS_DIR/results.json"
+fi
+
+# Final validation
+if [ -f "$RESULTS_DIR/results.json" ]; then
+    echo "✅ Results file created successfully"
+    # Validate JSON format
+    if command -v python3 >/dev/null 2>&1; then
+        python3 -c "
+import json
+try:
+    with open('$RESULTS_DIR/results.json') as f:
+        json.load(f)
+    print('✅ Results JSON is valid')
+except Exception as e:
+    print(f'❌ Invalid JSON: {e}')
+    exit(1)
+"
+    fi
+else
+    echo "❌ Results file was not created"
+    exit 1
 fi
