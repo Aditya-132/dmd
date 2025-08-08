@@ -1,12 +1,13 @@
 {
-  "timestamp": "2025-08-08T22:58:10+05:30",
+  "timestamp": "2025-08-09T00:17:08+05:30",
   "test_type": "pr",
-  "commit": "9ff228015a9cd449aef0f303befa5e1d850c4fba",
+  "commit": "cfcfa62322b53328edd5ad155a26b098e72cdeb3",
   "branch": "PRT2",
-  "test_suite_duration": 39.116364818,
-  "real_project_compile_time": 4.143871979,
-  "template_stress_time": 1.607942236,
-  "ctfe_stress_time": 0.962462501,
-  "self_compile_time": 0.666200857,
+  "test_suite_duration": 23.543433057,
+  "real_project_compile_time": 0.340763933,
+  "template_stress_time": 0.239318938,
+  "ctfe_stress_time": 0.273170317,
+  "self_compile_time": 1.641979575,
+  "large_file_compile_time": 0.283894211,
   "dmd_size_bytes": 14362560
 }
