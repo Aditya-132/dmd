@@ -1,3 +1,4 @@
+@@ -1,450 +1,450 @@
 #!/bin/bash
 # DMD Performance Test Script
 # Usage: ./dmd-performance-test.sh [baseline|pr]
@@ -26,14 +27,14 @@ find_dmd() {
         "src/dmd"
         "dmd"
     )
-    
+
     for path in "${dmd_paths[@]}"; do
         if [ -f "$PROJECT_ROOT/$path" ]; then
             echo "$PROJECT_ROOT/$path"
             return 0
         fi
     done
-    
+
     echo ""
     return 1
 }
@@ -74,10 +75,10 @@ echo "🏗️  Testing real D project compilation..."
 create_real_d_project() {
     local temp_dir=$(mktemp -d)
     cd "$temp_dir"
-    
+
     # Create a realistic D project structure
     mkdir -p src/{core,util,parser,backend}
-    
+
     # Main module - simplified to avoid import issues
     cat > src/main.d << 'EOF'
 module main;
