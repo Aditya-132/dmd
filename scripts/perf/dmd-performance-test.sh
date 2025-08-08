@@ -174,7 +174,7 @@ else
     echo "❌ Real project compilation failed"
     # Debug: show compilation errors
     echo "Debug: Compilation errors:"
-    "$DMD_BINARY" src/main.d -of=test_app || true
+    "$DMD_BINARY" src/main.d -of=test_app 2>&1 || true
 fi
 end_time=$(date +%s.%N)
 
