@@ -1,0 +1,24 @@
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -boundscheck=on  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/testbounds_on_0  runnable/testbounds_on.d 
+/home/aditya/dmd/perf-results/runnable/d/testbounds_on_0  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -boundscheck=on  -fPIC -inline -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/testbounds_on_1  runnable/testbounds_on.d 
+/home/aditya/dmd/perf-results/runnable/d/testbounds_on_1  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -boundscheck=on  -fPIC -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/testbounds_on_2  runnable/testbounds_on.d 
+/home/aditya/dmd/perf-results/runnable/d/testbounds_on_2  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -boundscheck=on  -fPIC -inline -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/testbounds_on_3  runnable/testbounds_on.d 
+/home/aditya/dmd/perf-results/runnable/d/testbounds_on_3  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -boundscheck=on  -fPIC -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/testbounds_on_4  runnable/testbounds_on.d 
+/home/aditya/dmd/perf-results/runnable/d/testbounds_on_4  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -boundscheck=on  -fPIC -inline -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/testbounds_on_5  runnable/testbounds_on.d 
+/home/aditya/dmd/perf-results/runnable/d/testbounds_on_5  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -boundscheck=on  -fPIC -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/testbounds_on_6  runnable/testbounds_on.d 
+/home/aditya/dmd/perf-results/runnable/d/testbounds_on_6  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -boundscheck=on  -fPIC -inline -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/testbounds_on_7  runnable/testbounds_on.d 
+/home/aditya/dmd/perf-results/runnable/d/testbounds_on_7  --DRT-testmode=run-main
+

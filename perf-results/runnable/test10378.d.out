@@ -1,0 +1,48 @@
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test10378_0  runnable/test10378.d 
+/home/aditya/dmd/perf-results/runnable/d/test10378_0  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test10378_1  runnable/test10378.d 
+/home/aditya/dmd/perf-results/runnable/d/test10378_1  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test10378_2  runnable/test10378.d 
+/home/aditya/dmd/perf-results/runnable/d/test10378_2  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test10378_3  runnable/test10378.d 
+/home/aditya/dmd/perf-results/runnable/d/test10378_3  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test10378_4  runnable/test10378.d 
+/home/aditya/dmd/perf-results/runnable/d/test10378_4  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test10378_5  runnable/test10378.d 
+/home/aditya/dmd/perf-results/runnable/d/test10378_5  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test10378_6  runnable/test10378.d 
+/home/aditya/dmd/perf-results/runnable/d/test10378_6  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test10378_7  runnable/test10378.d 
+/home/aditya/dmd/perf-results/runnable/d/test10378_7  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test10378_8  runnable/test10378.d 
+/home/aditya/dmd/perf-results/runnable/d/test10378_8  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test10378_9  runnable/test10378.d 
+/home/aditya/dmd/perf-results/runnable/d/test10378_9  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test10378_10  runnable/test10378.d 
+/home/aditya/dmd/perf-results/runnable/d/test10378_10  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test10378_11  runnable/test10378.d 
+/home/aditya/dmd/perf-results/runnable/d/test10378_11  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test10378_12  runnable/test10378.d 
+/home/aditya/dmd/perf-results/runnable/d/test10378_12  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test10378_13  runnable/test10378.d 
+/home/aditya/dmd/perf-results/runnable/d/test10378_13  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test10378_14  runnable/test10378.d 
+/home/aditya/dmd/perf-results/runnable/d/test10378_14  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test10378_15  runnable/test10378.d 
+/home/aditya/dmd/perf-results/runnable/d/test10378_15  --DRT-testmode=run-main
+

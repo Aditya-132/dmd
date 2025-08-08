@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-08-08T19:13:30+05:30",
+  "commit": "9ff228015a9cd449aef0f303befa5e1d850c4fba",
+  "branch": "master",
+  "test_suite_duration": 9.559085797,
+  "hello_world": {
+    "compile_time_seconds": 0.523789173,
+    "binary_size_bytes": 1285424,
+    "optimized_compile_time_seconds": 0.520937651,
+    "optimized_binary_size_bytes": 1284872
+  },
+  "complex_project": {
+    "compile_time_seconds": 0.995017006,
+    "binary_size_bytes": 1392304
+  },
+  "compiler_size_bytes": 14362560,
+  "stress_tests": {
+    "template_stress_compile_time": 0.470157196,
+    "ctfe_stress_compile_time": 1.014290417
+  }
+}

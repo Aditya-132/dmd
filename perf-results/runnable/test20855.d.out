@@ -1,0 +1,8 @@
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test20855_0  runnable/test20855.d 
+/home/aditya/dmd/perf-results/runnable/d/test20855_0  --DRT-testmode=run-main
+a = 3585
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test20855_1  runnable/test20855.d 
+/home/aditya/dmd/perf-results/runnable/d/test20855_1  --DRT-testmode=run-main
+a = 3585
+

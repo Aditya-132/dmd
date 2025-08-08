@@ -1,0 +1,4 @@
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/testgc3_0  runnable/testgc3.d 
+/home/aditya/dmd/perf-results/runnable/d/testgc3_0  --DRT-testmode=run-main
+finished
+

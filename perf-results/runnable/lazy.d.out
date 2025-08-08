@@ -1,0 +1,272 @@
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/lazy_0  runnable/lazy.d 
+/home/aditya/dmd/perf-results/runnable/d/lazy_0  --DRT-testmode=run-main
+4
+5
+6
+7
+8
+yes
+yes
+no
+it is 2
+8
+16
+32
+64
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/lazy_1  runnable/lazy.d 
+/home/aditya/dmd/perf-results/runnable/d/lazy_1  --DRT-testmode=run-main
+4
+5
+6
+7
+8
+yes
+yes
+no
+it is 2
+8
+16
+32
+64
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/lazy_2  runnable/lazy.d 
+/home/aditya/dmd/perf-results/runnable/d/lazy_2  --DRT-testmode=run-main
+4
+5
+6
+7
+8
+yes
+yes
+no
+it is 2
+8
+16
+32
+64
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/lazy_3  runnable/lazy.d 
+/home/aditya/dmd/perf-results/runnable/d/lazy_3  --DRT-testmode=run-main
+4
+5
+6
+7
+8
+yes
+yes
+no
+it is 2
+8
+16
+32
+64
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/lazy_4  runnable/lazy.d 
+/home/aditya/dmd/perf-results/runnable/d/lazy_4  --DRT-testmode=run-main
+4
+5
+6
+7
+8
+yes
+yes
+no
+it is 2
+8
+16
+32
+64
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/lazy_5  runnable/lazy.d 
+/home/aditya/dmd/perf-results/runnable/d/lazy_5  --DRT-testmode=run-main
+4
+5
+6
+7
+8
+yes
+yes
+no
+it is 2
+8
+16
+32
+64
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/lazy_6  runnable/lazy.d 
+/home/aditya/dmd/perf-results/runnable/d/lazy_6  --DRT-testmode=run-main
+4
+5
+6
+7
+8
+yes
+yes
+no
+it is 2
+8
+16
+32
+64
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/lazy_7  runnable/lazy.d 
+/home/aditya/dmd/perf-results/runnable/d/lazy_7  --DRT-testmode=run-main
+4
+5
+6
+7
+8
+yes
+yes
+no
+it is 2
+8
+16
+32
+64
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/lazy_8  runnable/lazy.d 
+/home/aditya/dmd/perf-results/runnable/d/lazy_8  --DRT-testmode=run-main
+4
+5
+6
+7
+8
+yes
+yes
+no
+it is 2
+8
+16
+32
+64
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/lazy_9  runnable/lazy.d 
+/home/aditya/dmd/perf-results/runnable/d/lazy_9  --DRT-testmode=run-main
+4
+5
+6
+7
+8
+yes
+yes
+no
+it is 2
+8
+16
+32
+64
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/lazy_10  runnable/lazy.d 
+/home/aditya/dmd/perf-results/runnable/d/lazy_10  --DRT-testmode=run-main
+4
+5
+6
+7
+8
+yes
+yes
+no
+it is 2
+8
+16
+32
+64
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/lazy_11  runnable/lazy.d 
+/home/aditya/dmd/perf-results/runnable/d/lazy_11  --DRT-testmode=run-main
+4
+5
+6
+7
+8
+yes
+yes
+no
+it is 2
+8
+16
+32
+64
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/lazy_12  runnable/lazy.d 
+/home/aditya/dmd/perf-results/runnable/d/lazy_12  --DRT-testmode=run-main
+4
+5
+6
+7
+8
+yes
+yes
+no
+it is 2
+8
+16
+32
+64
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/lazy_13  runnable/lazy.d 
+/home/aditya/dmd/perf-results/runnable/d/lazy_13  --DRT-testmode=run-main
+4
+5
+6
+7
+8
+yes
+yes
+no
+it is 2
+8
+16
+32
+64
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/lazy_14  runnable/lazy.d 
+/home/aditya/dmd/perf-results/runnable/d/lazy_14  --DRT-testmode=run-main
+4
+5
+6
+7
+8
+yes
+yes
+no
+it is 2
+8
+16
+32
+64
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/lazy_15  runnable/lazy.d 
+/home/aditya/dmd/perf-results/runnable/d/lazy_15  --DRT-testmode=run-main
+4
+5
+6
+7
+8
+yes
+yes
+no
+it is 2
+8
+16
+32
+64
+Success
+

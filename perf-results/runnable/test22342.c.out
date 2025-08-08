@@ -1,0 +1,48 @@
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC  -od/home/aditya/dmd/perf-results/runnable/c -of/home/aditya/dmd/perf-results/runnable/c/test22342_0  runnable/test22342.c 
+/home/aditya/dmd/perf-results/runnable/c/test22342_0  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -od/home/aditya/dmd/perf-results/runnable/c -of/home/aditya/dmd/perf-results/runnable/c/test22342_1  runnable/test22342.c 
+/home/aditya/dmd/perf-results/runnable/c/test22342_1  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -od/home/aditya/dmd/perf-results/runnable/c -of/home/aditya/dmd/perf-results/runnable/c/test22342_2  runnable/test22342.c 
+/home/aditya/dmd/perf-results/runnable/c/test22342_2  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -od/home/aditya/dmd/perf-results/runnable/c -of/home/aditya/dmd/perf-results/runnable/c/test22342_3  runnable/test22342.c 
+/home/aditya/dmd/perf-results/runnable/c/test22342_3  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -g -od/home/aditya/dmd/perf-results/runnable/c -of/home/aditya/dmd/perf-results/runnable/c/test22342_4  runnable/test22342.c 
+/home/aditya/dmd/perf-results/runnable/c/test22342_4  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -g -od/home/aditya/dmd/perf-results/runnable/c -of/home/aditya/dmd/perf-results/runnable/c/test22342_5  runnable/test22342.c 
+/home/aditya/dmd/perf-results/runnable/c/test22342_5  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -g -od/home/aditya/dmd/perf-results/runnable/c -of/home/aditya/dmd/perf-results/runnable/c/test22342_6  runnable/test22342.c 
+/home/aditya/dmd/perf-results/runnable/c/test22342_6  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -g -od/home/aditya/dmd/perf-results/runnable/c -of/home/aditya/dmd/perf-results/runnable/c/test22342_7  runnable/test22342.c 
+/home/aditya/dmd/perf-results/runnable/c/test22342_7  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -O -od/home/aditya/dmd/perf-results/runnable/c -of/home/aditya/dmd/perf-results/runnable/c/test22342_8  runnable/test22342.c 
+/home/aditya/dmd/perf-results/runnable/c/test22342_8  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -O -od/home/aditya/dmd/perf-results/runnable/c -of/home/aditya/dmd/perf-results/runnable/c/test22342_9  runnable/test22342.c 
+/home/aditya/dmd/perf-results/runnable/c/test22342_9  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -O -od/home/aditya/dmd/perf-results/runnable/c -of/home/aditya/dmd/perf-results/runnable/c/test22342_10  runnable/test22342.c 
+/home/aditya/dmd/perf-results/runnable/c/test22342_10  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -O -od/home/aditya/dmd/perf-results/runnable/c -of/home/aditya/dmd/perf-results/runnable/c/test22342_11  runnable/test22342.c 
+/home/aditya/dmd/perf-results/runnable/c/test22342_11  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -g -O -od/home/aditya/dmd/perf-results/runnable/c -of/home/aditya/dmd/perf-results/runnable/c/test22342_12  runnable/test22342.c 
+/home/aditya/dmd/perf-results/runnable/c/test22342_12  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -g -O -od/home/aditya/dmd/perf-results/runnable/c -of/home/aditya/dmd/perf-results/runnable/c/test22342_13  runnable/test22342.c 
+/home/aditya/dmd/perf-results/runnable/c/test22342_13  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -g -O -od/home/aditya/dmd/perf-results/runnable/c -of/home/aditya/dmd/perf-results/runnable/c/test22342_14  runnable/test22342.c 
+/home/aditya/dmd/perf-results/runnable/c/test22342_14  --DRT-testmode=run-main
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -g -O -od/home/aditya/dmd/perf-results/runnable/c -of/home/aditya/dmd/perf-results/runnable/c/test22342_15  runnable/test22342.c 
+/home/aditya/dmd/perf-results/runnable/c/test22342_15  --DRT-testmode=run-main
+

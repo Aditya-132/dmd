@@ -1,0 +1,456 @@
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test28_0  runnable/test28.d 
+/home/aditya/dmd/perf-results/runnable/d/test28_0  --DRT-testmode=run-main
+Start
+Arguments len = 2
+5
+6
+6
+6
+object.Object
+object.Object
+object.Object
+n = 10
+n = 5
+Hello
+Hello
+n = 2
+n = 1
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+0x7fffe51fd290 vs 0x7fffe51fd290
+s.x = 101
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test28_1  runnable/test28.d 
+/home/aditya/dmd/perf-results/runnable/d/test28_1  --DRT-testmode=run-main
+Start
+Arguments len = 2
+5
+6
+6
+6
+object.Object
+object.Object
+object.Object
+n = 10
+n = 5
+Hello
+Hello
+n = 2
+n = 1
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+0x7ffc479c4cd8 vs 0x7ffc479c4cd8
+s.x = 101
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test28_2  runnable/test28.d 
+/home/aditya/dmd/perf-results/runnable/d/test28_2  --DRT-testmode=run-main
+Start
+5
+6
+6
+6
+object.Object
+object.Object
+object.Object
+n = 10
+n = 5
+Hello
+Hello
+n = 2
+n = 1
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+0x7ffc23b57270 vs 0x7ffc23b57270
+s.x = 101
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test28_3  runnable/test28.d 
+/home/aditya/dmd/perf-results/runnable/d/test28_3  --DRT-testmode=run-main
+Start
+5
+6
+6
+6
+object.Object
+object.Object
+object.Object
+n = 10
+n = 5
+Hello
+Hello
+n = 2
+n = 1
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+0x7ffc9053a5c8 vs 0x7ffc9053a5c8
+s.x = 101
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test28_4  runnable/test28.d 
+/home/aditya/dmd/perf-results/runnable/d/test28_4  --DRT-testmode=run-main
+Start
+Arguments len = 2
+5
+6
+6
+6
+object.Object
+object.Object
+object.Object
+n = 10
+n = 5
+Hello
+Hello
+n = 2
+n = 1
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+0x7fff9186ddb0 vs 0x7fff9186ddb0
+s.x = 101
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test28_5  runnable/test28.d 
+/home/aditya/dmd/perf-results/runnable/d/test28_5  --DRT-testmode=run-main
+Start
+Arguments len = 2
+5
+6
+6
+6
+object.Object
+object.Object
+object.Object
+n = 10
+n = 5
+Hello
+Hello
+n = 2
+n = 1
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+0x7ffe31791118 vs 0x7ffe31791118
+s.x = 101
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test28_6  runnable/test28.d 
+/home/aditya/dmd/perf-results/runnable/d/test28_6  --DRT-testmode=run-main
+Start
+5
+6
+6
+6
+object.Object
+object.Object
+object.Object
+n = 10
+n = 5
+Hello
+Hello
+n = 2
+n = 1
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+0x7ffdffed9660 vs 0x7ffdffed9660
+s.x = 101
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test28_7  runnable/test28.d 
+/home/aditya/dmd/perf-results/runnable/d/test28_7  --DRT-testmode=run-main
+Start
+5
+6
+6
+6
+object.Object
+object.Object
+object.Object
+n = 10
+n = 5
+Hello
+Hello
+n = 2
+n = 1
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+0x7ffe2714cad8 vs 0x7ffe2714cad8
+s.x = 101
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test28_8  runnable/test28.d 
+/home/aditya/dmd/perf-results/runnable/d/test28_8  --DRT-testmode=run-main
+Start
+Arguments len = 2
+5
+6
+6
+6
+object.Object
+object.Object
+object.Object
+n = 10
+n = 5
+Hello
+Hello
+n = 2
+n = 1
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+0x7fff40ad02d0 vs 0x7fff40ad02d0
+s.x = 101
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test28_9  runnable/test28.d 
+/home/aditya/dmd/perf-results/runnable/d/test28_9  --DRT-testmode=run-main
+Start
+Arguments len = 2
+5
+6
+6
+6
+object.Object
+object.Object
+object.Object
+n = 10
+n = 5
+Hello
+Hello
+n = 2
+n = 1
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+0x7ffc5bd6d3d8 vs 0x7ffc5bd6d3d8
+s.x = 101
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test28_10  runnable/test28.d 
+/home/aditya/dmd/perf-results/runnable/d/test28_10  --DRT-testmode=run-main
+Start
+5
+6
+6
+6
+object.Object
+object.Object
+object.Object
+n = 10
+n = 5
+Hello
+Hello
+n = 2
+n = 1
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+0x7fff1c2a12a0 vs 0x7fff1c2a12a0
+s.x = 101
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test28_11  runnable/test28.d 
+/home/aditya/dmd/perf-results/runnable/d/test28_11  --DRT-testmode=run-main
+Start
+5
+6
+6
+6
+object.Object
+object.Object
+object.Object
+n = 10
+n = 5
+Hello
+Hello
+n = 2
+n = 1
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+0x7ffc533e3168 vs 0x7ffc533e3168
+s.x = 101
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test28_12  runnable/test28.d 
+/home/aditya/dmd/perf-results/runnable/d/test28_12  --DRT-testmode=run-main
+Start
+Arguments len = 2
+5
+6
+6
+6
+object.Object
+object.Object
+object.Object
+n = 10
+n = 5
+Hello
+Hello
+n = 2
+n = 1
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+0x7fffc3e56990 vs 0x7fffc3e56990
+s.x = 101
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test28_13  runnable/test28.d 
+/home/aditya/dmd/perf-results/runnable/d/test28_13  --DRT-testmode=run-main
+Start
+Arguments len = 2
+5
+6
+6
+6
+object.Object
+object.Object
+object.Object
+n = 10
+n = 5
+Hello
+Hello
+n = 2
+n = 1
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+0x7ffdb1d6e1f8 vs 0x7ffdb1d6e1f8
+s.x = 101
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test28_14  runnable/test28.d 
+/home/aditya/dmd/perf-results/runnable/d/test28_14  --DRT-testmode=run-main
+Start
+5
+6
+6
+6
+object.Object
+object.Object
+object.Object
+n = 10
+n = 5
+Hello
+Hello
+n = 2
+n = 1
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+0x7ffe54f05b80 vs 0x7ffe54f05b80
+s.x = 101
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test28_15  runnable/test28.d 
+/home/aditya/dmd/perf-results/runnable/d/test28_15  --DRT-testmode=run-main
+Start
+5
+6
+6
+6
+object.Object
+object.Object
+object.Object
+n = 10
+n = 5
+Hello
+Hello
+n = 2
+n = 1
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+Hello
+0x7ffc4de4e168 vs 0x7ffc4de4e168
+s.x = 101
+Success
+

@@ -1,0 +1,480 @@
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test34_0  runnable/test34.d 
+/home/aditya/dmd/perf-results/runnable/d/test34_0  --DRT-testmode=run-main
+one
+two
+C13.this()
+1  2  2
+2  4  4
+3  6  6
+4  8  8
+5  10  10
+6  12  12
+7  14  14
+8  16  16
+9  18  18
+10  20  20
+Hello world!
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+i = 1
+j = 2
+k = 3
+this = 0x7dafe1700170
+i = 4
+j = 5
+k = 6
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test34_1  runnable/test34.d 
+/home/aditya/dmd/perf-results/runnable/d/test34_1  --DRT-testmode=run-main
+one
+two
+C13.this()
+1  2  2
+2  4  4
+3  6  6
+4  8  8
+5  10  10
+6  12  12
+7  14  14
+8  16  16
+9  18  18
+10  20  20
+Hello world!
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+i = 1
+j = 2
+k = 3
+this = 0x7c52b5c17170
+i = 4
+j = 5
+k = 6
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test34_2  runnable/test34.d 
+/home/aditya/dmd/perf-results/runnable/d/test34_2  --DRT-testmode=run-main
+one
+two
+C13.this()
+1  2  2
+2  4  4
+3  6  6
+4  8  8
+5  10  10
+6  12  12
+7  14  14
+8  16  16
+9  18  18
+10  20  20
+Hello world!
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+i = 1
+j = 2
+k = 3
+this = 0x7563f9617100
+i = 4
+j = 5
+k = 6
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test34_3  runnable/test34.d 
+/home/aditya/dmd/perf-results/runnable/d/test34_3  --DRT-testmode=run-main
+one
+two
+C13.this()
+1  2  2
+2  4  4
+3  6  6
+4  8  8
+5  10  10
+6  12  12
+7  14  14
+8  16  16
+9  18  18
+10  20  20
+Hello world!
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+i = 1
+j = 2
+k = 3
+this = 0x700168d00100
+i = 4
+j = 5
+k = 6
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test34_4  runnable/test34.d 
+/home/aditya/dmd/perf-results/runnable/d/test34_4  --DRT-testmode=run-main
+one
+two
+C13.this()
+1  2  2
+2  4  4
+3  6  6
+4  8  8
+5  10  10
+6  12  12
+7  14  14
+8  16  16
+9  18  18
+10  20  20
+Hello world!
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+i = 1
+j = 2
+k = 3
+this = 0x7b840e700170
+i = 4
+j = 5
+k = 6
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test34_5  runnable/test34.d 
+/home/aditya/dmd/perf-results/runnable/d/test34_5  --DRT-testmode=run-main
+one
+two
+C13.this()
+1  2  2
+2  4  4
+3  6  6
+4  8  8
+5  10  10
+6  12  12
+7  14  14
+8  16  16
+9  18  18
+10  20  20
+Hello world!
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+i = 1
+j = 2
+k = 3
+this = 0x7db0af817170
+i = 4
+j = 5
+k = 6
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test34_6  runnable/test34.d 
+/home/aditya/dmd/perf-results/runnable/d/test34_6  --DRT-testmode=run-main
+one
+two
+C13.this()
+1  2  2
+2  4  4
+3  6  6
+4  8  8
+5  10  10
+6  12  12
+7  14  14
+8  16  16
+9  18  18
+10  20  20
+Hello world!
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+i = 1
+j = 2
+k = 3
+this = 0x777d93417100
+i = 4
+j = 5
+k = 6
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test34_7  runnable/test34.d 
+/home/aditya/dmd/perf-results/runnable/d/test34_7  --DRT-testmode=run-main
+one
+two
+C13.this()
+1  2  2
+2  4  4
+3  6  6
+4  8  8
+5  10  10
+6  12  12
+7  14  14
+8  16  16
+9  18  18
+10  20  20
+Hello world!
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+i = 1
+j = 2
+k = 3
+this = 0x708a73c17100
+i = 4
+j = 5
+k = 6
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test34_8  runnable/test34.d 
+/home/aditya/dmd/perf-results/runnable/d/test34_8  --DRT-testmode=run-main
+one
+two
+C13.this()
+1  2  2
+2  4  4
+3  6  6
+4  8  8
+5  10  10
+6  12  12
+7  14  14
+8  16  16
+9  18  18
+10  20  20
+Hello world!
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+i = 1
+j = 2
+k = 3
+this = 0x73c34cd00170
+i = 4
+j = 5
+k = 6
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test34_9  runnable/test34.d 
+/home/aditya/dmd/perf-results/runnable/d/test34_9  --DRT-testmode=run-main
+one
+two
+C13.this()
+1  2  2
+2  4  4
+3  6  6
+4  8  8
+5  10  10
+6  12  12
+7  14  14
+8  16  16
+9  18  18
+10  20  20
+Hello world!
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+i = 1
+j = 2
+k = 3
+this = 0x77ed2b900170
+i = 4
+j = 5
+k = 6
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test34_10  runnable/test34.d 
+/home/aditya/dmd/perf-results/runnable/d/test34_10  --DRT-testmode=run-main
+one
+two
+C13.this()
+1  2  2
+2  4  4
+3  6  6
+4  8  8
+5  10  10
+6  12  12
+7  14  14
+8  16  16
+9  18  18
+10  20  20
+Hello world!
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+i = 1
+j = 2
+k = 3
+this = 0x71ef6a417100
+i = 4
+j = 5
+k = 6
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test34_11  runnable/test34.d 
+/home/aditya/dmd/perf-results/runnable/d/test34_11  --DRT-testmode=run-main
+one
+two
+C13.this()
+1  2  2
+2  4  4
+3  6  6
+4  8  8
+5  10  10
+6  12  12
+7  14  14
+8  16  16
+9  18  18
+10  20  20
+Hello world!
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+i = 1
+j = 2
+k = 3
+this = 0x7f7330217100
+i = 4
+j = 5
+k = 6
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test34_12  runnable/test34.d 
+/home/aditya/dmd/perf-results/runnable/d/test34_12  --DRT-testmode=run-main
+one
+two
+C13.this()
+1  2  2
+2  4  4
+3  6  6
+4  8  8
+5  10  10
+6  12  12
+7  14  14
+8  16  16
+9  18  18
+10  20  20
+Hello world!
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+i = 1
+j = 2
+k = 3
+this = 0x7d09bde17170
+i = 4
+j = 5
+k = 6
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test34_13  runnable/test34.d 
+/home/aditya/dmd/perf-results/runnable/d/test34_13  --DRT-testmode=run-main
+one
+two
+C13.this()
+1  2  2
+2  4  4
+3  6  6
+4  8  8
+5  10  10
+6  12  12
+7  14  14
+8  16  16
+9  18  18
+10  20  20
+Hello world!
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+i = 1
+j = 2
+k = 3
+this = 0x7fba83017170
+i = 4
+j = 5
+k = 6
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test34_14  runnable/test34.d 
+/home/aditya/dmd/perf-results/runnable/d/test34_14  --DRT-testmode=run-main
+one
+two
+C13.this()
+1  2  2
+2  4  4
+3  6  6
+4  8  8
+5  10  10
+6  12  12
+7  14  14
+8  16  16
+9  18  18
+10  20  20
+Hello world!
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+i = 1
+j = 2
+k = 3
+this = 0x71daafa17100
+i = 4
+j = 5
+k = 6
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test34_15  runnable/test34.d 
+/home/aditya/dmd/perf-results/runnable/d/test34_15  --DRT-testmode=run-main
+one
+two
+C13.this()
+1  2  2
+2  4  4
+3  6  6
+4  8  8
+5  10  10
+6  12  12
+7  14  14
+8  16  16
+9  18  18
+10  20  20
+Hello world!
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+(0, 0)-(0, 0)
+i = 1
+j = 2
+k = 3
+this = 0x7a29e2a17100
+i = 4
+j = 5
+k = 6
+Success
+~one
+~two
+

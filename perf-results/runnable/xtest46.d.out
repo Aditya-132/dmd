@@ -1,0 +1,2248 @@
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -preview=rvaluerefparam  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/xtest46_0  runnable/xtest46.d 
+Boo!double
+Boo!int
+true
+int
+!! immutable(int)[]
+int(int i, long j = 7L)
+long
+C10390(C10390(C10390(<recursion>)))
+AliasSeq!(height)
+AliasSeq!(get, get)
+AliasSeq!(clear)
+AliasSeq!(draw, draw)
+const(int)
+string[]
+double[]
+double[]
+{}
+AliasSeq!("m")
+true
+TFunction1: extern (C) void function()
+/home/aditya/dmd/perf-results/runnable/d/xtest46_0  --DRT-testmode=run-main
+7
+  2
+5 8 6
+3 1 4
+  7
+
+  2
+6 8 5
+4 1 3
+  7
+
+  7
+3 1 4
+5 8 6
+  2
+
+  7
+4 1 3
+6 8 5
+  2
+
+n1 = 188, n2 = 188, s = runnable/xtest46.d
+n1 = 201, n2 = 201, s = runnable/xtest46.d
+i = 16
+i = 4
+7
+9
+i == 2
+i == 2
+i == 7
+i == 4
+6
+7
+aaa
+aaa
+bbb
+aaa
+aaa
+a = 42 and b = 11
+a = 42 and b = 52
+B's copy
+B
+(ctor) &s2.x = 0x7bc7b3c1a0b0
+&s2.x = 0x7bc7b3c1a0b0
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+hello pc
+S.opDispatch('hello', 7)
+S.opDispatch('foo', 7)
+C.opDispatch('foo', 8)
+d.foo = 8
+4
+1888
+1889
+7
+10
+13
+1
+2
+3
+hello world 145
+7
+hello world 146
+X.f mutable
+X.g mutable
+X+= mutable
+X.f const
+X.g const
+X+= const
+x[] = [1 2 3]
+postblit: 2
+s[].n = [1 2 3]
+v[] = [0 0 0, ..., 0]
+y[] = [5 5 5]
+postblit: 2
+postblit: 2
+postblit: 2
+z[].n = [2 2 2]
+Application.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+Application.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+TimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+SubTimedApp.fun()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+done.
+foo
+bar
+bar
+test5 year 1999, day 6
+test7 year 1999, day 6
+length = 3
+ptr = 0x62063e19e148
+length = 3
+ptr = 0x62063e19e148
+S.alignof: 10, r.alignof: 10
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -preview=rvaluerefparam  -fPIC -inline -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/xtest46_1  runnable/xtest46.d 
+Boo!double
+Boo!int
+true
+int
+!! immutable(int)[]
+int(int i, long j = 7L)
+long
+C10390(C10390(C10390(<recursion>)))
+AliasSeq!(height)
+AliasSeq!(get, get)
+AliasSeq!(clear)
+AliasSeq!(draw, draw)
+const(int)
+string[]
+double[]
+double[]
+{}
+AliasSeq!("m")
+true
+TFunction1: extern (C) void function()
+/home/aditya/dmd/perf-results/runnable/d/xtest46_1  --DRT-testmode=run-main
+7
+  2
+5 8 6
+3 1 4
+  7
+
+  2
+6 8 5
+4 1 3
+  7
+
+  7
+3 1 4
+5 8 6
+  2
+
+  7
+4 1 3
+6 8 5
+  2
+
+n1 = 188, n2 = 188, s = runnable/xtest46.d
+n1 = 201, n2 = 201, s = runnable/xtest46.d
+i = 16
+i = 4
+7
+9
+i == 2
+i == 2
+i == 7
+i == 4
+6
+7
+aaa
+aaa
+bbb
+aaa
+aaa
+a = 42 and b = 11
+a = 42 and b = 52
+B's copy
+B
+(ctor) &s2.x = 0x728573a1a0b0
+&s2.x = 0x728573a1a0b0
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+hello pc
+S.opDispatch('hello', 7)
+S.opDispatch('foo', 7)
+C.opDispatch('foo', 8)
+d.foo = 8
+4
+1888
+1889
+7
+10
+13
+1
+2
+3
+hello world 145
+7
+hello world 146
+X.f mutable
+X.g mutable
+X+= mutable
+X.f const
+X.g const
+X+= const
+x[] = [1 2 3]
+postblit: 2
+s[].n = [1 2 3]
+v[] = [0 0 0, ..., 0]
+y[] = [5 5 5]
+postblit: 2
+postblit: 2
+postblit: 2
+z[].n = [2 2 2]
+Application.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+Application.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+TimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+SubTimedApp.fun()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+done.
+foo
+bar
+bar
+test5 year 1999, day 6
+test7 year 1999, day 6
+length = 3
+ptr = 0x63bcaccd3148
+length = 3
+ptr = 0x63bcaccd3148
+S.alignof: 10, r.alignof: 10
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -preview=rvaluerefparam  -fPIC -release -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/xtest46_2  runnable/xtest46.d 
+Boo!double
+Boo!int
+true
+int
+!! immutable(int)[]
+int(int i, long j = 7L)
+long
+C10390(C10390(C10390(<recursion>)))
+AliasSeq!(height)
+AliasSeq!(get, get)
+AliasSeq!(clear)
+AliasSeq!(draw, draw)
+const(int)
+string[]
+double[]
+double[]
+{}
+AliasSeq!("m")
+true
+TFunction1: extern (C) void function()
+/home/aditya/dmd/perf-results/runnable/d/xtest46_2  --DRT-testmode=run-main
+7
+  2
+5 8 6
+3 1 4
+  7
+
+  2
+6 8 5
+4 1 3
+  7
+
+  7
+3 1 4
+5 8 6
+  2
+
+  7
+4 1 3
+6 8 5
+  2
+
+n1 = 188, n2 = 188, s = runnable/xtest46.d
+n1 = 201, n2 = 201, s = runnable/xtest46.d
+i = 16
+i = 4
+7
+9
+i == 2
+i == 2
+i == 7
+i == 4
+6
+7
+aaa
+aaa
+bbb
+aaa
+aaa
+a = 42 and b = 11
+a = 42 and b = 52
+B's copy
+B
+(ctor) &s2.x = 0x71f8387030b0
+&s2.x = 0x71f8387030b0
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+hello pc
+S.opDispatch('hello', 7)
+S.opDispatch('foo', 7)
+C.opDispatch('foo', 8)
+d.foo = 8
+4
+1888
+1889
+7
+10
+13
+1
+2
+3
+hello world 145
+7
+hello world 146
+X.f mutable
+X.g mutable
+X+= mutable
+X.f const
+X.g const
+X+= const
+x[] = [1 2 3]
+postblit: 2
+s[].n = [1 2 3]
+v[] = [0 0 0, ..., 0]
+y[] = [5 5 5]
+postblit: 2
+postblit: 2
+postblit: 2
+z[].n = [2 2 2]
+Timer.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+done.
+foo
+bar
+bar
+test5 year 1999, day 6
+test7 year 1999, day 6
+length = 3
+ptr = 0x5ffec855e148
+length = 3
+ptr = 0x5ffec855e148
+S.alignof: 10, r.alignof: 10
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -preview=rvaluerefparam  -fPIC -inline -release -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/xtest46_3  runnable/xtest46.d 
+Boo!double
+Boo!int
+true
+int
+!! immutable(int)[]
+int(int i, long j = 7L)
+long
+C10390(C10390(C10390(<recursion>)))
+AliasSeq!(height)
+AliasSeq!(get, get)
+AliasSeq!(clear)
+AliasSeq!(draw, draw)
+const(int)
+string[]
+double[]
+double[]
+{}
+AliasSeq!("m")
+true
+TFunction1: extern (C) void function()
+/home/aditya/dmd/perf-results/runnable/d/xtest46_3  --DRT-testmode=run-main
+7
+  2
+5 8 6
+3 1 4
+  7
+
+  2
+6 8 5
+4 1 3
+  7
+
+  7
+3 1 4
+5 8 6
+  2
+
+  7
+4 1 3
+6 8 5
+  2
+
+n1 = 188, n2 = 188, s = runnable/xtest46.d
+n1 = 201, n2 = 201, s = runnable/xtest46.d
+i = 16
+i = 4
+7
+9
+i == 2
+i == 2
+i == 7
+i == 4
+6
+7
+aaa
+aaa
+bbb
+aaa
+aaa
+a = 42 and b = 11
+a = 42 and b = 52
+B's copy
+B
+(ctor) &s2.x = 0x759ee041a0b0
+&s2.x = 0x759ee041a0b0
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+hello pc
+S.opDispatch('hello', 7)
+S.opDispatch('foo', 7)
+C.opDispatch('foo', 8)
+d.foo = 8
+4
+1888
+1889
+7
+10
+13
+1
+2
+3
+hello world 145
+7
+hello world 146
+X.f mutable
+X.g mutable
+X+= mutable
+X.f const
+X.g const
+X+= const
+x[] = [1 2 3]
+postblit: 2
+s[].n = [1 2 3]
+v[] = [0 0 0, ..., 0]
+y[] = [5 5 5]
+postblit: 2
+postblit: 2
+postblit: 2
+z[].n = [2 2 2]
+Timer.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+done.
+foo
+bar
+bar
+test5 year 1999, day 6
+test7 year 1999, day 6
+length = 3
+ptr = 0x56f1341f8148
+length = 3
+ptr = 0x56f1341f8148
+S.alignof: 10, r.alignof: 10
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -preview=rvaluerefparam  -fPIC -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/xtest46_4  runnable/xtest46.d 
+Boo!double
+Boo!int
+true
+int
+!! immutable(int)[]
+int(int i, long j = 7L)
+long
+C10390(C10390(C10390(<recursion>)))
+AliasSeq!(height)
+AliasSeq!(get, get)
+AliasSeq!(clear)
+AliasSeq!(draw, draw)
+const(int)
+string[]
+double[]
+double[]
+{}
+AliasSeq!("m")
+true
+TFunction1: extern (C) void function()
+/home/aditya/dmd/perf-results/runnable/d/xtest46_4  --DRT-testmode=run-main
+7
+  2
+5 8 6
+3 1 4
+  7
+
+  2
+6 8 5
+4 1 3
+  7
+
+  7
+3 1 4
+5 8 6
+  2
+
+  7
+4 1 3
+6 8 5
+  2
+
+n1 = 188, n2 = 188, s = runnable/xtest46.d
+n1 = 201, n2 = 201, s = runnable/xtest46.d
+i = 16
+i = 4
+7
+9
+i == 2
+i == 2
+i == 7
+i == 4
+6
+7
+aaa
+aaa
+bbb
+aaa
+aaa
+a = 42 and b = 11
+a = 42 and b = 52
+B's copy
+B
+(ctor) &s2.x = 0x71f3dc41a0b0
+&s2.x = 0x71f3dc41a0b0
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+hello pc
+S.opDispatch('hello', 7)
+S.opDispatch('foo', 7)
+C.opDispatch('foo', 8)
+d.foo = 8
+4
+1888
+1889
+7
+10
+13
+1
+2
+3
+hello world 145
+7
+hello world 146
+X.f mutable
+X.g mutable
+X+= mutable
+X.f const
+X.g const
+X+= const
+x[] = [1 2 3]
+postblit: 2
+s[].n = [1 2 3]
+v[] = [0 0 0, ..., 0]
+y[] = [5 5 5]
+postblit: 2
+postblit: 2
+postblit: 2
+z[].n = [2 2 2]
+Application.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+Application.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+TimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+SubTimedApp.fun()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+done.
+foo
+bar
+bar
+test5 year 1999, day 6
+test7 year 1999, day 6
+length = 3
+ptr = 0x5621a104e148
+length = 3
+ptr = 0x5621a104e148
+S.alignof: 10, r.alignof: 10
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -preview=rvaluerefparam  -fPIC -inline -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/xtest46_5  runnable/xtest46.d 
+Boo!double
+Boo!int
+true
+int
+!! immutable(int)[]
+int(int i, long j = 7L)
+long
+C10390(C10390(C10390(<recursion>)))
+AliasSeq!(height)
+AliasSeq!(get, get)
+AliasSeq!(clear)
+AliasSeq!(draw, draw)
+const(int)
+string[]
+double[]
+double[]
+{}
+AliasSeq!("m")
+true
+TFunction1: extern (C) void function()
+/home/aditya/dmd/perf-results/runnable/d/xtest46_5  --DRT-testmode=run-main
+7
+  2
+5 8 6
+3 1 4
+  7
+
+  2
+6 8 5
+4 1 3
+  7
+
+  7
+3 1 4
+5 8 6
+  2
+
+  7
+4 1 3
+6 8 5
+  2
+
+n1 = 188, n2 = 188, s = runnable/xtest46.d
+n1 = 201, n2 = 201, s = runnable/xtest46.d
+i = 16
+i = 4
+7
+9
+i == 2
+i == 2
+i == 7
+i == 4
+6
+7
+aaa
+aaa
+bbb
+aaa
+aaa
+a = 42 and b = 11
+a = 42 and b = 52
+B's copy
+B
+(ctor) &s2.x = 0x7314871030b0
+&s2.x = 0x7314871030b0
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+hello pc
+S.opDispatch('hello', 7)
+S.opDispatch('foo', 7)
+C.opDispatch('foo', 8)
+d.foo = 8
+4
+1888
+1889
+7
+10
+13
+1
+2
+3
+hello world 145
+7
+hello world 146
+X.f mutable
+X.g mutable
+X+= mutable
+X.f const
+X.g const
+X+= const
+x[] = [1 2 3]
+postblit: 2
+s[].n = [1 2 3]
+v[] = [0 0 0, ..., 0]
+y[] = [5 5 5]
+postblit: 2
+postblit: 2
+postblit: 2
+z[].n = [2 2 2]
+Application.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+Application.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+TimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+SubTimedApp.fun()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+done.
+foo
+bar
+bar
+test5 year 1999, day 6
+test7 year 1999, day 6
+length = 3
+ptr = 0x577abcbd3148
+length = 3
+ptr = 0x577abcbd3148
+S.alignof: 10, r.alignof: 10
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -preview=rvaluerefparam  -fPIC -release -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/xtest46_6  runnable/xtest46.d 
+Boo!double
+Boo!int
+true
+int
+!! immutable(int)[]
+int(int i, long j = 7L)
+long
+C10390(C10390(C10390(<recursion>)))
+AliasSeq!(height)
+AliasSeq!(get, get)
+AliasSeq!(clear)
+AliasSeq!(draw, draw)
+const(int)
+string[]
+double[]
+double[]
+{}
+AliasSeq!("m")
+true
+TFunction1: extern (C) void function()
+/home/aditya/dmd/perf-results/runnable/d/xtest46_6  --DRT-testmode=run-main
+7
+  2
+5 8 6
+3 1 4
+  7
+
+  2
+6 8 5
+4 1 3
+  7
+
+  7
+3 1 4
+5 8 6
+  2
+
+  7
+4 1 3
+6 8 5
+  2
+
+n1 = 188, n2 = 188, s = runnable/xtest46.d
+n1 = 201, n2 = 201, s = runnable/xtest46.d
+i = 16
+i = 4
+7
+9
+i == 2
+i == 2
+i == 7
+i == 4
+6
+7
+aaa
+aaa
+bbb
+aaa
+aaa
+a = 42 and b = 11
+a = 42 and b = 52
+B's copy
+B
+(ctor) &s2.x = 0x7ba6ee3030b0
+&s2.x = 0x7ba6ee3030b0
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+hello pc
+S.opDispatch('hello', 7)
+S.opDispatch('foo', 7)
+C.opDispatch('foo', 8)
+d.foo = 8
+4
+1888
+1889
+7
+10
+13
+1
+2
+3
+hello world 145
+7
+hello world 146
+X.f mutable
+X.g mutable
+X+= mutable
+X.f const
+X.g const
+X+= const
+x[] = [1 2 3]
+postblit: 2
+s[].n = [1 2 3]
+v[] = [0 0 0, ..., 0]
+y[] = [5 5 5]
+postblit: 2
+postblit: 2
+postblit: 2
+z[].n = [2 2 2]
+Timer.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+done.
+foo
+bar
+bar
+test5 year 1999, day 6
+test7 year 1999, day 6
+length = 3
+ptr = 0x6150d5df5148
+length = 3
+ptr = 0x6150d5df5148
+S.alignof: 10, r.alignof: 10
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -preview=rvaluerefparam  -fPIC -inline -release -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/xtest46_7  runnable/xtest46.d 
+Boo!double
+Boo!int
+true
+int
+!! immutable(int)[]
+int(int i, long j = 7L)
+long
+C10390(C10390(C10390(<recursion>)))
+AliasSeq!(height)
+AliasSeq!(get, get)
+AliasSeq!(clear)
+AliasSeq!(draw, draw)
+const(int)
+string[]
+double[]
+double[]
+{}
+AliasSeq!("m")
+true
+TFunction1: extern (C) void function()
+/home/aditya/dmd/perf-results/runnable/d/xtest46_7  --DRT-testmode=run-main
+7
+  2
+5 8 6
+3 1 4
+  7
+
+  2
+6 8 5
+4 1 3
+  7
+
+  7
+3 1 4
+5 8 6
+  2
+
+  7
+4 1 3
+6 8 5
+  2
+
+n1 = 188, n2 = 188, s = runnable/xtest46.d
+n1 = 201, n2 = 201, s = runnable/xtest46.d
+i = 16
+i = 4
+7
+9
+i == 2
+i == 2
+i == 7
+i == 4
+6
+7
+aaa
+aaa
+bbb
+aaa
+aaa
+a = 42 and b = 11
+a = 42 and b = 52
+B's copy
+B
+(ctor) &s2.x = 0x75c76db030b0
+&s2.x = 0x75c76db030b0
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+hello pc
+S.opDispatch('hello', 7)
+S.opDispatch('foo', 7)
+C.opDispatch('foo', 8)
+d.foo = 8
+4
+1888
+1889
+7
+10
+13
+1
+2
+3
+hello world 145
+7
+hello world 146
+X.f mutable
+X.g mutable
+X+= mutable
+X.f const
+X.g const
+X+= const
+x[] = [1 2 3]
+postblit: 2
+s[].n = [1 2 3]
+v[] = [0 0 0, ..., 0]
+y[] = [5 5 5]
+postblit: 2
+postblit: 2
+postblit: 2
+z[].n = [2 2 2]
+Timer.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+done.
+foo
+bar
+bar
+test5 year 1999, day 6
+test7 year 1999, day 6
+length = 3
+ptr = 0x5691207cd148
+length = 3
+ptr = 0x5691207cd148
+S.alignof: 10, r.alignof: 10
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -preview=rvaluerefparam  -fPIC -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/xtest46_8  runnable/xtest46.d 
+Boo!double
+Boo!int
+true
+int
+!! immutable(int)[]
+int(int i, long j = 7L)
+long
+C10390(C10390(C10390(<recursion>)))
+AliasSeq!(height)
+AliasSeq!(get, get)
+AliasSeq!(clear)
+AliasSeq!(draw, draw)
+const(int)
+string[]
+double[]
+double[]
+{}
+AliasSeq!("m")
+true
+TFunction1: extern (C) void function()
+/home/aditya/dmd/perf-results/runnable/d/xtest46_8  --DRT-testmode=run-main
+7
+  2
+5 8 6
+3 1 4
+  7
+
+  2
+6 8 5
+4 1 3
+  7
+
+  7
+3 1 4
+5 8 6
+  2
+
+  7
+4 1 3
+6 8 5
+  2
+
+n1 = 188, n2 = 188, s = runnable/xtest46.d
+n1 = 201, n2 = 201, s = runnable/xtest46.d
+i = 16
+i = 4
+7
+9
+i == 2
+i == 2
+i == 7
+i == 4
+6
+7
+aaa
+aaa
+bbb
+aaa
+aaa
+a = 42 and b = 11
+a = 42 and b = 52
+B's copy
+B
+(ctor) &s2.x = 0x754d9eb030b0
+&s2.x = 0x754d9eb030b0
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+hello pc
+S.opDispatch('hello', 7)
+S.opDispatch('foo', 7)
+C.opDispatch('foo', 8)
+d.foo = 8
+4
+1888
+1889
+7
+10
+13
+1
+2
+3
+hello world 145
+7
+hello world 146
+X.f mutable
+X.g mutable
+X+= mutable
+X.f const
+X.g const
+X+= const
+x[] = [1 2 3]
+postblit: 2
+s[].n = [1 2 3]
+v[] = [0 0 0, ..., 0]
+y[] = [5 5 5]
+postblit: 2
+postblit: 2
+postblit: 2
+z[].n = [2 2 2]
+Application.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+Application.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+TimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+SubTimedApp.fun()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+done.
+foo
+bar
+bar
+test5 year 1999, day 6
+test7 year 1999, day 6
+length = 3
+ptr = 0x5dd9dfe68148
+length = 3
+ptr = 0x5dd9dfe68148
+S.alignof: 10, r.alignof: 10
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -preview=rvaluerefparam  -fPIC -inline -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/xtest46_9  runnable/xtest46.d 
+Boo!double
+Boo!int
+true
+int
+!! immutable(int)[]
+int(int i, long j = 7L)
+long
+C10390(C10390(C10390(<recursion>)))
+AliasSeq!(height)
+AliasSeq!(get, get)
+AliasSeq!(clear)
+AliasSeq!(draw, draw)
+const(int)
+string[]
+double[]
+double[]
+{}
+AliasSeq!("m")
+true
+TFunction1: extern (C) void function()
+/home/aditya/dmd/perf-results/runnable/d/xtest46_9  --DRT-testmode=run-main
+7
+  2
+5 8 6
+3 1 4
+  7
+
+  2
+6 8 5
+4 1 3
+  7
+
+  7
+3 1 4
+5 8 6
+  2
+
+  7
+4 1 3
+6 8 5
+  2
+
+n1 = 188, n2 = 188, s = runnable/xtest46.d
+n1 = 201, n2 = 201, s = runnable/xtest46.d
+i = 16
+i = 4
+7
+9
+i == 2
+i == 2
+i == 7
+i == 4
+6
+7
+aaa
+aaa
+bbb
+aaa
+aaa
+a = 42 and b = 11
+a = 42 and b = 52
+B's copy
+B
+(ctor) &s2.x = 0x7aebb65030b0
+&s2.x = 0x7aebb65030b0
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+hello pc
+S.opDispatch('hello', 7)
+S.opDispatch('foo', 7)
+C.opDispatch('foo', 8)
+d.foo = 8
+4
+1888
+1889
+7
+10
+13
+1
+2
+3
+hello world 145
+7
+hello world 146
+X.f mutable
+X.g mutable
+X+= mutable
+X.f const
+X.g const
+X+= const
+x[] = [1 2 3]
+postblit: 2
+s[].n = [1 2 3]
+v[] = [0 0 0, ..., 0]
+y[] = [5 5 5]
+postblit: 2
+postblit: 2
+postblit: 2
+z[].n = [2 2 2]
+Application.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+Application.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+TimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+SubTimedApp.fun()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+done.
+foo
+bar
+bar
+test5 year 1999, day 6
+test7 year 1999, day 6
+length = 3
+ptr = 0x55cf3beab148
+length = 3
+ptr = 0x55cf3beab148
+S.alignof: 10, r.alignof: 10
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -preview=rvaluerefparam  -fPIC -release -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/xtest46_10  runnable/xtest46.d 
+Boo!double
+Boo!int
+true
+int
+!! immutable(int)[]
+int(int i, long j = 7L)
+long
+C10390(C10390(C10390(<recursion>)))
+AliasSeq!(height)
+AliasSeq!(get, get)
+AliasSeq!(clear)
+AliasSeq!(draw, draw)
+const(int)
+string[]
+double[]
+double[]
+{}
+AliasSeq!("m")
+true
+TFunction1: extern (C) void function()
+/home/aditya/dmd/perf-results/runnable/d/xtest46_10  --DRT-testmode=run-main
+7
+  2
+5 8 6
+3 1 4
+  7
+
+  2
+6 8 5
+4 1 3
+  7
+
+  7
+3 1 4
+5 8 6
+  2
+
+  7
+4 1 3
+6 8 5
+  2
+
+n1 = 188, n2 = 188, s = runnable/xtest46.d
+n1 = 201, n2 = 201, s = runnable/xtest46.d
+i = 16
+i = 4
+7
+9
+i == 2
+i == 2
+i == 7
+i == 4
+6
+7
+aaa
+aaa
+bbb
+aaa
+aaa
+a = 42 and b = 11
+a = 42 and b = 52
+B's copy
+B
+(ctor) &s2.x = 0x7bb9be41a0b0
+&s2.x = 0x7bb9be41a0b0
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+hello pc
+S.opDispatch('hello', 7)
+S.opDispatch('foo', 7)
+C.opDispatch('foo', 8)
+d.foo = 8
+4
+1888
+1889
+7
+10
+13
+1
+2
+3
+hello world 145
+7
+hello world 146
+X.f mutable
+X.g mutable
+X+= mutable
+X.f const
+X.g const
+X+= const
+x[] = [1 2 3]
+postblit: 2
+s[].n = [1 2 3]
+v[] = [0 0 0, ..., 0]
+y[] = [5 5 5]
+postblit: 2
+postblit: 2
+postblit: 2
+z[].n = [2 2 2]
+Timer.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+done.
+foo
+bar
+bar
+test5 year 1999, day 6
+test7 year 1999, day 6
+length = 3
+ptr = 0x5f21727cb148
+length = 3
+ptr = 0x5f21727cb148
+S.alignof: 10, r.alignof: 10
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -preview=rvaluerefparam  -fPIC -inline -release -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/xtest46_11  runnable/xtest46.d 
+Boo!double
+Boo!int
+true
+int
+!! immutable(int)[]
+int(int i, long j = 7L)
+long
+C10390(C10390(C10390(<recursion>)))
+AliasSeq!(height)
+AliasSeq!(get, get)
+AliasSeq!(clear)
+AliasSeq!(draw, draw)
+const(int)
+string[]
+double[]
+double[]
+{}
+AliasSeq!("m")
+true
+TFunction1: extern (C) void function()
+/home/aditya/dmd/perf-results/runnable/d/xtest46_11  --DRT-testmode=run-main
+7
+  2
+5 8 6
+3 1 4
+  7
+
+  2
+6 8 5
+4 1 3
+  7
+
+  7
+3 1 4
+5 8 6
+  2
+
+  7
+4 1 3
+6 8 5
+  2
+
+n1 = 188, n2 = 188, s = runnable/xtest46.d
+n1 = 201, n2 = 201, s = runnable/xtest46.d
+i = 16
+i = 4
+7
+9
+i == 2
+i == 2
+i == 7
+i == 4
+6
+7
+aaa
+aaa
+bbb
+aaa
+aaa
+a = 42 and b = 11
+a = 42 and b = 52
+B's copy
+B
+(ctor) &s2.x = 0x7ab5f1a1a0b0
+&s2.x = 0x7ab5f1a1a0b0
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+hello pc
+S.opDispatch('hello', 7)
+S.opDispatch('foo', 7)
+C.opDispatch('foo', 8)
+d.foo = 8
+4
+1888
+1889
+7
+10
+13
+1
+2
+3
+hello world 145
+7
+hello world 146
+X.f mutable
+X.g mutable
+X+= mutable
+X.f const
+X.g const
+X+= const
+x[] = [1 2 3]
+postblit: 2
+s[].n = [1 2 3]
+v[] = [0 0 0, ..., 0]
+y[] = [5 5 5]
+postblit: 2
+postblit: 2
+postblit: 2
+z[].n = [2 2 2]
+Timer.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+done.
+foo
+bar
+bar
+test5 year 1999, day 6
+test7 year 1999, day 6
+length = 3
+ptr = 0x56c917363148
+length = 3
+ptr = 0x56c917363148
+S.alignof: 10, r.alignof: 10
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -preview=rvaluerefparam  -fPIC -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/xtest46_12  runnable/xtest46.d 
+Boo!double
+Boo!int
+true
+int
+!! immutable(int)[]
+int(int i, long j = 7L)
+long
+C10390(C10390(C10390(<recursion>)))
+AliasSeq!(height)
+AliasSeq!(get, get)
+AliasSeq!(clear)
+AliasSeq!(draw, draw)
+const(int)
+string[]
+double[]
+double[]
+{}
+AliasSeq!("m")
+true
+TFunction1: extern (C) void function()
+/home/aditya/dmd/perf-results/runnable/d/xtest46_12  --DRT-testmode=run-main
+7
+  2
+5 8 6
+3 1 4
+  7
+
+  2
+6 8 5
+4 1 3
+  7
+
+  7
+3 1 4
+5 8 6
+  2
+
+  7
+4 1 3
+6 8 5
+  2
+
+n1 = 188, n2 = 188, s = runnable/xtest46.d
+n1 = 201, n2 = 201, s = runnable/xtest46.d
+i = 16
+i = 4
+7
+9
+i == 2
+i == 2
+i == 7
+i == 4
+6
+7
+aaa
+aaa
+bbb
+aaa
+aaa
+a = 42 and b = 11
+a = 42 and b = 52
+B's copy
+B
+(ctor) &s2.x = 0x7e9bf39030b0
+&s2.x = 0x7e9bf39030b0
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+hello pc
+S.opDispatch('hello', 7)
+S.opDispatch('foo', 7)
+C.opDispatch('foo', 8)
+d.foo = 8
+4
+1888
+1889
+7
+10
+13
+1
+2
+3
+hello world 145
+7
+hello world 146
+X.f mutable
+X.g mutable
+X+= mutable
+X.f const
+X.g const
+X+= const
+x[] = [1 2 3]
+postblit: 2
+s[].n = [1 2 3]
+v[] = [0 0 0, ..., 0]
+y[] = [5 5 5]
+postblit: 2
+postblit: 2
+postblit: 2
+z[].n = [2 2 2]
+Application.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+Application.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+TimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+SubTimedApp.fun()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+done.
+foo
+bar
+bar
+test5 year 1999, day 6
+test7 year 1999, day 6
+length = 3
+ptr = 0x600b4f723148
+length = 3
+ptr = 0x600b4f723148
+S.alignof: 10, r.alignof: 10
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -preview=rvaluerefparam  -fPIC -inline -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/xtest46_13  runnable/xtest46.d 
+Boo!double
+Boo!int
+true
+int
+!! immutable(int)[]
+int(int i, long j = 7L)
+long
+C10390(C10390(C10390(<recursion>)))
+AliasSeq!(height)
+AliasSeq!(get, get)
+AliasSeq!(clear)
+AliasSeq!(draw, draw)
+const(int)
+string[]
+double[]
+double[]
+{}
+AliasSeq!("m")
+true
+TFunction1: extern (C) void function()
+/home/aditya/dmd/perf-results/runnable/d/xtest46_13  --DRT-testmode=run-main
+7
+  2
+5 8 6
+3 1 4
+  7
+
+  2
+6 8 5
+4 1 3
+  7
+
+  7
+3 1 4
+5 8 6
+  2
+
+  7
+4 1 3
+6 8 5
+  2
+
+n1 = 188, n2 = 188, s = runnable/xtest46.d
+n1 = 201, n2 = 201, s = runnable/xtest46.d
+i = 16
+i = 4
+7
+9
+i == 2
+i == 2
+i == 7
+i == 4
+6
+7
+aaa
+aaa
+bbb
+aaa
+aaa
+a = 42 and b = 11
+a = 42 and b = 52
+B's copy
+B
+(ctor) &s2.x = 0x7c01c4a1a0b0
+&s2.x = 0x7c01c4a1a0b0
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+hello pc
+S.opDispatch('hello', 7)
+S.opDispatch('foo', 7)
+C.opDispatch('foo', 8)
+d.foo = 8
+4
+1888
+1889
+7
+10
+13
+1
+2
+3
+hello world 145
+7
+hello world 146
+X.f mutable
+X.g mutable
+X+= mutable
+X.f const
+X.g const
+X+= const
+x[] = [1 2 3]
+postblit: 2
+s[].n = [1 2 3]
+v[] = [0 0 0, ..., 0]
+y[] = [5 5 5]
+postblit: 2
+postblit: 2
+postblit: 2
+z[].n = [2 2 2]
+Application.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+Application.run()
+TimedApp.fun()
+Timer.run()
+TimedApp.fun()
+TimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+SubTimedApp.fun()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+Application.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+done.
+foo
+bar
+bar
+test5 year 1999, day 6
+test7 year 1999, day 6
+length = 3
+ptr = 0x6022a61ab148
+length = 3
+ptr = 0x6022a61ab148
+S.alignof: 10, r.alignof: 10
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -preview=rvaluerefparam  -fPIC -release -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/xtest46_14  runnable/xtest46.d 
+Boo!double
+Boo!int
+true
+int
+!! immutable(int)[]
+int(int i, long j = 7L)
+long
+C10390(C10390(C10390(<recursion>)))
+AliasSeq!(height)
+AliasSeq!(get, get)
+AliasSeq!(clear)
+AliasSeq!(draw, draw)
+const(int)
+string[]
+double[]
+double[]
+{}
+AliasSeq!("m")
+true
+TFunction1: extern (C) void function()
+/home/aditya/dmd/perf-results/runnable/d/xtest46_14  --DRT-testmode=run-main
+7
+  2
+5 8 6
+3 1 4
+  7
+
+  2
+6 8 5
+4 1 3
+  7
+
+  7
+3 1 4
+5 8 6
+  2
+
+  7
+4 1 3
+6 8 5
+  2
+
+n1 = 188, n2 = 188, s = runnable/xtest46.d
+n1 = 201, n2 = 201, s = runnable/xtest46.d
+i = 16
+i = 4
+7
+9
+i == 2
+i == 2
+i == 7
+i == 4
+6
+7
+aaa
+aaa
+bbb
+aaa
+aaa
+a = 42 and b = 11
+a = 42 and b = 52
+B's copy
+B
+(ctor) &s2.x = 0x7df7beb030b0
+&s2.x = 0x7df7beb030b0
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+hello pc
+S.opDispatch('hello', 7)
+S.opDispatch('foo', 7)
+C.opDispatch('foo', 8)
+d.foo = 8
+4
+1888
+1889
+7
+10
+13
+1
+2
+3
+hello world 145
+7
+hello world 146
+X.f mutable
+X.g mutable
+X+= mutable
+X.f const
+X.g const
+X+= const
+x[] = [1 2 3]
+postblit: 2
+s[].n = [1 2 3]
+v[] = [0 0 0, ..., 0]
+y[] = [5 5 5]
+postblit: 2
+postblit: 2
+postblit: 2
+z[].n = [2 2 2]
+Timer.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+done.
+foo
+bar
+bar
+test5 year 1999, day 6
+test7 year 1999, day 6
+length = 3
+ptr = 0x606db6dfc148
+length = 3
+ptr = 0x606db6dfc148
+S.alignof: 10, r.alignof: 10
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -preview=rvaluerefparam  -fPIC -inline -release -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/xtest46_15  runnable/xtest46.d 
+Boo!double
+Boo!int
+true
+int
+!! immutable(int)[]
+int(int i, long j = 7L)
+long
+C10390(C10390(C10390(<recursion>)))
+AliasSeq!(height)
+AliasSeq!(get, get)
+AliasSeq!(clear)
+AliasSeq!(draw, draw)
+const(int)
+string[]
+double[]
+double[]
+{}
+AliasSeq!("m")
+true
+TFunction1: extern (C) void function()
+/home/aditya/dmd/perf-results/runnable/d/xtest46_15  --DRT-testmode=run-main
+7
+  2
+5 8 6
+3 1 4
+  7
+
+  2
+6 8 5
+4 1 3
+  7
+
+  7
+3 1 4
+5 8 6
+  2
+
+  7
+4 1 3
+6 8 5
+  2
+
+n1 = 188, n2 = 188, s = runnable/xtest46.d
+n1 = 201, n2 = 201, s = runnable/xtest46.d
+i = 16
+i = 4
+7
+9
+i == 2
+i == 2
+i == 7
+i == 4
+6
+7
+aaa
+aaa
+bbb
+aaa
+aaa
+a = 42 and b = 11
+a = 42 and b = 52
+B's copy
+B
+(ctor) &s2.x = 0x77d8489030b0
+&s2.x = 0x77d8489030b0
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+hello pc
+S.opDispatch('hello', 7)
+S.opDispatch('foo', 7)
+C.opDispatch('foo', 8)
+d.foo = 8
+4
+1888
+1889
+7
+10
+13
+1
+2
+3
+hello world 145
+7
+hello world 146
+X.f mutable
+X.g mutable
+X+= mutable
+X.f const
+X.g const
+X+= const
+x[] = [1 2 3]
+postblit: 2
+s[].n = [1 2 3]
+v[] = [0 0 0, ..., 0]
+y[] = [5 5 5]
+postblit: 2
+postblit: 2
+postblit: 2
+z[].n = [2 2 2]
+Timer.run()
+SubTimedApp.fun()
+Timer.run()
+SubTimedApp.fun()
+done.
+foo
+bar
+bar
+test5 year 1999, day 6
+test7 year 1999, day 6
+length = 3
+ptr = 0x611da2d9c148
+length = 3
+ptr = 0x611da2d9c148
+S.alignof: 10, r.alignof: 10
+Success
+

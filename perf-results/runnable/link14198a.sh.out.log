@@ -1,0 +1,13 @@
++ source runnable/link14198a.sh
+++ libname=/home/aditya/dmd/perf-results/runnable/link14198a.a
+++ /home/aditya/dmd/generated/linux/release/64/dmd -m64 -Irunnable/extra-files -of/home/aditya/dmd/perf-results/runnable/link14198a.a -lib runnable/extra-files/std14198/array.d runnable/extra-files/std14198/conv.d runnable/extra-files/std14198/format.d runnable/extra-files/std14198/uni.d
+++ /home/aditya/dmd/generated/linux/release/64/dmd -m64 -Irunnable/extra-files -of/home/aditya/dmd/perf-results/runnable/link14198a runnable/extra-files/test14198.d /home/aditya/dmd/perf-results/runnable/link14198a.a
+++ /home/aditya/dmd/generated/linux/release/64/dmd -m64 -Irunnable/extra-files -of/home/aditya/dmd/perf-results/runnable/link14198a -version=bug14198 runnable/extra-files/test14198.d /home/aditya/dmd/perf-results/runnable/link14198a.a
+++ rm_retry /home/aditya/dmd/perf-results/runnable/link14198a.o /home/aditya/dmd/perf-results/runnable/link14198a /home/aditya/dmd/perf-results/runnable/link14198a.a
+++ local attempt=1
+++ for true in "$@"
+++ rm -f /home/aditya/dmd/perf-results/runnable/link14198a.o /home/aditya/dmd/perf-results/runnable/link14198a /home/aditya/dmd/perf-results/runnable/link14198a.a
+++ break
+++ return 0
++ finish 0
++ set +x

@@ -1,0 +1,96 @@
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -verrors=simple  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/implicit_0  runnable/implicit.d 
+runnable/implicit.d(163): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z1`
+runnable/implicit.d(164): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z2`
+/home/aditya/dmd/perf-results/runnable/d/implicit_0  --DRT-testmode=run-main
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -verrors=simple  -fPIC -inline -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/implicit_1  runnable/implicit.d 
+runnable/implicit.d(163): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z1`
+runnable/implicit.d(164): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z2`
+/home/aditya/dmd/perf-results/runnable/d/implicit_1  --DRT-testmode=run-main
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -verrors=simple  -fPIC -release -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/implicit_2  runnable/implicit.d 
+runnable/implicit.d(163): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z1`
+runnable/implicit.d(164): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z2`
+/home/aditya/dmd/perf-results/runnable/d/implicit_2  --DRT-testmode=run-main
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -verrors=simple  -fPIC -inline -release -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/implicit_3  runnable/implicit.d 
+runnable/implicit.d(163): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z1`
+runnable/implicit.d(164): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z2`
+/home/aditya/dmd/perf-results/runnable/d/implicit_3  --DRT-testmode=run-main
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -verrors=simple  -fPIC -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/implicit_4  runnable/implicit.d 
+runnable/implicit.d(163): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z1`
+runnable/implicit.d(164): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z2`
+/home/aditya/dmd/perf-results/runnable/d/implicit_4  --DRT-testmode=run-main
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -verrors=simple  -fPIC -inline -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/implicit_5  runnable/implicit.d 
+runnable/implicit.d(163): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z1`
+runnable/implicit.d(164): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z2`
+/home/aditya/dmd/perf-results/runnable/d/implicit_5  --DRT-testmode=run-main
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -verrors=simple  -fPIC -release -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/implicit_6  runnable/implicit.d 
+runnable/implicit.d(163): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z1`
+runnable/implicit.d(164): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z2`
+/home/aditya/dmd/perf-results/runnable/d/implicit_6  --DRT-testmode=run-main
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -verrors=simple  -fPIC -inline -release -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/implicit_7  runnable/implicit.d 
+runnable/implicit.d(163): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z1`
+runnable/implicit.d(164): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z2`
+/home/aditya/dmd/perf-results/runnable/d/implicit_7  --DRT-testmode=run-main
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -verrors=simple  -fPIC -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/implicit_8  runnable/implicit.d 
+runnable/implicit.d(163): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z1`
+runnable/implicit.d(164): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z2`
+/home/aditya/dmd/perf-results/runnable/d/implicit_8  --DRT-testmode=run-main
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -verrors=simple  -fPIC -inline -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/implicit_9  runnable/implicit.d 
+runnable/implicit.d(163): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z1`
+runnable/implicit.d(164): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z2`
+/home/aditya/dmd/perf-results/runnable/d/implicit_9  --DRT-testmode=run-main
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -verrors=simple  -fPIC -release -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/implicit_10  runnable/implicit.d 
+runnable/implicit.d(163): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z1`
+runnable/implicit.d(164): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z2`
+/home/aditya/dmd/perf-results/runnable/d/implicit_10  --DRT-testmode=run-main
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -verrors=simple  -fPIC -inline -release -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/implicit_11  runnable/implicit.d 
+runnable/implicit.d(163): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z1`
+runnable/implicit.d(164): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z2`
+/home/aditya/dmd/perf-results/runnable/d/implicit_11  --DRT-testmode=run-main
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -verrors=simple  -fPIC -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/implicit_12  runnable/implicit.d 
+runnable/implicit.d(163): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z1`
+runnable/implicit.d(164): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z2`
+/home/aditya/dmd/perf-results/runnable/d/implicit_12  --DRT-testmode=run-main
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -verrors=simple  -fPIC -inline -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/implicit_13  runnable/implicit.d 
+runnable/implicit.d(163): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z1`
+runnable/implicit.d(164): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z2`
+/home/aditya/dmd/perf-results/runnable/d/implicit_13  --DRT-testmode=run-main
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -verrors=simple  -fPIC -release -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/implicit_14  runnable/implicit.d 
+runnable/implicit.d(163): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z1`
+runnable/implicit.d(164): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z2`
+/home/aditya/dmd/perf-results/runnable/d/implicit_14  --DRT-testmode=run-main
+Success
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -verrors=simple  -fPIC -inline -release -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/implicit_15  runnable/implicit.d 
+runnable/implicit.d(163): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z1`
+runnable/implicit.d(164): Deprecation: slice of static array temporary returned by `pureMaker3c()` assigned to longer lived variable `z2`
+/home/aditya/dmd/perf-results/runnable/d/implicit_15  --DRT-testmode=run-main
+Success
+

@@ -1,0 +1,66 @@
+name: Performance Regression Test
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [master, stable]
+
+env:
+  # Set consistent environment
+  DFLAGS: "-O -release"
+
+jobs:
+  performance-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Need full history for comparison
+        
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential curl wget time
+        
+    - name: Setup baseline D compiler
+      run: |
+        # Download and install a reference DMD version
+        wget https://downloads.dlang.org/releases/2.x/2.105.3/dmd.2.105.3.linux.tar.xz
+        tar -xf dmd.2.105.3.linux.tar.xz
+        export PATH="$PWD/dmd2/linux/bin64:$PATH"
+        echo "$PWD/dmd2/linux/bin64" >> $GITHUB_PATH
+        
+    - name: Build current DMD
+      run: |
+        make -j$(nproc) -C src
+        echo "$PWD/generated/linux/release/64" >> $GITHUB_PATH
+        
+    - name: Run performance tests
+      run: |
+        chmod +x scripts/performance/run-tests.sh
+        ./scripts/performance/run-tests.sh
+        
+    - name: Upload performance results
+      uses: actions/upload-artifact@v4
+      with:
+        name: performance-results-${{ github.sha }}
+        path: perf-results/
+        
+    - name: Comment PR with results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          if (fs.existsSync('perf-results/summary.md')) {
+            const summary = fs.readFileSync('perf-results/summary.md', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });
+          }

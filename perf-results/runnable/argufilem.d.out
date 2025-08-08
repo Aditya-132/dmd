@@ -1,0 +1,80 @@
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/argufilem_0  runnable/argufilem.d runnable/imports/argufile.d 
+/home/aditya/dmd/perf-results/runnable/d/argufilem_0  --DRT-testmode=run-main
+bob is 7 years old
+why is 8 scared of 7? because789
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/argufilem_1  runnable/argufilem.d runnable/imports/argufile.d 
+/home/aditya/dmd/perf-results/runnable/d/argufilem_1  --DRT-testmode=run-main
+bob is 7 years old
+why is 8 scared of 7? because789
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/argufilem_2  runnable/argufilem.d runnable/imports/argufile.d 
+/home/aditya/dmd/perf-results/runnable/d/argufilem_2  --DRT-testmode=run-main
+bob is 7 years old
+why is 8 scared of 7? because789
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/argufilem_3  runnable/argufilem.d runnable/imports/argufile.d 
+/home/aditya/dmd/perf-results/runnable/d/argufilem_3  --DRT-testmode=run-main
+bob is 7 years old
+why is 8 scared of 7? because789
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/argufilem_4  runnable/argufilem.d runnable/imports/argufile.d 
+/home/aditya/dmd/perf-results/runnable/d/argufilem_4  --DRT-testmode=run-main
+bob is 7 years old
+why is 8 scared of 7? because789
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/argufilem_5  runnable/argufilem.d runnable/imports/argufile.d 
+/home/aditya/dmd/perf-results/runnable/d/argufilem_5  --DRT-testmode=run-main
+bob is 7 years old
+why is 8 scared of 7? because789
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/argufilem_6  runnable/argufilem.d runnable/imports/argufile.d 
+/home/aditya/dmd/perf-results/runnable/d/argufilem_6  --DRT-testmode=run-main
+bob is 7 years old
+why is 8 scared of 7? because789
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/argufilem_7  runnable/argufilem.d runnable/imports/argufile.d 
+/home/aditya/dmd/perf-results/runnable/d/argufilem_7  --DRT-testmode=run-main
+bob is 7 years old
+why is 8 scared of 7? because789
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/argufilem_8  runnable/argufilem.d runnable/imports/argufile.d 
+/home/aditya/dmd/perf-results/runnable/d/argufilem_8  --DRT-testmode=run-main
+bob is 7 years old
+why is 8 scared of 7? because789
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/argufilem_9  runnable/argufilem.d runnable/imports/argufile.d 
+/home/aditya/dmd/perf-results/runnable/d/argufilem_9  --DRT-testmode=run-main
+bob is 7 years old
+why is 8 scared of 7? because789
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/argufilem_10  runnable/argufilem.d runnable/imports/argufile.d 
+/home/aditya/dmd/perf-results/runnable/d/argufilem_10  --DRT-testmode=run-main
+bob is 7 years old
+why is 8 scared of 7? because789
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/argufilem_11  runnable/argufilem.d runnable/imports/argufile.d 
+/home/aditya/dmd/perf-results/runnable/d/argufilem_11  --DRT-testmode=run-main
+bob is 7 years old
+why is 8 scared of 7? because789
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/argufilem_12  runnable/argufilem.d runnable/imports/argufile.d 
+/home/aditya/dmd/perf-results/runnable/d/argufilem_12  --DRT-testmode=run-main
+bob is 7 years old
+why is 8 scared of 7? because789
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/argufilem_13  runnable/argufilem.d runnable/imports/argufile.d 
+/home/aditya/dmd/perf-results/runnable/d/argufilem_13  --DRT-testmode=run-main
+bob is 7 years old
+why is 8 scared of 7? because789
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/argufilem_14  runnable/argufilem.d runnable/imports/argufile.d 
+/home/aditya/dmd/perf-results/runnable/d/argufilem_14  --DRT-testmode=run-main
+bob is 7 years old
+why is 8 scared of 7? because789
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/argufilem_15  runnable/argufilem.d runnable/imports/argufile.d 
+/home/aditya/dmd/perf-results/runnable/d/argufilem_15  --DRT-testmode=run-main
+bob is 7 years old
+why is 8 scared of 7? because789
+

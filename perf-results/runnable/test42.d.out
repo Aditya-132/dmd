@@ -1,0 +1,1312 @@
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test42_0  runnable/test42.d 
+success
+myInt int
+myBool bool
+i
+s
+C6test42__T4T219TiZ1C
+C6test427test219FZ8__mixin11C
+/home/aditya/dmd/perf-results/runnable/d/test42_0  --DRT-testmode=run-main
+one
+two
+63
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&x = 0x644741382f38
+&s = 0x644741382f40
+adf
+AsdfadSF
+dfdsfassdf
+escape
+return
+0
+test88
+test89
+hello
+a
+b
+ulong: 9223372036854775808 => real: 9.22337e+18 => ulong: 9223372036854775808
+ulong: 18446744073709551615 => real: 1.84467e+19 => ulong: 18446744073709551615
+external: 42
+internal: 43
+i
+T1.foo()
+0 1
+1 2
+1 3
+4 arguments
+	2
+	3
+	4
+	5
+---
+4 arguments
+	2
+	3
+	4
+	5
+2
+0x7e5336435200
+In main() 1:  0x7e5336435210	0x7e5336435210
+In doSynchronized() 1:  0x7e5336435210
+In doSynchronized() 2:  0x7e5336435210
+In main() 1:  0x7e5336435210	0x7e5336435210
+test1
+ldval = 123
+test1
+ldval = 123
+1
+2
+4
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+r=0007000100000000
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test42_1  runnable/test42.d 
+success
+myInt int
+myBool bool
+i
+s
+C6test42__T4T219TiZ1C
+C6test427test219FZ8__mixin11C
+/home/aditya/dmd/perf-results/runnable/d/test42_1  --DRT-testmode=run-main
+one
+two
+63
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&x = 0x5b5d7b64ef38
+&s = 0x5b5d7b64ef40
+adf
+AsdfadSF
+dfdsfassdf
+escape
+return
+0
+test88
+test89
+hello
+a
+b
+ulong: 9223372036854775808 => real: 9.22337e+18 => ulong: 9223372036854775808
+ulong: 18446744073709551615 => real: 1.84467e+19 => ulong: 18446744073709551615
+external: 42
+internal: 43
+i
+T1.foo()
+0 1
+1 2
+1 3
+4 arguments
+	2
+	3
+	4
+	5
+---
+4 arguments
+	2
+	3
+	4
+	5
+2
+0x71b0a1900200
+In main() 1:  0x71b0a1900210	0x71b0a1900210
+In doSynchronized() 1:  0x71b0a1900210
+In doSynchronized() 2:  0x71b0a1900210
+In main() 1:  0x71b0a1900210	0x71b0a1900210
+test1
+ldval = 123
+test1
+ldval = 123
+1
+2
+4
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+r=0007000100000000
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test42_2  runnable/test42.d 
+success
+myInt int
+myBool bool
+i
+s
+C6test42__T4T219TiZ1C
+C6test427test219FZ8__mixin11C
+/home/aditya/dmd/perf-results/runnable/d/test42_2  --DRT-testmode=run-main
+one
+two
+63
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&x = 0x5694cc1a0f38
+&s = 0x5694cc1a0f40
+adf
+AsdfadSF
+dfdsfassdf
+escape
+return
+0
+test88
+test89
+hello
+a
+b
+ulong: 9223372036854775808 => real: 9.22337e+18 => ulong: 9223372036854775808
+ulong: 18446744073709551615 => real: 1.84467e+19 => ulong: 18446744073709551615
+external: 42
+internal: 43
+i
+T1.foo()
+0 1
+1 2
+1 3
+4 arguments
+	2
+	3
+	4
+	5
+---
+4 arguments
+	2
+	3
+	4
+	5
+2
+0x773a14d001e0
+In main() 1:  0x773a14d001f0	0x773a14d001f0
+In doSynchronized() 1:  0x773a14d001f0
+In doSynchronized() 2:  0x773a14d001f0
+In main() 1:  0x773a14d001f0	0x773a14d001f0
+test1
+ldval = 123
+test1
+ldval = 123
+1
+2
+4
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+r=0007000100000000
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test42_3  runnable/test42.d 
+success
+myInt int
+myBool bool
+i
+s
+C6test42__T4T219TiZ1C
+C6test427test219FZ8__mixin11C
+/home/aditya/dmd/perf-results/runnable/d/test42_3  --DRT-testmode=run-main
+one
+two
+63
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&x = 0x5b1b726aff38
+&s = 0x5b1b726aff40
+adf
+AsdfadSF
+dfdsfassdf
+escape
+return
+0
+test88
+test89
+hello
+a
+b
+ulong: 9223372036854775808 => real: 9.22337e+18 => ulong: 9223372036854775808
+ulong: 18446744073709551615 => real: 1.84467e+19 => ulong: 18446744073709551615
+external: 42
+internal: 43
+i
+T1.foo()
+0 1
+1 2
+1 3
+4 arguments
+	2
+	3
+	4
+	5
+---
+4 arguments
+	2
+	3
+	4
+	5
+2
+0x729699c351e0
+In main() 1:  0x729699c351f0	0x729699c351f0
+In doSynchronized() 1:  0x729699c351f0
+In doSynchronized() 2:  0x729699c351f0
+In main() 1:  0x729699c351f0	0x729699c351f0
+test1
+ldval = 123
+test1
+ldval = 123
+1
+2
+4
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+r=0007000100000000
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test42_4  runnable/test42.d 
+success
+myInt int
+myBool bool
+i
+s
+C6test42__T4T219TiZ1C
+C6test427test219FZ8__mixin11C
+/home/aditya/dmd/perf-results/runnable/d/test42_4  --DRT-testmode=run-main
+one
+two
+63
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&x = 0x608e9fde7f38
+&s = 0x608e9fde7f40
+adf
+AsdfadSF
+dfdsfassdf
+escape
+return
+0
+test88
+test89
+hello
+a
+b
+ulong: 9223372036854775808 => real: 9.22337e+18 => ulong: 9223372036854775808
+ulong: 18446744073709551615 => real: 1.84467e+19 => ulong: 18446744073709551615
+external: 42
+internal: 43
+i
+T1.foo()
+0 1
+1 2
+1 3
+4 arguments
+	2
+	3
+	4
+	5
+---
+4 arguments
+	2
+	3
+	4
+	5
+2
+0x74dc2dc35200
+In main() 1:  0x74dc2dc35210	0x74dc2dc35210
+In doSynchronized() 1:  0x74dc2dc35210
+In doSynchronized() 2:  0x74dc2dc35210
+In main() 1:  0x74dc2dc35210	0x74dc2dc35210
+test1
+ldval = 123
+test1
+ldval = 123
+1
+2
+4
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+r=0007000100000000
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test42_5  runnable/test42.d 
+success
+myInt int
+myBool bool
+i
+s
+C6test42__T4T219TiZ1C
+C6test427test219FZ8__mixin11C
+/home/aditya/dmd/perf-results/runnable/d/test42_5  --DRT-testmode=run-main
+one
+two
+63
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&x = 0x5b77c9d88f38
+&s = 0x5b77c9d88f40
+adf
+AsdfadSF
+dfdsfassdf
+escape
+return
+0
+test88
+test89
+hello
+a
+b
+ulong: 9223372036854775808 => real: 9.22337e+18 => ulong: 9223372036854775808
+ulong: 18446744073709551615 => real: 1.84467e+19 => ulong: 18446744073709551615
+external: 42
+internal: 43
+i
+T1.foo()
+0 1
+1 2
+1 3
+4 arguments
+	2
+	3
+	4
+	5
+---
+4 arguments
+	2
+	3
+	4
+	5
+2
+0x71ae70435200
+In main() 1:  0x71ae70435210	0x71ae70435210
+In doSynchronized() 1:  0x71ae70435210
+In doSynchronized() 2:  0x71ae70435210
+In main() 1:  0x71ae70435210	0x71ae70435210
+test1
+ldval = 123
+test1
+ldval = 123
+1
+2
+4
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+r=0007000100000000
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test42_6  runnable/test42.d 
+success
+myInt int
+myBool bool
+i
+s
+C6test42__T4T219TiZ1C
+C6test427test219FZ8__mixin11C
+/home/aditya/dmd/perf-results/runnable/d/test42_6  --DRT-testmode=run-main
+one
+two
+63
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&x = 0x5d84d9e6cf38
+&s = 0x5d84d9e6cf40
+adf
+AsdfadSF
+dfdsfassdf
+escape
+return
+0
+test88
+test89
+hello
+a
+b
+ulong: 9223372036854775808 => real: 9.22337e+18 => ulong: 9223372036854775808
+ulong: 18446744073709551615 => real: 1.84467e+19 => ulong: 18446744073709551615
+external: 42
+internal: 43
+i
+T1.foo()
+0 1
+1 2
+1 3
+4 arguments
+	2
+	3
+	4
+	5
+---
+4 arguments
+	2
+	3
+	4
+	5
+2
+0x71ceac9001e0
+In main() 1:  0x71ceac9001f0	0x71ceac9001f0
+In doSynchronized() 1:  0x71ceac9001f0
+In doSynchronized() 2:  0x71ceac9001f0
+In main() 1:  0x71ceac9001f0	0x71ceac9001f0
+test1
+ldval = 123
+test1
+ldval = 123
+1
+2
+4
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+r=0007000100000000
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -g -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test42_7  runnable/test42.d 
+success
+myInt int
+myBool bool
+i
+s
+C6test42__T4T219TiZ1C
+C6test427test219FZ8__mixin11C
+/home/aditya/dmd/perf-results/runnable/d/test42_7  --DRT-testmode=run-main
+one
+two
+63
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&x = 0x5b06d1a39f38
+&s = 0x5b06d1a39f40
+adf
+AsdfadSF
+dfdsfassdf
+escape
+return
+0
+test88
+test89
+hello
+a
+b
+ulong: 9223372036854775808 => real: 9.22337e+18 => ulong: 9223372036854775808
+ulong: 18446744073709551615 => real: 1.84467e+19 => ulong: 18446744073709551615
+external: 42
+internal: 43
+i
+T1.foo()
+0 1
+1 2
+1 3
+4 arguments
+	2
+	3
+	4
+	5
+---
+4 arguments
+	2
+	3
+	4
+	5
+2
+0x71b8f06351e0
+In main() 1:  0x71b8f06351f0	0x71b8f06351f0
+In doSynchronized() 1:  0x71b8f06351f0
+In doSynchronized() 2:  0x71b8f06351f0
+In main() 1:  0x71b8f06351f0	0x71b8f06351f0
+test1
+ldval = 123
+test1
+ldval = 123
+1
+2
+4
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+r=0007000100000000
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test42_8  runnable/test42.d 
+success
+myInt int
+myBool bool
+i
+s
+C6test42__T4T219TiZ1C
+C6test427test219FZ8__mixin11C
+/home/aditya/dmd/perf-results/runnable/d/test42_8  --DRT-testmode=run-main
+one
+two
+63
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&x = 0x62fb83621f38
+&s = 0x62fb83621f40
+adf
+AsdfadSF
+dfdsfassdf
+escape
+return
+0
+test88
+test89
+hello
+a
+b
+ulong: 9223372036854775808 => real: 9.22337e+18 => ulong: 9223372036854775808
+ulong: 18446744073709551615 => real: 1.84467e+19 => ulong: 18446744073709551615
+external: 42
+internal: 43
+i
+T1.foo()
+0 1
+1 2
+1 3
+4 arguments
+	2
+	3
+	4
+	5
+---
+4 arguments
+	2
+	3
+	4
+	5
+2
+0x72da60f00200
+In main() 1:  0x72da60f00210	0x72da60f00210
+In doSynchronized() 1:  0x72da60f00210
+In doSynchronized() 2:  0x72da60f00210
+In main() 1:  0x72da60f00210	0x72da60f00210
+test1
+ldval = 123
+test1
+ldval = 123
+1
+2
+4
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+r=0007000100000000
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test42_9  runnable/test42.d 
+success
+myInt int
+myBool bool
+i
+s
+C6test42__T4T219TiZ1C
+C6test427test219FZ8__mixin11C
+/home/aditya/dmd/perf-results/runnable/d/test42_9  --DRT-testmode=run-main
+one
+two
+63
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&x = 0x6072d6572f38
+&s = 0x6072d6572f40
+adf
+AsdfadSF
+dfdsfassdf
+escape
+return
+0
+test88
+test89
+hello
+a
+b
+ulong: 9223372036854775808 => real: 9.22337e+18 => ulong: 9223372036854775808
+ulong: 18446744073709551615 => real: 1.84467e+19 => ulong: 18446744073709551615
+external: 42
+internal: 43
+i
+T1.foo()
+0 1
+1 2
+1 3
+4 arguments
+	2
+	3
+	4
+	5
+---
+4 arguments
+	2
+	3
+	4
+	5
+2
+0x7e60b9835200
+In main() 1:  0x7e60b9835210	0x7e60b9835210
+In doSynchronized() 1:  0x7e60b9835210
+In doSynchronized() 2:  0x7e60b9835210
+In main() 1:  0x7e60b9835210	0x7e60b9835210
+test1
+ldval = 123
+test1
+ldval = 123
+1
+2
+4
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+r=0007000100000000
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test42_10  runnable/test42.d 
+success
+myInt int
+myBool bool
+i
+s
+C6test42__T4T219TiZ1C
+C6test427test219FZ8__mixin11C
+/home/aditya/dmd/perf-results/runnable/d/test42_10  --DRT-testmode=run-main
+one
+two
+63
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&x = 0x615bc7438f38
+&s = 0x615bc7438f40
+adf
+AsdfadSF
+dfdsfassdf
+escape
+return
+0
+test88
+test89
+hello
+a
+b
+ulong: 9223372036854775808 => real: 9.22337e+18 => ulong: 9223372036854775808
+ulong: 18446744073709551615 => real: 1.84467e+19 => ulong: 18446744073709551615
+external: 42
+internal: 43
+i
+T1.foo()
+0 1
+1 2
+1 3
+4 arguments
+	2
+	3
+	4
+	5
+---
+4 arguments
+	2
+	3
+	4
+	5
+2
+0x7d727ba351e0
+In main() 1:  0x7d727ba351f0	0x7d727ba351f0
+In doSynchronized() 1:  0x7d727ba351f0
+In doSynchronized() 2:  0x7d727ba351f0
+In main() 1:  0x7d727ba351f0	0x7d727ba351f0
+test1
+ldval = 123
+test1
+ldval = 123
+1
+2
+4
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+r=0007000100000000
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test42_11  runnable/test42.d 
+success
+myInt int
+myBool bool
+i
+s
+C6test42__T4T219TiZ1C
+C6test427test219FZ8__mixin11C
+/home/aditya/dmd/perf-results/runnable/d/test42_11  --DRT-testmode=run-main
+one
+two
+63
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&x = 0x5865c8738f38
+&s = 0x5865c8738f40
+adf
+AsdfadSF
+dfdsfassdf
+escape
+return
+0
+test88
+test89
+hello
+a
+b
+ulong: 9223372036854775808 => real: 9.22337e+18 => ulong: 9223372036854775808
+ulong: 18446744073709551615 => real: 1.84467e+19 => ulong: 18446744073709551615
+external: 42
+internal: 43
+i
+T1.foo()
+0 1
+1 2
+1 3
+4 arguments
+	2
+	3
+	4
+	5
+---
+4 arguments
+	2
+	3
+	4
+	5
+2
+0x72a13a1001e0
+In main() 1:  0x72a13a1001f0	0x72a13a1001f0
+In doSynchronized() 1:  0x72a13a1001f0
+In doSynchronized() 2:  0x72a13a1001f0
+In main() 1:  0x72a13a1001f0	0x72a13a1001f0
+test1
+ldval = 123
+test1
+ldval = 123
+1
+2
+4
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+r=0007000100000000
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test42_12  runnable/test42.d 
+success
+myInt int
+myBool bool
+i
+s
+C6test42__T4T219TiZ1C
+C6test427test219FZ8__mixin11C
+/home/aditya/dmd/perf-results/runnable/d/test42_12  --DRT-testmode=run-main
+one
+two
+63
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&x = 0x60363952ef38
+&s = 0x60363952ef40
+adf
+AsdfadSF
+dfdsfassdf
+escape
+return
+0
+test88
+test89
+hello
+a
+b
+ulong: 9223372036854775808 => real: 9.22337e+18 => ulong: 9223372036854775808
+ulong: 18446744073709551615 => real: 1.84467e+19 => ulong: 18446744073709551615
+external: 42
+internal: 43
+i
+T1.foo()
+0 1
+1 2
+1 3
+4 arguments
+	2
+	3
+	4
+	5
+---
+4 arguments
+	2
+	3
+	4
+	5
+2
+0x7419bf435200
+In main() 1:  0x7419bf435210	0x7419bf435210
+In doSynchronized() 1:  0x7419bf435210
+In doSynchronized() 2:  0x7419bf435210
+In main() 1:  0x7419bf435210	0x7419bf435210
+test1
+ldval = 123
+test1
+ldval = 123
+1
+2
+4
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+r=0007000100000000
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test42_13  runnable/test42.d 
+success
+myInt int
+myBool bool
+i
+s
+C6test42__T4T219TiZ1C
+C6test427test219FZ8__mixin11C
+/home/aditya/dmd/perf-results/runnable/d/test42_13  --DRT-testmode=run-main
+one
+two
+63
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&x = 0x5da1f9b2cf38
+&s = 0x5da1f9b2cf40
+adf
+AsdfadSF
+dfdsfassdf
+escape
+return
+0
+test88
+test89
+hello
+a
+b
+ulong: 9223372036854775808 => real: 9.22337e+18 => ulong: 9223372036854775808
+ulong: 18446744073709551615 => real: 1.84467e+19 => ulong: 18446744073709551615
+external: 42
+internal: 43
+i
+T1.foo()
+0 1
+1 2
+1 3
+4 arguments
+	2
+	3
+	4
+	5
+---
+4 arguments
+	2
+	3
+	4
+	5
+2
+0x74e099900200
+In main() 1:  0x74e099900210	0x74e099900210
+In doSynchronized() 1:  0x74e099900210
+In doSynchronized() 2:  0x74e099900210
+In main() 1:  0x74e099900210	0x74e099900210
+test1
+ldval = 123
+test1
+ldval = 123
+1
+2
+4
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+r=0007000100000000
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -release -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test42_14  runnable/test42.d 
+success
+myInt int
+myBool bool
+i
+s
+C6test42__T4T219TiZ1C
+C6test427test219FZ8__mixin11C
+/home/aditya/dmd/perf-results/runnable/d/test42_14  --DRT-testmode=run-main
+one
+two
+63
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&x = 0x5a55f314ff38
+&s = 0x5a55f314ff40
+adf
+AsdfadSF
+dfdsfassdf
+escape
+return
+0
+test88
+test89
+hello
+a
+b
+ulong: 9223372036854775808 => real: 9.22337e+18 => ulong: 9223372036854775808
+ulong: 18446744073709551615 => real: 1.84467e+19 => ulong: 18446744073709551615
+external: 42
+internal: 43
+i
+T1.foo()
+0 1
+1 2
+1 3
+4 arguments
+	2
+	3
+	4
+	5
+---
+4 arguments
+	2
+	3
+	4
+	5
+2
+0x7904d8f001e0
+In main() 1:  0x7904d8f001f0	0x7904d8f001f0
+In doSynchronized() 1:  0x7904d8f001f0
+In doSynchronized() 2:  0x7904d8f001f0
+In main() 1:  0x7904d8f001f0	0x7904d8f001f0
+test1
+ldval = 123
+test1
+ldval = 123
+1
+2
+4
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+r=0007000100000000
+Success
+~one
+~two
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable  -fPIC -inline -release -g -O -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/test42_15  runnable/test42.d 
+success
+myInt int
+myBool bool
+i
+s
+C6test42__T4T219TiZ1C
+C6test427test219FZ8__mixin11C
+/home/aditya/dmd/perf-results/runnable/d/test42_15  --DRT-testmode=run-main
+one
+two
+63
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+&x = 0x5a625fe0cf38
+&s = 0x5a625fe0cf40
+adf
+AsdfadSF
+dfdsfassdf
+escape
+return
+0
+test88
+test89
+hello
+a
+b
+ulong: 9223372036854775808 => real: 9.22337e+18 => ulong: 9223372036854775808
+ulong: 18446744073709551615 => real: 1.84467e+19 => ulong: 18446744073709551615
+external: 42
+internal: 43
+i
+T1.foo()
+0 1
+1 2
+1 3
+4 arguments
+	2
+	3
+	4
+	5
+---
+4 arguments
+	2
+	3
+	4
+	5
+2
+0x7b28e2b001e0
+In main() 1:  0x7b28e2b001f0	0x7b28e2b001f0
+In doSynchronized() 1:  0x7b28e2b001f0
+In doSynchronized() 2:  0x7b28e2b001f0
+In main() 1:  0x7b28e2b001f0	0x7b28e2b001f0
+test1
+ldval = 123
+test1
+ldval = 123
+1
+2
+4
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+t1: 1 2 3 4
+t2: 5 6 7 8
+someBool: 0
+finalFloat: 1
+r=0007000100000000
+Success
+~one
+~two
+

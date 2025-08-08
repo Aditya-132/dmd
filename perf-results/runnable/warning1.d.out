@@ -1,0 +1,3 @@
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -w  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/warning1_0  runnable/warning1.d 
+/home/aditya/dmd/perf-results/runnable/d/warning1_0  --DRT-testmode=run-main
+

@@ -1,0 +1,48 @@
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -inline  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -c  runnable/link13415.d
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -inline  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -c  runnable/imports/link13415a.d
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/link13415_0 /home/aditya/dmd/perf-results/runnable/d/link13415.o /home/aditya/dmd/perf-results/runnable/d/link13415a.o
+/home/aditya/dmd/perf-results/runnable/d/link13415_0  --DRT-testmode=run-main
+i = 77;
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -inline  -fPIC -allinst -od/home/aditya/dmd/perf-results/runnable/d -c  runnable/link13415.d
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -inline  -fPIC -allinst -od/home/aditya/dmd/perf-results/runnable/d -c  runnable/imports/link13415a.d
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/link13415_1 /home/aditya/dmd/perf-results/runnable/d/link13415.o /home/aditya/dmd/perf-results/runnable/d/link13415a.o
+/home/aditya/dmd/perf-results/runnable/d/link13415_1  --DRT-testmode=run-main
+i = 77;
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -inline  -fPIC -unittest -od/home/aditya/dmd/perf-results/runnable/d -c  runnable/link13415.d
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -inline  -fPIC -unittest -od/home/aditya/dmd/perf-results/runnable/d -c  runnable/imports/link13415a.d
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/link13415_2 /home/aditya/dmd/perf-results/runnable/d/link13415.o /home/aditya/dmd/perf-results/runnable/d/link13415a.o
+/home/aditya/dmd/perf-results/runnable/d/link13415_2  --DRT-testmode=run-main
+i = 77;
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -inline  -fPIC -allinst -unittest -od/home/aditya/dmd/perf-results/runnable/d -c  runnable/link13415.d
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -inline  -fPIC -allinst -unittest -od/home/aditya/dmd/perf-results/runnable/d -c  runnable/imports/link13415a.d
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/link13415_3 /home/aditya/dmd/perf-results/runnable/d/link13415.o /home/aditya/dmd/perf-results/runnable/d/link13415a.o
+/home/aditya/dmd/perf-results/runnable/d/link13415_3  --DRT-testmode=run-main
+i = 77;
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -inline  -fPIC -debug -od/home/aditya/dmd/perf-results/runnable/d -c  runnable/link13415.d
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -inline  -fPIC -debug -od/home/aditya/dmd/perf-results/runnable/d -c  runnable/imports/link13415a.d
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/link13415_4 /home/aditya/dmd/perf-results/runnable/d/link13415.o /home/aditya/dmd/perf-results/runnable/d/link13415a.o
+/home/aditya/dmd/perf-results/runnable/d/link13415_4  --DRT-testmode=run-main
+i = 77;
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -inline  -fPIC -allinst -debug -od/home/aditya/dmd/perf-results/runnable/d -c  runnable/link13415.d
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -inline  -fPIC -allinst -debug -od/home/aditya/dmd/perf-results/runnable/d -c  runnable/imports/link13415a.d
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/link13415_5 /home/aditya/dmd/perf-results/runnable/d/link13415.o /home/aditya/dmd/perf-results/runnable/d/link13415a.o
+/home/aditya/dmd/perf-results/runnable/d/link13415_5  --DRT-testmode=run-main
+i = 77;
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -inline  -fPIC -unittest -debug -od/home/aditya/dmd/perf-results/runnable/d -c  runnable/link13415.d
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -inline  -fPIC -unittest -debug -od/home/aditya/dmd/perf-results/runnable/d -c  runnable/imports/link13415a.d
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/link13415_6 /home/aditya/dmd/perf-results/runnable/d/link13415.o /home/aditya/dmd/perf-results/runnable/d/link13415a.o
+/home/aditya/dmd/perf-results/runnable/d/link13415_6  --DRT-testmode=run-main
+i = 77;
+
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -inline  -fPIC -allinst -unittest -debug -od/home/aditya/dmd/perf-results/runnable/d -c  runnable/link13415.d
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64 -Irunnable -inline  -fPIC -allinst -unittest -debug -od/home/aditya/dmd/perf-results/runnable/d -c  runnable/imports/link13415a.d
+/home/aditya/dmd/generated/linux/release/64/dmd -conf= -m64  -fPIC  -od/home/aditya/dmd/perf-results/runnable/d -of/home/aditya/dmd/perf-results/runnable/d/link13415_7 /home/aditya/dmd/perf-results/runnable/d/link13415.o /home/aditya/dmd/perf-results/runnable/d/link13415a.o
+/home/aditya/dmd/perf-results/runnable/d/link13415_7  --DRT-testmode=run-main
+i = 77;
+
