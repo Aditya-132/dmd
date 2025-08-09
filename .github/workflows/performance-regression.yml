@@ -6,6 +6,11 @@ on:
     types: [opened, synchronize, reopened]
   workflow_dispatch:
 
+# Add permissions for commenting on PRs
+permissions:
+  contents: read
+  pull-requests: write
+
 concurrency:
   group: perf-${{ github.ref }}
   cancel-in-progress: true
@@ -295,14 +300,6 @@ jobs:
           "multifile_compile_time"
         
         # 6. DMD binary size
-
-
-
-
-
-
-
-
         if [ -f "$DMD_BINARY" ]; then
           DMD_SIZE=$(stat -c%s "$DMD_BINARY")
           add_result "dmd_size_bytes" "$DMD_SIZE"
@@ -340,23 +337,6 @@ jobs:
           ENABLE_RELEASE=1 \
           VERBOSE=1 2>&1 | tee baseline-build.log
         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         # Verify DMD was built
         if [ ! -f "generated/linux/release/64/dmd" ]; then
           echo "❌ Baseline DMD binary not found after build"
@@ -410,23 +390,6 @@ jobs:
           ENABLE_RELEASE=1 \
           VERBOSE=1 2>&1 | tee pr-build.log
         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         # Verify DMD was built
         if [ ! -f "generated/linux/release/64/dmd" ]; then
           echo "❌ PR DMD binary not found after build"
@@ -486,8 +449,6 @@ jobs:
         def format_time(seconds):
             if str(seconds) == "999.000" or str(seconds) == "999.000000000":
                 return "FAILED"
-
-
             try:
                 return f"{float(seconds):.3f}s"
             except:
@@ -568,7 +529,6 @@ jobs:
             ("CTFE Heavy Code", "ctfe_stress_time"),
             ("Large File Compilation", "large_file_compile_time"),
             ("Multi-file Project", "multifile_compile_time"),
-
         ]
         
         baseline_tests = baseline.get('tests', {})
