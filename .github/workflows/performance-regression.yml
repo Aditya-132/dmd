@@ -183,9 +183,9 @@ jobs:
           exit 1
         fi
         
-        # 1. Simple compilation test (without std.stdio to avoid library issues)
+        # 1. Simple compilation test (compile only, no linking)
         run_timed "Simple compilation test" \
-          "echo 'void main() { int x = 42; }' > test_simple.d && $DMD_PATH test_simple.d -of=test_simple_out && rm -f test_simple.d test_simple_out test_simple.o" \
+          "echo 'void main() { int x = 42; }' > test_simple.d && $DMD_PATH -c test_simple.d && rm -f test_simple.d test_simple.o" \
           "simple_compile_time"
         
         # 2. Template stress test
@@ -291,10 +291,18 @@ jobs:
         TEST_EOF
         
         run_timed "Multiple file compilation" \
-          "$DMD_PATH multifile_test/*.d -of=multifile_out && rm -f multifile_out *.o" \
+          "$DMD_PATH -c multifile_test/*.d && rm -f *.o" \
           "multifile_compile_time"
         
-        # 6. DMD binary size
+        # Add a test that actually tries linking (if phobos is available)
+        if [ -n "$PHOBOS_LIB" ] && [ -f "$PHOBOS_LIB/libphobos2.a" ]; then
+          run_timed "Full linking test" \
+            "echo 'void main() { int x = 42; }' > test_link.d && $DMD_PATH test_link.d -of=test_link_out && rm -f test_link.d test_link_out test_link.o" \
+            "full_link_time"
+        else
+          echo "[$TEST_TYPE] Skipping linking test - Phobos library not found"
+          add_result "full_link_time" "skipped"
+        fi
         if [ -f "$DMD_BINARY" ]; then
           DMD_SIZE=$(stat -c%s "$DMD_BINARY")
           add_result "dmd_size_bytes" "$DMD_SIZE"
@@ -331,6 +339,23 @@ jobs:
           MODEL=64 \
           ENABLE_RELEASE=1 \
           VERBOSE=1 2>&1 | tee baseline-build.log
+        
+        # Check if Phobos was built successfully
+        echo "=== Checking Phobos Build Status ==="
+        if [ -d "phobos/generated/linux/release/64" ]; then
+          echo "✅ Phobos directory found"
+          ls -la phobos/generated/linux/release/64/ | head -10
+          if [ -f "phobos/generated/linux/release/64/libphobos2.a" ]; then
+            echo "✅ Phobos library found"
+          else
+            echo "⚠️ Phobos library not found, trying to build manually"
+            cd phobos
+            make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd 2>&1 | tee ../phobos-build.log || true
+            cd ..
+          fi
+        else
+          echo "⚠️ Phobos directory not found"
+        fi
         
         # Verify DMD was built
         if [ ! -f "generated/linux/release/64/dmd" ]; then
@@ -384,6 +409,23 @@ jobs:
           MODEL=64 \
           ENABLE_RELEASE=1 \
           VERBOSE=1 2>&1 | tee pr-build.log
+        
+        # Check if Phobos was built successfully
+        echo "=== Checking Phobos Build Status ==="
+        if [ -d "phobos/generated/linux/release/64" ]; then
+          echo "✅ Phobos directory found"
+          ls -la phobos/generated/linux/release/64/ | head -10
+          if [ -f "phobos/generated/linux/release/64/libphobos2.a" ]; then
+            echo "✅ Phobos library found"
+          else
+            echo "⚠️ Phobos library not found, trying to build manually"
+            cd phobos
+            make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd 2>&1 | tee ../phobos-build.log || true
+            cd ..
+          fi
+        else
+          echo "⚠️ Phobos directory not found"
+        fi
         
         # Verify DMD was built
         if [ ! -f "generated/linux/release/64/dmd" ]; then
@@ -444,6 +486,8 @@ jobs:
         def format_time(seconds):
             if str(seconds) == "999.000" or str(seconds) == "999.000000000":
                 return "FAILED"
+            elif str(seconds) == "skipped":
+                return "SKIPPED"
             try:
                 return f"{float(seconds):.3f}s"
             except:
@@ -459,7 +503,7 @@ jobs:
                 return "ERROR"
         
         def calc_change(baseline, pr):
-            if baseline == 0 or str(pr) == "999.000" or str(baseline) == "999.000":
+            if baseline == 0 or str(pr) == "999.000" or str(baseline) == "999.000" or str(pr) == "skipped" or str(baseline) == "skipped":
                 return "N/A"
             try:
                 baseline_val = float(baseline)
@@ -524,6 +568,7 @@ jobs:
             ("CTFE Heavy Code", "ctfe_stress_time"),
             ("Large File Compilation", "large_file_compile_time"),
             ("Multi-file Project", "multifile_compile_time"),
+            ("Full Linking", "full_link_time"),
         ]
         
         baseline_tests = baseline.get('tests', {})
