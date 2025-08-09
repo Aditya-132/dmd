@@ -70,48 +70,44 @@ jobs:
           exit 1
         fi
         
+        # Check for Phobos and clone if missing
+        if [ ! -d "phobos" ]; then
+          echo "Phobos not found, cloning..."
+          git clone --depth 1 https://github.com/dlang/phobos.git
+        fi
+        
         # Build Phobos (D standard library)
         echo "=== Building Phobos ==="
-        if [ -d "phobos" ]; then
-          cd phobos
-          make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd || {
-            echo "❌ Failed to build Phobos"
-            exit 1
-          }
-          cd ..
-          
-          # Set up library paths
-          export LD_LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LD_LIBRARY_PATH"
-          export LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LIBRARY_PATH"
-          echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $GITHUB_ENV
-          echo "LIBRARY_PATH=$LIBRARY_PATH" >> $GITHUB_ENV
-        else
-          echo "⚠️ Phobos directory not found, will try to continue with limited tests"
-          # Create minimal results file
-          mkdir -p /tmp/perf-results
-          echo '{"error": "phobos_missing"}' > /tmp/perf-results/baseline.json
-        fi
+        cd phobos
+        make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd || {
+          echo "❌ Failed to build Phobos"
+          exit 1
+        }
+        cd ..
+        
+        # Set up library paths
+        export LD_LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LD_LIBRARY_PATH"
+        export LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LIBRARY_PATH"
+        echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $GITHUB_ENV
+        echo "LIBRARY_PATH=$LIBRARY_PATH" >> $GITHUB_ENV
         
         echo "✅ Baseline DMD built successfully"
         generated/linux/release/64/dmd --version
         
-        # Only run performance tests if Phobos was built
-        if [ -d "phobos" ]; then
-          echo "=== Testing Baseline Performance ==="
-          ./scripts/perf/dmd-performance-test.sh baseline || {
-            echo "⚠️ Baseline performance test had issues"
-            cat perf-results/results.json 2>/dev/null || echo "No results file generated"
-          }
-          
-          # Save results
-          mkdir -p /tmp/perf-results
-          if [ -f "perf-results/results.json" ]; then
-            cp perf-results/results.json /tmp/perf-results/baseline.json
-            echo "✅ Baseline results saved"
-          else
-            echo "❌ No baseline results generated"
-            echo '{"error": "baseline_failed"}' > /tmp/perf-results/baseline.json
-          fi
+        echo "=== Testing Baseline Performance ==="
+        ./scripts/perf/dmd-performance-test.sh baseline || {
+          echo "⚠️ Baseline performance test had issues"
+          cat perf-results/results.json 2>/dev/null || echo "No results file generated"
+        }
+        
+        # Save results
+        mkdir -p /tmp/perf-results
+        if [ -f "perf-results/results.json" ]; then
+          cp perf-results/results.json /tmp/perf-results/baseline.json
+          echo "✅ Baseline results saved"
+        else
+          echo "❌ No baseline results generated"
+          echo '{"error": "baseline_failed"}' > /tmp/perf-results/baseline.json
         fi
 
     - name: Build and Test PR Branch  
@@ -136,47 +132,43 @@ jobs:
           exit 1
         fi
         
+        # Check for Phobos and clone if missing
+        if [ ! -d "phobos" ]; then
+          echo "Phobos not found, cloning..."
+          git clone --depth 1 https://github.com/dlang/phobos.git
+        fi
+        
         # Build Phobos (D standard library)
         echo "=== Building Phobos ==="
-        if [ -d "phobos" ]; then
-          cd phobos
-          make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd || {
-            echo "❌ Failed to build Phobos"
-            exit 1
-          }
-          cd ..
-          
-          # Set up library paths
-          export LD_LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LD_LIBRARY_PATH"
-          export LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LIBRARY_PATH"
-          echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $GITHUB_ENV
-          echo "LIBRARY_PATH=$LIBRARY_PATH" >> $GITHUB_ENV
-        else
-          echo "⚠️ Phobos directory not found, will try to continue with limited tests"
-          # Create minimal results file
-          mkdir -p /tmp/perf-results
-          echo '{"error": "phobos_missing"}' > /tmp/perf-results/pr.json
-        fi
+        cd phobos
+        make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd || {
+          echo "❌ Failed to build Phobos"
+          exit 1
+        }
+        cd ..
+        
+        # Set up library paths
+        export LD_LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LD_LIBRARY_PATH"
+        export LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LIBRARY_PATH"
+        echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $GITHUB_ENV
+        echo "LIBRARY_PATH=$LIBRARY_PATH" >> $GITHUB_ENV
         
         echo "✅ PR DMD built successfully"
         generated/linux/release/64/dmd --version
         
-        # Only run performance tests if Phobos was built
-        if [ -d "phobos" ]; then
-          echo "=== Testing PR Performance ==="
-          ./scripts/perf/dmd-performance-test.sh pr || {
-            echo "⚠️ PR performance test had issues"
-            cat perf-results/results.json 2>/dev/null || echo "No results file generated"
-          }
-          
-          # Save results
-          if [ -f "perf-results/results.json" ]; then
-            cp perf-results/results.json /tmp/perf-results/pr.json
-            echo "✅ PR results saved"
-          else
-            echo "❌ No PR results generated"
-            echo '{"error": "pr_failed"}' > /tmp/perf-results/pr.json
-          fi
+        echo "=== Testing PR Performance ==="
+        ./scripts/perf/dmd-performance-test.sh pr || {
+          echo "⚠️ PR performance test had issues"
+          cat perf-results/results.json 2>/dev/null || echo "No results file generated"
+        }
+        
+        # Save results
+        if [ -f "perf-results/results.json" ]; then
+          cp perf-results/results.json /tmp/perf-results/pr.json
+          echo "✅ PR results saved"
+        else
+          echo "❌ No PR results generated"
+          echo '{"error": "pr_failed"}' > /tmp/perf-results/pr.json
         fi
 
     - name: Generate Performance Report
