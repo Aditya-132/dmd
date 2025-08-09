@@ -10,6 +10,12 @@ concurrency:
   group: perf-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  checks: write
+
 jobs:
   performance-test:
     name: DMD Performance Test
@@ -648,6 +654,7 @@ jobs:
 
     - name: Comment PR with Results
       uses: actions/github-script@v7
+      if: github.event_name == 'pull_request'
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
@@ -657,6 +664,7 @@ jobs:
           try {
             report = fs.readFileSync('/tmp/performance-report.md', 'utf8');
           } catch (error) {
+            console.log('Error reading report file:', error);
             report = `# ⚠️ Performance Test Error
             
             Performance comparison could not be completed due to an internal error.
@@ -667,37 +675,54 @@ jobs:
             *DMD Performance Regression Testing*`;
           }
           
-          // Find existing comment
-          const { data: comments } = await github.rest.issues.listComments({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: context.issue.number,
-          });
-          
-          const existingComment = comments.find(comment => 
-            comment.user.login === 'github-actions[bot]' &&
-            comment.body.includes('📊 DMD Performance Comparison')
-          );
-          
-          if (existingComment) {
-            await github.rest.issues.updateComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              comment_id: existingComment.id,
-              body: report
-            });
-            console.log('Updated existing performance comment');
-          } else {
-            await github.rest.issues.createComment({
+          try {
+            // Find existing comment
+            const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: report
             });
-            console.log('Created new performance comment');
+            
+            const existingComment = comments.find(comment => 
+              comment.user.login === 'github-actions[bot]' &&
+              comment.body.includes('📊 DMD Performance Comparison')
+            );
+            
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body: report
+              });
+              console.log('Updated existing performance comment');
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: report
+              });
+              console.log('Created new performance comment');
+            }
+          } catch (error) {
+            console.log('Failed to post comment to PR:', error.message);
+            console.log('This might be due to insufficient permissions or the event not being a pull request.');
+            console.log('Performance report content:');
+            console.log(report);
           }
 
-    - name: Upload Results
+    - name: Output Performance Results to Summary
+      if: always()
+      run: |
+        echo "## 📊 DMD Performance Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        if [ -f "/tmp/performance-report.md" ]; then
+          cat /tmp/performance-report.md >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ Performance report could not be generated" >> $GITHUB_STEP_SUMMARY
+          echo "Check the workflow logs for details." >> $GITHUB_STEP_SUMMARY
+        fi
       uses: actions/upload-artifact@v4
       if: always()
       with:
