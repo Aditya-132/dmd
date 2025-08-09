@@ -10,12 +10,6 @@ concurrency:
   group: perf-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-  pull-requests: write
-  issues: write
-  checks: write
-
 jobs:
   performance-test:
     name: DMD Performance Test
@@ -189,9 +183,9 @@ jobs:
           exit 1
         fi
         
-        # 1. Simple compilation test (compile only, no linking)
+        # 1. Simple compilation test (without std.stdio to avoid library issues)
         run_timed "Simple compilation test" \
-          "echo 'void main() { int x = 42; }' > test_simple.d && $DMD_PATH -c test_simple.d && rm -f test_simple.d test_simple.o" \
+          "echo 'void main() { int x = 42; }' > test_simple.d && $DMD_PATH test_simple.d -of=test_simple_out && rm -f test_simple.d test_simple_out test_simple.o" \
           "simple_compile_time"
         
         # 2. Template stress test
@@ -297,18 +291,18 @@ jobs:
         TEST_EOF
         
         run_timed "Multiple file compilation" \
-          "$DMD_PATH -c multifile_test/*.d && rm -f *.o" \
+          "$DMD_PATH multifile_test/*.d -of=multifile_out && rm -f multifile_out *.o" \
           "multifile_compile_time"
         
-        # Add a test that actually tries linking (if phobos is available)
-        if [ -n "$PHOBOS_LIB" ] && [ -f "$PHOBOS_LIB/libphobos2.a" ]; then
-          run_timed "Full linking test" \
-            "echo 'void main() { int x = 42; }' > test_link.d && $DMD_PATH test_link.d -of=test_link_out && rm -f test_link.d test_link_out test_link.o" \
-            "full_link_time"
-        else
-          echo "[$TEST_TYPE] Skipping linking test - Phobos library not found"
-          add_result "full_link_time" "skipped"
-        fi
+        # 6. DMD binary size
+
+
+
+
+
+
+
+
         if [ -f "$DMD_BINARY" ]; then
           DMD_SIZE=$(stat -c%s "$DMD_BINARY")
           add_result "dmd_size_bytes" "$DMD_SIZE"
@@ -346,23 +340,23 @@ jobs:
           ENABLE_RELEASE=1 \
           VERBOSE=1 2>&1 | tee baseline-build.log
         
-        # Check if Phobos was built successfully
-        echo "=== Checking Phobos Build Status ==="
-        if [ -d "phobos/generated/linux/release/64" ]; then
-          echo "✅ Phobos directory found"
-          ls -la phobos/generated/linux/release/64/ | head -10
-          if [ -f "phobos/generated/linux/release/64/libphobos2.a" ]; then
-            echo "✅ Phobos library found"
-          else
-            echo "⚠️ Phobos library not found, trying to build manually"
-            cd phobos
-            make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd 2>&1 | tee ../phobos-build.log || true
-            cd ..
-          fi
-        else
-          echo "⚠️ Phobos directory not found"
-        fi
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         # Verify DMD was built
         if [ ! -f "generated/linux/release/64/dmd" ]; then
           echo "❌ Baseline DMD binary not found after build"
@@ -416,23 +410,23 @@ jobs:
           ENABLE_RELEASE=1 \
           VERBOSE=1 2>&1 | tee pr-build.log
         
-        # Check if Phobos was built successfully
-        echo "=== Checking Phobos Build Status ==="
-        if [ -d "phobos/generated/linux/release/64" ]; then
-          echo "✅ Phobos directory found"
-          ls -la phobos/generated/linux/release/64/ | head -10
-          if [ -f "phobos/generated/linux/release/64/libphobos2.a" ]; then
-            echo "✅ Phobos library found"
-          else
-            echo "⚠️ Phobos library not found, trying to build manually"
-            cd phobos
-            make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd 2>&1 | tee ../phobos-build.log || true
-            cd ..
-          fi
-        else
-          echo "⚠️ Phobos directory not found"
-        fi
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         # Verify DMD was built
         if [ ! -f "generated/linux/release/64/dmd" ]; then
           echo "❌ PR DMD binary not found after build"
@@ -492,8 +486,8 @@ jobs:
         def format_time(seconds):
             if str(seconds) == "999.000" or str(seconds) == "999.000000000":
                 return "FAILED"
-            elif str(seconds) == "skipped":
-                return "SKIPPED"
+
+
             try:
                 return f"{float(seconds):.3f}s"
             except:
@@ -509,7 +503,7 @@ jobs:
                 return "ERROR"
         
         def calc_change(baseline, pr):
-            if baseline == 0 or str(pr) == "999.000" or str(baseline) == "999.000" or str(pr) == "skipped" or str(baseline) == "skipped":
+            if baseline == 0 or str(pr) == "999.000" or str(baseline) == "999.000":
                 return "N/A"
             try:
                 baseline_val = float(baseline)
@@ -574,7 +568,7 @@ jobs:
             ("CTFE Heavy Code", "ctfe_stress_time"),
             ("Large File Compilation", "large_file_compile_time"),
             ("Multi-file Project", "multifile_compile_time"),
-            ("Full Linking", "full_link_time"),
+
         ]
         
         baseline_tests = baseline.get('tests', {})
@@ -654,7 +648,6 @@ jobs:
 
     - name: Comment PR with Results
       uses: actions/github-script@v7
-      if: github.event_name == 'pull_request'
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
@@ -664,7 +657,6 @@ jobs:
           try {
             report = fs.readFileSync('/tmp/performance-report.md', 'utf8');
           } catch (error) {
-            console.log('Error reading report file:', error);
             report = `# ⚠️ Performance Test Error
             
             Performance comparison could not be completed due to an internal error.
@@ -675,61 +667,44 @@ jobs:
             *DMD Performance Regression Testing*`;
           }
           
-          try {
-            // Find existing comment
-            const { data: comments } = await github.rest.issues.listComments({
+          // Find existing comment
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
+          
+          const existingComment = comments.find(comment => 
+            comment.user.login === 'github-actions[bot]' &&
+            comment.body.includes('📊 DMD Performance Comparison')
+          );
+          
+          if (existingComment) {
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: existingComment.id,
+              body: report
+            });
+            console.log('Updated existing performance comment');
+          } else {
+            await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
+              body: report
             });
-            
-            const existingComment = comments.find(comment => 
-              comment.user.login === 'github-actions[bot]' &&
-              comment.body.includes('📊 DMD Performance Comparison')
-            );
-            
-            if (existingComment) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existingComment.id,
-                body: report
-              });
-              console.log('Updated existing performance comment');
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: report
-              });
-              console.log('Created new performance comment');
-            }
-          } catch (error) {
-            console.log('Failed to post comment to PR:', error.message);
-            console.log('This might be due to insufficient permissions or the event not being a pull request.');
-            console.log('Performance report content:');
-            console.log(report);
+            console.log('Created new performance comment');
           }
 
-    - name: Output Performance Results to Summary
-      if: always()
-      run: |
-        echo "## 📊 DMD Performance Results" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        if [ -f "/tmp/performance-report.md" ]; then
-          cat /tmp/performance-report.md >> $GITHUB_STEP_SUMMARY
-        else
-          echo "❌ Performance report could not be generated" >> $GITHUB_STEP_SUMMARY
-          echo "Check the workflow logs for details." >> $GITHUB_STEP_SUMMARY
-        fi
+    - name: Upload Results
       uses: actions/upload-artifact@v4
       if: always()
       with:
         name: dmd-performance-results
         path: /tmp/perf-results/
         retention-days: 30
-        
+
     - name: Debug Environment
       if: failure()
       run: |
