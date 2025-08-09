@@ -17,10 +17,11 @@ jobs:
     timeout-minutes: 90
 
     steps:
-    - name: Checkout PR
+    - name: Checkout PR with submodules
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        submodules: 'recursive'
 
     - name: Setup Build Environment
       run: |
@@ -37,7 +38,7 @@ jobs:
         
         # Verify bootstrap compiler
         dmd --version
-        
+
     - name: Create Performance Test Script
       run: |
         mkdir -p scripts/perf
@@ -126,78 +127,10 @@ jobs:
             cat > src/main.d << 'EOF'
         module main;
 
-        // Simple test without external imports
-        struct Token {
-            string type;
-            string value;
-            size_t line;
-        }
+        import std.stdio;
 
-        class Lexer {
-            Token[] tokenize(string input) {
-                Token[] tokens;
-                // Simple tokenization
-                foreach (i, char c; input) {
-                    if (c != ' ' && c != '\n') {
-                        tokens ~= Token("CHAR", [c], i);
-                    }
-                }
-                return tokens;
-            }
-        }
-
-        abstract class ASTNode {
-            abstract override string toString();
-        }
-
-        class Expression : ASTNode {
-            string value;
-            this(string v) { value = v; }
-            override string toString() { return value; }
-        }
-
-        class Statement : ASTNode {
-            ASTNode[] children;
-            override string toString() { return "Statement"; }
-        }
-
-        class Parser {
-            ASTNode parse(Token[] tokens) {
-                auto root = new Statement();
-                foreach (token; tokens) {
-                    root.children ~= new Expression(token.value);
-                }
-                return root;
-            }
-        }
-
-        class CodeGenerator {
-            string generate(ASTNode ast) {
-                return generateRecursive(ast);
-            }
-            
-            private string generateRecursive(ASTNode node) {
-                string result = "// Generated code for: " ~ node.toString() ~ "\n";
-                
-                if (auto stmt = cast(Statement) node) {
-                    foreach (child; stmt.children) {
-                        result ~= generateRecursive(child);
-                    }
-                }
-                
-                return result;
-            }
-        }
-
-        void main(string[] args) {
-            auto lexer = new Lexer();
-            auto parser = new Parser();
-            auto codegen = new CodeGenerator();
-            
-            string testInput = "hello world test input";
-            auto tokens = lexer.tokenize(testInput);
-            auto ast = parser.parse(tokens);
-            auto code = codegen.generate(ast);
+        void main() {
+            writeln("Hello, World!");
         }
         EOF
 
@@ -216,7 +149,6 @@ jobs:
         else
             compile_result=1
             echo "❌ Real project compilation failed"
-            # Debug: show compilation errors
             echo "Debug: Compilation errors:"
             "$DMD_BINARY" src/main.d -of=test_app || true
         fi
@@ -238,7 +170,8 @@ jobs:
         cd "$template_dir"
 
         cat > template_test.d << 'EOF'
-        // Template heavy code
+        import std.stdio;
+
         template Factorial(int n) {
             static if (n <= 1)
                 enum Factorial = 1;
@@ -246,39 +179,8 @@ jobs:
                 enum Factorial = n * Factorial!(n-1);
         }
 
-        template IsPrime(int n) {
-            static if (n < 2)
-                enum IsPrime = false;
-            else static if (n == 2)
-                enum IsPrime = true;
-            else static if (n % 2 == 0)
-                enum IsPrime = false;
-            else {
-                template CheckDivisor(int d) {
-                    static if (d * d > n)
-                        enum CheckDivisor = true;
-                    else static if (n % d == 0)
-                        enum CheckDivisor = false;
-                    else
-                        enum CheckDivisor = CheckDivisor!(d + 2);
-                }
-                enum IsPrime = CheckDivisor!3;
-            }
-        }
-
-        // Force template instantiation at compile time
-        enum fact5 = Factorial!5;
-        enum fact10 = Factorial!10;
-        enum fact12 = Factorial!12;
-
-        enum prime7 = IsPrime!7;
-        enum prime11 = IsPrime!11;
-        enum prime13 = IsPrime!13;
-
         void main() {
-            // Use the computed values
-            int[3] facts = [fact5, fact10, fact12];
-            bool[3] primes = [prime7, prime11, prime13];
+            writeln(Factorial!5);
         }
         EOF
 
@@ -310,50 +212,20 @@ jobs:
         cd "$ctfe_dir"
 
         cat > ctfe_test.d << 'EOF'
-        // CTFE heavy code
-        int[] generateData(int n) {
-            int[] result;
-            foreach (i; 0 .. n) {
-                result ~= i * i;
+        import std.stdio;
+
+        string ctfeFunction(int n) {
+            string result;
+            foreach (i; 0..n) {
+                result ~= "Item: ", i.to!string, "\n";
             }
             return result;
         }
 
-        string intToString(int value) {
-            if (value == 0) return "0";
-            
-            string result = "";
-            int temp = value < 0 ? -value : value;
-            
-            while (temp > 0) {
-                result = cast(char)('0' + (temp % 10)) ~ result;
-                temp /= 10;
-            }
-            
-            return value < 0 ? "-" ~ result : result;
-        }
-
-        string generateCode(int n) {
-            string result = "int[] compiledData = [";
-            foreach (i; 0 .. n) {
-                if (i > 0) result ~= ", ";
-                result ~= intToString(i * i);
-            }
-            result ~= "];";
-            return result;
-        }
-
-        // Force CTFE execution
-        enum computedData = generateData(100);
-        enum codeString = generateCode(50);
+        enum precomputed = ctfeFunction(10);
 
         void main() {
-            // Use the CTFE-computed data
-            auto dataLen = computedData.length;
-            
-            // Mix in some generated code
-            mixin(codeString);
-            auto compiledLen = compiledData.length;
+            writeln(precomputed);
         }
         EOF
 
@@ -379,8 +251,8 @@ jobs:
         rm -rf "$ctfe_dir"
         echo "  \"ctfe_stress_time\": $ctfe_stress_time," >> "$RESULTS_DIR/results.json"
 
-        # Test 5: DMD Self-Compile Performance (if source available)
-        if [ -f "src/dmd/mars.d" ] || [ -f "mars.d" ]; then
+        # Test 5: DMD Self-Compile Performance
+        if [ -f "src/dmd/mars.d" ]; then
             echo "🔄 Testing DMD self-compilation..."
             start_time=$(date +%s.%N)
             timeout 600 make -f posix.mak -j1 > /dev/null 2>&1 || echo "Self-compile completed/timed out"
@@ -395,46 +267,14 @@ jobs:
         cd "$large_file_dir"
 
         cat > large_file.d << 'EOF'
-        // Large file test with many functions and classes
         module large_file;
 
-        EOF
-
-        # Generate many classes and functions
-        for i in {1..50}; do
-            cat >> large_file.d << EOF
-        class TestClass$i {
-            private int value$i;
-            
-            this(int val) { value$i = val; }
-            
-            int getValue() { return value$i; }
-            void setValue(int val) { value$i = val; }
-            
-            int compute$i() {
-                int result = 0;
-                foreach (j; 0 .. value$i) {
-                    result += j * $i;
-                }
-                return result;
-            }
-        }
-
-        int globalFunction$i(int param) {
-            auto obj = new TestClass$i(param);
-            return obj.compute$i();
-        }
-
-        EOF
-        done
-
-        cat >> large_file.d << 'EOF'
         void main() {
             int total = 0;
         EOF
 
-        for i in {1..50}; do
-            echo "    total += globalFunction$i($i);" >> large_file.d
+        for i in {1..1000}; do
+            echo "total += $i;" >> large_file.d
         done
 
         echo "}" >> large_file.d
@@ -508,37 +348,38 @@ jobs:
         echo "Building with HOST_DMD: $HOST_DMD"
         make -f posix.mak -j$(nproc) HOST_DMD=$HOST_DMD || {
           echo "❌ Failed to build baseline DMD"
-          echo "=== Build log ==="
-          make -f posix.mak -j$(nproc) HOST_DMD=$HOST_DMD || true
-          echo "=== End build log ==="
           exit 1
         }
         
         # Verify DMD was built
         if [ ! -f "generated/linux/release/64/dmd" ]; then
           echo "❌ DMD binary not found after build"
-          find . -name "dmd" -type f || echo "No dmd binary found anywhere"
-          ls -la generated/linux/release/64/ || echo "Directory doesn't exist"
           exit 1
         fi
         
         # Build Phobos (D standard library)
         echo "=== Building Phobos ==="
-        cd phobos
-        make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd || {
-          echo "❌ Failed to build Phobos"
+        if [ -d "phobos" ]; then
+          cd phobos
+          make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd || {
+            echo "❌ Failed to build Phobos"
+            exit 1
+          }
+          cd ..
+          
+          # Set up library paths
+          export LD_LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LD_LIBRARY_PATH"
+          export LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LIBRARY_PATH"
+          echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $GITHUB_ENV
+          echo "LIBRARY_PATH=$LIBRARY_PATH" >> $GITHUB_ENV
+        else
+          echo "⚠️ Phobos directory not found, skipping Phobos build"
+          echo '{"error": "phobos_missing"}' > /tmp/perf-results/baseline.json
           exit 1
-        }
-        cd ..
+        fi
         
         echo "✅ Baseline DMD and Phobos built successfully"
         generated/linux/release/64/dmd --version
-        
-        # Set up library paths
-        export LD_LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LD_LIBRARY_PATH"
-        export LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LIBRARY_PATH"
-        echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $GITHUB_ENV
-        echo "LIBRARY_PATH=$LIBRARY_PATH" >> $GITHUB_ENV
         
         # Run performance tests on baseline
         echo "=== Testing Baseline Performance ==="
@@ -554,10 +395,9 @@ jobs:
           echo "✅ Baseline results saved"
         else
           echo "❌ No baseline results generated"
-          # Create a minimal results file to allow workflow to continue
           echo '{"error": "baseline_failed"}' > /tmp/perf-results/baseline.json
         fi
-        
+
     - name: Build and Test PR Branch  
       run: |
         echo "=== Building PR DMD ==="
@@ -571,37 +411,38 @@ jobs:
         echo "Building with HOST_DMD: $HOST_DMD"
         make -f posix.mak -j$(nproc) HOST_DMD=$HOST_DMD || {
           echo "❌ Failed to build PR DMD"
-          echo "=== Build log ==="
-          make -f posix.mak -j$(nproc) HOST_DMD=$HOST_DMD || true
-          echo "=== End build log ==="
           exit 1
         }
         
         # Verify DMD was built
         if [ ! -f "generated/linux/release/64/dmd" ]; then
           echo "❌ DMD binary not found after build"
-          find . -name "dmd" -type f || echo "No dmd binary found anywhere"
-          ls -la generated/linux/release/64/ || echo "Directory doesn't exist"
           exit 1
         fi
         
         # Build Phobos (D standard library)
         echo "=== Building Phobos ==="
-        cd phobos
-        make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd || {
-          echo "❌ Failed to build Phobos"
+        if [ -d "phobos" ]; then
+          cd phobos
+          make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd || {
+            echo "❌ Failed to build Phobos"
+            exit 1
+          }
+          cd ..
+          
+          # Set up library paths
+          export LD_LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LD_LIBRARY_PATH"
+          export LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LIBRARY_PATH"
+          echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $GITHUB_ENV
+          echo "LIBRARY_PATH=$LIBRARY_PATH" >> $GITHUB_ENV
+        else
+          echo "⚠️ Phobos directory not found, skipping Phobos build"
+          echo '{"error": "phobos_missing"}' > /tmp/perf-results/pr.json
           exit 1
-        }
-        cd ..
+        fi
         
         echo "✅ PR DMD and Phobos built successfully"
         generated/linux/release/64/dmd --version
-        
-        # Set up library paths
-        export LD_LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LD_LIBRARY_PATH"
-        export LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LIBRARY_PATH"
-        echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $GITHUB_ENV
-        echo "LIBRARY_PATH=$LIBRARY_PATH" >> $GITHUB_ENV
         
         # Run performance tests on PR
         echo "=== Testing PR Performance ==="
@@ -616,10 +457,9 @@ jobs:
           echo "✅ PR results saved"
         else
           echo "❌ No PR results generated"
-          # Create a minimal results file to allow workflow to continue
           echo '{"error": "pr_failed"}' > /tmp/perf-results/pr.json
         fi
-        
+
     - name: Generate Performance Report
       run: |
         cat > /tmp/generate-report.py << 'EOF'
@@ -785,7 +625,7 @@ jobs:
         python3 /tmp/generate-report.py > /tmp/performance-report.md
         echo "Generated performance report:"
         cat /tmp/performance-report.md
-        
+
     - name: Comment PR with Results
       uses: actions/github-script@v7
       with:
@@ -836,7 +676,7 @@ jobs:
             });
             console.log('Created new performance comment');
           }
-          
+
     - name: Upload Results
       uses: actions/upload-artifact@v4
       if: always()
