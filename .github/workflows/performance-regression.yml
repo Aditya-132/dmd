@@ -26,7 +26,7 @@ jobs:
     - name: Setup Build Environment
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential git bc python3 time
+        sudo apt-get install -y build-essential git bc python3 time libcurl4-openssl-dev zlib1g-dev libevent-dev libssl-dev
         
         # Install bootstrap D compiler
         curl -fsS https://dlang.org/install.sh | bash -s dmd
@@ -44,9 +44,82 @@ jobs:
         mkdir -p scripts/perf
         cat > scripts/perf/dmd-performance-test.sh << 'SCRIPT_EOF'
         #!/bin/bash
-        # [Previous script content remains exactly the same]
+        set -euo pipefail
+        
+        TEST_TYPE=$1
+        RESULTS_DIR="perf-results"
+        mkdir -p "$RESULTS_DIR"
+        
+        # Get current commit hash
+        COMMIT_HASH=$(git rev-parse --short HEAD)
+        BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+        
+        # Initialize results JSON
+        echo '{
+          "branch": "'"$BRANCH_NAME"'",
+          "commit": "'"$COMMIT_HASH"'",
+          "timestamp": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'",
+          "tests": {}
+        }' > "$RESULTS_DIR/results.json"
+        
+        # Helper function to add test results
+        add_result() {
+          local key=$1
+          local value=$2
+          local tmpfile=$(mktemp)
+          jq --arg key "$key" --arg value "$value" '.tests += {($key): $value}' "$RESULTS_DIR/results.json" > "$tmpfile"
+          mv "$tmpfile" "$RESULTS_DIR/results.json"
+        }
+        
+        # 1. Test Suite Compilation Time
+        echo "[$TEST_TYPE] Testing DMD test suite compilation time..."
+        TEST_SUITE_TIME=$( { time make -j$(nproc) -C test START=1 END=999 >/dev/null 2>&1; } 2>&1 | grep real | awk '{print $2}')
+        add_result "test_suite_duration" "$TEST_SUITE_TIME"
+        
+        # 2. Real Project Compilation Time
+        echo "[$TEST_TYPE] Testing real project compilation time..."
+        if [ -d "samples" ]; then
+          REAL_PROJ_TIME=$( { time find samples -name "*.d" -print0 | xargs -0 generated/linux/release/64/dmd -c >/dev/null 2>&1; } 2>&1 | grep real | awk '{print $2}')
+          add_result "real_project_compile_time" "$REAL_PROJ_TIME"
+        else
+          add_result "real_project_compile_time" "999.000000000"
+        fi
+        
+        # 3. Template Stress Test
+        echo "[$TEST_TYPE] Running template stress test..."
+        TEMPLATE_STRESS=$( { time generated/linux/release/64/dmd -c -o- test/compilable/testtempl.d >/dev/null 2>&1; } 2>&1 | grep real | awk '{print $2}')
+        add_result "template_stress_time" "$TEMPLATE_STRESS"
+        
+        # 4. CTFE Stress Test
+        echo "[$TEST_TYPE] Running CTFE stress test..."
+        CTFE_STRESS=$( { time generated/linux/release/64/dmd -c -o- test/compilable/testctfe.d >/dev/null 2>&1; } 2>&1 | grep real | awk '{print $2}')
+        add_result "ctfe_stress_time" "$CTFE_STRESS"
+        
+        # 5. Large File Compilation
+        echo "[$TEST_TYPE] Testing large file compilation..."
+        LARGE_FILE=$( { time generated/linux/release/64/dmd -c -o- test/compilable/extra-files/large.d >/dev/null 2>&1; } 2>&1 | grep real | awk '{print $2}')
+        add_result "large_file_compile_time" "$LARGE_FILE"
+        
+        # 6. DMD Self-Compile Time
+        echo "[$TEST_TYPE] Testing DMD self-compile time..."
+        SELF_COMPILE=$( { time make -f posix.mak -j$(nproc) clean all HOST_DMD=generated/linux/release/64/dmd >/dev/null 2>&1; } 2>&1 | grep real | awk '{print $2}')
+        add_result "self_compile_time" "$SELF_COMPILE"
+        
+        # 7. Binary Size
+        echo "[$TEST_TYPE] Measuring binary size..."
+        if [ -f "generated/linux/release/64/dmd" ]; then
+          DMD_SIZE=$(stat -c%s "generated/linux/release/64/dmd")
+          add_result "dmd_size_bytes" "$DMD_SIZE"
+        else
+          add_result "dmd_size_bytes" "0"
+        fi
+        
+        echo "[$TEST_TYPE] Performance tests completed!"
         SCRIPT_EOF
         chmod +x scripts/perf/dmd-performance-test.sh
+
+    - name: Install jq for JSON processing
+      run: sudo apt-get install -y jq
 
     - name: Build and Test Baseline (Main Branch)
       run: |
@@ -59,28 +132,33 @@ jobs:
         
         # Build baseline DMD using bootstrap compiler
         echo "Building with HOST_DMD: $HOST_DMD"
-        make -f posix.mak -j$(nproc) HOST_DMD=$HOST_DMD || {
+        make -f posix.mak -j$(nproc) HOST_DMD=$HOST_DMD VERBOSE=1 2>&1 | tee dmd-build.log || {
           echo "❌ Failed to build baseline DMD"
+          echo "=== Build Log ==="
+          cat dmd-build.log || true
           exit 1
         }
         
         # Verify DMD was built
         if [ ! -f "generated/linux/release/64/dmd" ]; then
           echo "❌ DMD binary not found after build"
+          ls -R generated/ || true
           exit 1
         fi
         
         # Check for Phobos and clone if missing
         if [ ! -d "phobos" ]; then
           echo "Phobos not found, cloning..."
-          git clone --depth 1 https://github.com/dlang/phobos.git
+          git clone --depth 1 --branch v2.106.0 https://github.com/dlang/phobos.git
         fi
         
         # Build Phobos (D standard library)
         echo "=== Building Phobos ==="
         cd phobos
-        make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd || {
+        make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd VERBOSE=1 2>&1 | tee phobos-build.log || {
           echo "❌ Failed to build Phobos"
+          echo "=== Phobos Build Log ==="
+          cat phobos-build.log || true
           exit 1
         }
         cd ..
@@ -121,28 +199,33 @@ jobs:
         
         # Build PR DMD
         echo "Building with HOST_DMD: $HOST_DMD"
-        make -f posix.mak -j$(nproc) HOST_DMD=$HOST_DMD || {
+        make -f posix.mak -j$(nproc) HOST_DMD=$HOST_DMD VERBOSE=1 2>&1 | tee dmd-build.log || {
           echo "❌ Failed to build PR DMD"
+          echo "=== Build Log ==="
+          cat dmd-build.log || true
           exit 1
         }
         
         # Verify DMD was built
         if [ ! -f "generated/linux/release/64/dmd" ]; then
           echo "❌ DMD binary not found after build"
+          ls -R generated/ || true
           exit 1
         fi
         
         # Check for Phobos and clone if missing
         if [ ! -d "phobos" ]; then
           echo "Phobos not found, cloning..."
-          git clone --depth 1 https://github.com/dlang/phobos.git
+          git clone --depth 1 --branch v2.106.0 https://github.com/dlang/phobos.git
         fi
         
         # Build Phobos (D standard library)
         echo "=== Building Phobos ==="
         cd phobos
-        make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd || {
+        make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd VERBOSE=1 2>&1 | tee phobos-build.log || {
           echo "❌ Failed to build Phobos"
+          echo "=== Phobos Build Log ==="
+          cat phobos-build.log || true
           exit 1
         }
         cd ..
