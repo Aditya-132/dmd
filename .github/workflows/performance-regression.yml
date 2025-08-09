@@ -522,8 +522,23 @@ jobs:
           exit 1
         fi
         
-        echo "✅ Baseline DMD built successfully"
+        # Build Phobos (D standard library)
+        echo "=== Building Phobos ==="
+        cd phobos
+        make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd || {
+          echo "❌ Failed to build Phobos"
+          exit 1
+        }
+        cd ..
+        
+        echo "✅ Baseline DMD and Phobos built successfully"
         generated/linux/release/64/dmd --version
+        
+        # Set up library paths
+        export LD_LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LD_LIBRARY_PATH"
+        export LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LIBRARY_PATH"
+        echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $GITHUB_ENV
+        echo "LIBRARY_PATH=$LIBRARY_PATH" >> $GITHUB_ENV
         
         # Run performance tests on baseline
         echo "=== Testing Baseline Performance ==="
@@ -570,8 +585,23 @@ jobs:
           exit 1
         fi
         
-        echo "✅ PR DMD built successfully"
+        # Build Phobos (D standard library)
+        echo "=== Building Phobos ==="
+        cd phobos
+        make -f posix.mak -j$(nproc) DMD=../generated/linux/release/64/dmd || {
+          echo "❌ Failed to build Phobos"
+          exit 1
+        }
+        cd ..
+        
+        echo "✅ PR DMD and Phobos built successfully"
         generated/linux/release/64/dmd --version
+        
+        # Set up library paths
+        export LD_LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LD_LIBRARY_PATH"
+        export LIBRARY_PATH="$(pwd)/phobos/generated/linux/release/64:$LIBRARY_PATH"
+        echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $GITHUB_ENV
+        echo "LIBRARY_PATH=$LIBRARY_PATH" >> $GITHUB_ENV
         
         # Run performance tests on PR
         echo "=== Testing PR Performance ==="
